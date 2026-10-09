@@ -24,6 +24,9 @@ function db(): PDO {
             $_ENV['DB_PASS'],
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false]
         );
+        // created_at ve stejné zóně jako PHP (Europe/Prague); offset, protože MariaDB nemusí mít načtené tabulky zón
+        $offset = (new DateTimeImmutable('now', new DateTimeZone('Europe/Prague')))->format('P');
+        $pdo->exec("SET time_zone = '$offset'");
     }
     return $pdo;
 }
