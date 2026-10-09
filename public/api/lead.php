@@ -32,10 +32,8 @@ function send_resend_mail(string $email, array $content, string $unsubUrl): bool
         'subject' => $content['subject'],
         'html' => $content['html'],
         'text' => $content['text'],
-        'headers' => [
-            'List-Unsubscribe' => '<' . $unsubUrl . '>',
-            'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click', // RFC 8058
-        ],
+        // Bez hlaviček List-Unsubscribe: jde o jeden vyžádaný (transakční) e-mail, ne newsletter.
+        // S nimi ho Seznam řadí do „Hromadné“. Odhlašovací odkaz zůstává v textu e-mailu.
     ];
     // Odesílací adresa nemá schránku – odpovědi jdou na skutečný kontakt
     if (!empty($_ENV['MAIL_REPLY_TO'])) {

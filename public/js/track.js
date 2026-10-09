@@ -18,7 +18,7 @@ let sid = store.get('lp_sid');
 if (!sid) { sid = uuid(); store.set('lp_sid', sid); }
 
 const params = new URLSearchParams(location.search);
-for (const [param, key] of [['ad', 'lp_ad'], ['utm_source', 'lp_utm_source'], ['utm_campaign', 'lp_utm_campaign']]) {
+for (const [param, key] of [['ad', 'lp_ad'], ['utm_source', 'lp_utm_source'], ['utm_campaign', 'lp_utm_campaign'], ['test', 'lp_test']]) {
   const v = params.get(param);
   if (v) store.set(key, v.slice(0, 100));
 }
@@ -35,6 +35,8 @@ export function getContext() {
 
 export function track(event, props = {}) {
   try {
+    // ?test=1 označí celou návštěvu jako testovací – analytika ji standardně vylučuje
+    if (store.get('lp_test')) props = { ...props, test: 1 };
     const payload = { session_id: sid, event, ad_variant: getContext().ad_variant, props };
     const body = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
     if (navigator.sendBeacon) navigator.sendBeacon(API_BASE + '/api/event.php', body);

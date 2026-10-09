@@ -294,6 +294,10 @@ async function startCalc() {
 /* ---------- Formuláře ---------- */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+function initHeroCta() {
+  $('#hero-cta').addEventListener('click', () => track('cta_click', { position: 'hero' }));
+}
+
 function initForms() {
   $$('form.lead-form').forEach((form) => {
     const position = +form.dataset.position;
@@ -376,6 +380,7 @@ function initScrollDepth() {
 /* ---------- Start ---------- */
 initReveal();
 initHero();
+initHeroCta();
 initForms();
 initScrollDepth();
 const c = getContext();
