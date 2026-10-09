@@ -1,0 +1,1105 @@
+{
+  "ticker": "VT",
+  "currency": "USD",
+  "field": "adjclose",
+  "interval": "1mo",
+  "source": "https://query1.finance.yahoo.com/v8/finance/chart/VT?interval=1mo&range=max&events=div%7Csplit",
+  "retrieved": "2026-10-09",
+  "data": [
+    {
+      "date": "2008-07",
+      "adjclose": 32.8539,
+      "close": 48.21
+    },
+    {
+      "date": "2008-08",
+      "adjclose": 32.2474,
+      "close": 47.32
+    },
+    {
+      "date": "2008-09",
+      "adjclose": 29.3102,
+      "close": 43.01
+    },
+    {
+      "date": "2008-10",
+      "adjclose": 23.027,
+      "close": 33.79
+    },
+    {
+      "date": "2008-11",
+      "adjclose": 21.4596,
+      "close": 31.49
+    },
+    {
+      "date": "2008-12",
+      "adjclose": 22.6209,
+      "close": 32.98
+    },
+    {
+      "date": "2009-01",
+      "adjclose": 20.1654,
+      "close": 29.4
+    },
+    {
+      "date": "2009-02",
+      "adjclose": 18.2449,
+      "close": 26.6
+    },
+    {
+      "date": "2009-03",
+      "adjclose": 19.8567,
+      "close": 28.95
+    },
+    {
+      "date": "2009-04",
+      "adjclose": 22.2505,
+      "close": 32.44
+    },
+    {
+      "date": "2009-05",
+      "adjclose": 24.61,
+      "close": 35.88
+    },
+    {
+      "date": "2009-06",
+      "adjclose": 24.1847,
+      "close": 35.26
+    },
+    {
+      "date": "2009-07",
+      "adjclose": 26.6334,
+      "close": 38.83
+    },
+    {
+      "date": "2009-08",
+      "adjclose": 27.3467,
+      "close": 39.87
+    },
+    {
+      "date": "2009-09",
+      "adjclose": 28.7802,
+      "close": 41.96
+    },
+    {
+      "date": "2009-10",
+      "adjclose": 28.0532,
+      "close": 40.9
+    },
+    {
+      "date": "2009-11",
+      "adjclose": 29.5484,
+      "close": 43.08
+    },
+    {
+      "date": "2009-12",
+      "adjclose": 30.0097,
+      "close": 43.09
+    },
+    {
+      "date": "2010-01",
+      "adjclose": 28.4775,
+      "close": 40.89
+    },
+    {
+      "date": "2010-02",
+      "adjclose": 29.0695,
+      "close": 41.74
+    },
+    {
+      "date": "2010-03",
+      "adjclose": 31.0056,
+      "close": 44.52
+    },
+    {
+      "date": "2010-04",
+      "adjclose": 30.8663,
+      "close": 44.32
+    },
+    {
+      "date": "2010-05",
+      "adjclose": 27.8159,
+      "close": 39.94
+    },
+    {
+      "date": "2010-06",
+      "adjclose": 27.0359,
+      "close": 38.82
+    },
+    {
+      "date": "2010-07",
+      "adjclose": 29.5222,
+      "close": 42.39
+    },
+    {
+      "date": "2010-08",
+      "adjclose": 28.3452,
+      "close": 40.7
+    },
+    {
+      "date": "2010-09",
+      "adjclose": 31.1937,
+      "close": 44.79
+    },
+    {
+      "date": "2010-10",
+      "adjclose": 32.3776,
+      "close": 46.49
+    },
+    {
+      "date": "2010-11",
+      "adjclose": 31.521,
+      "close": 45.26
+    },
+    {
+      "date": "2010-12",
+      "adjclose": 33.9357,
+      "close": 47.8
+    },
+    {
+      "date": "2011-01",
+      "adjclose": 34.4114,
+      "close": 48.47
+    },
+    {
+      "date": "2011-02",
+      "adjclose": 35.4195,
+      "close": 49.89
+    },
+    {
+      "date": "2011-03",
+      "adjclose": 35.3982,
+      "close": 49.86
+    },
+    {
+      "date": "2011-04",
+      "adjclose": 36.9388,
+      "close": 52.03
+    },
+    {
+      "date": "2011-05",
+      "adjclose": 36.1011,
+      "close": 50.85
+    },
+    {
+      "date": "2011-06",
+      "adjclose": 35.6183,
+      "close": 50.17
+    },
+    {
+      "date": "2011-07",
+      "adjclose": 34.8516,
+      "close": 49.09
+    },
+    {
+      "date": "2011-08",
+      "adjclose": 32.3241,
+      "close": 45.53
+    },
+    {
+      "date": "2011-09",
+      "adjclose": 28.8596,
+      "close": 40.65
+    },
+    {
+      "date": "2011-10",
+      "adjclose": 32.1112,
+      "close": 45.23
+    },
+    {
+      "date": "2011-11",
+      "adjclose": 31.7136,
+      "close": 44.67
+    },
+    {
+      "date": "2011-12",
+      "adjclose": 31.3876,
+      "close": 43.18
+    },
+    {
+      "date": "2012-01",
+      "adjclose": 33.1031,
+      "close": 45.54
+    },
+    {
+      "date": "2012-02",
+      "adjclose": 34.6805,
+      "close": 47.71
+    },
+    {
+      "date": "2012-03",
+      "adjclose": 35.0875,
+      "close": 48.27
+    },
+    {
+      "date": "2012-04",
+      "adjclose": 34.6732,
+      "close": 47.7
+    },
+    {
+      "date": "2012-05",
+      "adjclose": 31.5766,
+      "close": 43.44
+    },
+    {
+      "date": "2012-06",
+      "adjclose": 33.1976,
+      "close": 45.67
+    },
+    {
+      "date": "2012-07",
+      "adjclose": 33.4375,
+      "close": 46
+    },
+    {
+      "date": "2012-08",
+      "adjclose": 34.2661,
+      "close": 47.14
+    },
+    {
+      "date": "2012-09",
+      "adjclose": 35.3309,
+      "close": 48.03
+    },
+    {
+      "date": "2012-10",
+      "adjclose": 35.1176,
+      "close": 47.74
+    },
+    {
+      "date": "2012-11",
+      "adjclose": 35.6546,
+      "close": 48.47
+    },
+    {
+      "date": "2012-12",
+      "adjclose": 36.7627,
+      "close": 49.42
+    },
+    {
+      "date": "2013-01",
+      "adjclose": 38.2356,
+      "close": 51.4
+    },
+    {
+      "date": "2013-02",
+      "adjclose": 38.1166,
+      "close": 51.24
+    },
+    {
+      "date": "2013-03",
+      "adjclose": 39.0136,
+      "close": 52.28
+    },
+    {
+      "date": "2013-04",
+      "adjclose": 40.0583,
+      "close": 53.68
+    },
+    {
+      "date": "2013-05",
+      "adjclose": 39.8345,
+      "close": 53.38
+    },
+    {
+      "date": "2013-06",
+      "adjclose": 38.7703,
+      "close": 51.51
+    },
+    {
+      "date": "2013-07",
+      "adjclose": 40.7724,
+      "close": 54.17
+    },
+    {
+      "date": "2013-08",
+      "adjclose": 39.7714,
+      "close": 52.84
+    },
+    {
+      "date": "2013-09",
+      "adjclose": 41.9936,
+      "close": 55.55
+    },
+    {
+      "date": "2013-10",
+      "adjclose": 43.5509,
+      "close": 57.61
+    },
+    {
+      "date": "2013-11",
+      "adjclose": 44.2237,
+      "close": 58.5
+    },
+    {
+      "date": "2013-12",
+      "adjclose": 45.1952,
+      "close": 59.4
+    },
+    {
+      "date": "2014-01",
+      "adjclose": 43.1865,
+      "close": 56.76
+    },
+    {
+      "date": "2014-02",
+      "adjclose": 45.4387,
+      "close": 59.72
+    },
+    {
+      "date": "2014-03",
+      "adjclose": 45.6598,
+      "close": 59.67
+    },
+    {
+      "date": "2014-04",
+      "adjclose": 45.9965,
+      "close": 60.11
+    },
+    {
+      "date": "2014-05",
+      "adjclose": 46.9377,
+      "close": 61.34
+    },
+    {
+      "date": "2014-06",
+      "adjclose": 47.9734,
+      "close": 62.23
+    },
+    {
+      "date": "2014-07",
+      "adjclose": 47.1331,
+      "close": 61.14
+    },
+    {
+      "date": "2014-08",
+      "adjclose": 48.3819,
+      "close": 62.76
+    },
+    {
+      "date": "2014-09",
+      "adjclose": 46.768,
+      "close": 60.38
+    },
+    {
+      "date": "2014-10",
+      "adjclose": 47.2095,
+      "close": 60.95
+    },
+    {
+      "date": "2014-11",
+      "adjclose": 47.8059,
+      "close": 61.72
+    },
+    {
+      "date": "2014-12",
+      "adjclose": 46.8584,
+      "close": 60.12
+    },
+    {
+      "date": "2015-01",
+      "adjclose": 46.0946,
+      "close": 59.14
+    },
+    {
+      "date": "2015-02",
+      "adjclose": 48.8381,
+      "close": 62.66
+    },
+    {
+      "date": "2015-03",
+      "adjclose": 48.2453,
+      "close": 61.59
+    },
+    {
+      "date": "2015-04",
+      "adjclose": 49.4752,
+      "close": 63.16
+    },
+    {
+      "date": "2015-05",
+      "adjclose": 49.6397,
+      "close": 63.37
+    },
+    {
+      "date": "2015-06",
+      "adjclose": 48.5375,
+      "close": 61.52
+    },
+    {
+      "date": "2015-07",
+      "adjclose": 48.7821,
+      "close": 61.83
+    },
+    {
+      "date": "2015-08",
+      "adjclose": 45.5473,
+      "close": 57.73
+    },
+    {
+      "date": "2015-09",
+      "adjclose": 43.8571,
+      "close": 55.31
+    },
+    {
+      "date": "2015-10",
+      "adjclose": 47.0526,
+      "close": 59.34
+    },
+    {
+      "date": "2015-11",
+      "adjclose": 47.013,
+      "close": 59.29
+    },
+    {
+      "date": "2015-12",
+      "adjclose": 45.9862,
+      "close": 57.62
+    },
+    {
+      "date": "2016-01",
+      "adjclose": 43.2886,
+      "close": 54.24
+    },
+    {
+      "date": "2016-02",
+      "adjclose": 42.8098,
+      "close": 53.64
+    },
+    {
+      "date": "2016-03",
+      "adjclose": 46.2228,
+      "close": 57.69
+    },
+    {
+      "date": "2016-04",
+      "adjclose": 46.6875,
+      "close": 58.27
+    },
+    {
+      "date": "2016-05",
+      "adjclose": 46.992,
+      "close": 58.65
+    },
+    {
+      "date": "2016-06",
+      "adjclose": 46.905,
+      "close": 58.07
+    },
+    {
+      "date": "2016-07",
+      "adjclose": 48.8516,
+      "close": 60.48
+    },
+    {
+      "date": "2016-08",
+      "adjclose": 49.0212,
+      "close": 60.69
+    },
+    {
+      "date": "2016-09",
+      "adjclose": 49.4029,
+      "close": 60.85
+    },
+    {
+      "date": "2016-10",
+      "adjclose": 48.4286,
+      "close": 59.65
+    },
+    {
+      "date": "2016-11",
+      "adjclose": 49.0051,
+      "close": 60.36
+    },
+    {
+      "date": "2016-12",
+      "adjclose": 49.8939,
+      "close": 61
+    },
+    {
+      "date": "2017-01",
+      "adjclose": 51.3907,
+      "close": 62.83
+    },
+    {
+      "date": "2017-02",
+      "adjclose": 52.773,
+      "close": 64.52
+    },
+    {
+      "date": "2017-03",
+      "adjclose": 53.5522,
+      "close": 65.22
+    },
+    {
+      "date": "2017-04",
+      "adjclose": 54.4226,
+      "close": 66.28
+    },
+    {
+      "date": "2017-05",
+      "adjclose": 55.4818,
+      "close": 67.57
+    },
+    {
+      "date": "2017-06",
+      "adjclose": 55.832,
+      "close": 67.53
+    },
+    {
+      "date": "2017-07",
+      "adjclose": 57.3119,
+      "close": 69.32
+    },
+    {
+      "date": "2017-08",
+      "adjclose": 57.5517,
+      "close": 69.61
+    },
+    {
+      "date": "2017-09",
+      "adjclose": 58.7647,
+      "close": 70.72
+    },
+    {
+      "date": "2017-10",
+      "adjclose": 60.0028,
+      "close": 72.21
+    },
+    {
+      "date": "2017-11",
+      "adjclose": 61.1412,
+      "close": 73.58
+    },
+    {
+      "date": "2017-12",
+      "adjclose": 62.1161,
+      "close": 74.26
+    },
+    {
+      "date": "2018-01",
+      "adjclose": 65.5206,
+      "close": 78.33
+    },
+    {
+      "date": "2018-02",
+      "adjclose": 62.6096,
+      "close": 74.85
+    },
+    {
+      "date": "2018-03",
+      "adjclose": 61.8089,
+      "close": 73.63
+    },
+    {
+      "date": "2018-04",
+      "adjclose": 62.0691,
+      "close": 73.94
+    },
+    {
+      "date": "2018-05",
+      "adjclose": 62.4217,
+      "close": 74.36
+    },
+    {
+      "date": "2018-06",
+      "adjclose": 62.05,
+      "close": 73.37
+    },
+    {
+      "date": "2018-07",
+      "adjclose": 63.8344,
+      "close": 75.48
+    },
+    {
+      "date": "2018-08",
+      "adjclose": 64.3842,
+      "close": 76.13
+    },
+    {
+      "date": "2018-09",
+      "adjclose": 64.4352,
+      "close": 75.83
+    },
+    {
+      "date": "2018-10",
+      "adjclose": 59.3963,
+      "close": 69.9
+    },
+    {
+      "date": "2018-11",
+      "adjclose": 60.4245,
+      "close": 71.11
+    },
+    {
+      "date": "2018-12",
+      "adjclose": 56.0517,
+      "close": 65.46
+    },
+    {
+      "date": "2019-01",
+      "adjclose": 60.53,
+      "close": 70.69
+    },
+    {
+      "date": "2019-02",
+      "adjclose": 62.234,
+      "close": 72.68
+    },
+    {
+      "date": "2019-03",
+      "adjclose": 62.8966,
+      "close": 73.17
+    },
+    {
+      "date": "2019-04",
+      "adjclose": 65.08,
+      "close": 75.71
+    },
+    {
+      "date": "2019-05",
+      "adjclose": 61.1946,
+      "close": 71.19
+    },
+    {
+      "date": "2019-06",
+      "adjclose": 65.0927,
+      "close": 75.16
+    },
+    {
+      "date": "2019-07",
+      "adjclose": 65.0927,
+      "close": 75.16
+    },
+    {
+      "date": "2019-08",
+      "adjclose": 63.7244,
+      "close": 73.58
+    },
+    {
+      "date": "2019-09",
+      "adjclose": 65.1725,
+      "close": 74.82
+    },
+    {
+      "date": "2019-10",
+      "adjclose": 66.993,
+      "close": 76.91
+    },
+    {
+      "date": "2019-11",
+      "adjclose": 68.709,
+      "close": 78.88
+    },
+    {
+      "date": "2019-12",
+      "adjclose": 71.0813,
+      "close": 80.99
+    },
+    {
+      "date": "2020-01",
+      "adjclose": 69.9754,
+      "close": 79.73
+    },
+    {
+      "date": "2020-02",
+      "adjclose": 64.9202,
+      "close": 73.97
+    },
+    {
+      "date": "2020-03",
+      "adjclose": 55.335,
+      "close": 62.8
+    },
+    {
+      "date": "2020-04",
+      "adjclose": 61.0712,
+      "close": 69.31
+    },
+    {
+      "date": "2020-05",
+      "adjclose": 64.252,
+      "close": 72.92
+    },
+    {
+      "date": "2020-06",
+      "adjclose": 66.2254,
+      "close": 74.8
+    },
+    {
+      "date": "2020-07",
+      "adjclose": 69.7314,
+      "close": 78.76
+    },
+    {
+      "date": "2020-08",
+      "adjclose": 73.9192,
+      "close": 83.49
+    },
+    {
+      "date": "2020-09",
+      "adjclose": 71.7522,
+      "close": 80.64
+    },
+    {
+      "date": "2020-10",
+      "adjclose": 70.2841,
+      "close": 78.99
+    },
+    {
+      "date": "2020-11",
+      "adjclose": 78.9773,
+      "close": 88.76
+    },
+    {
+      "date": "2020-12",
+      "adjclose": 82.8721,
+      "close": 92.58
+    },
+    {
+      "date": "2021-01",
+      "adjclose": 82.6841,
+      "close": 92.37
+    },
+    {
+      "date": "2021-02",
+      "adjclose": 84.8951,
+      "close": 94.84
+    },
+    {
+      "date": "2021-03",
+      "adjclose": 87.3154,
+      "close": 97.29
+    },
+    {
+      "date": "2021-04",
+      "adjclose": 90.9232,
+      "close": 101.31
+    },
+    {
+      "date": "2021-05",
+      "adjclose": 92.3592,
+      "close": 102.91
+    },
+    {
+      "date": "2021-06",
+      "adjclose": 93.4509,
+      "close": 103.61
+    },
+    {
+      "date": "2021-07",
+      "adjclose": 94.0282,
+      "close": 104.25
+    },
+    {
+      "date": "2021-08",
+      "adjclose": 96.1568,
+      "close": 106.61
+    },
+    {
+      "date": "2021-09",
+      "adjclose": 92.2069,
+      "close": 101.83
+    },
+    {
+      "date": "2021-10",
+      "adjclose": 96.9517,
+      "close": 107.07
+    },
+    {
+      "date": "2021-11",
+      "adjclose": 94.4163,
+      "close": 104.27
+    },
+    {
+      "date": "2021-12",
+      "adjclose": 98.0097,
+      "close": 107.43
+    },
+    {
+      "date": "2022-01",
+      "adjclose": 93.5212,
+      "close": 102.51
+    },
+    {
+      "date": "2022-02",
+      "adjclose": 90.9302,
+      "close": 99.67
+    },
+    {
+      "date": "2022-03",
+      "adjclose": 92.6446,
+      "close": 101.29
+    },
+    {
+      "date": "2022-04",
+      "adjclose": 85.1445,
+      "close": 93.09
+    },
+    {
+      "date": "2022-05",
+      "adjclose": 85.5653,
+      "close": 93.55
+    },
+    {
+      "date": "2022-06",
+      "adjclose": 78.6159,
+      "close": 85.34
+    },
+    {
+      "date": "2022-07",
+      "adjclose": 84.1063,
+      "close": 91.3
+    },
+    {
+      "date": "2022-08",
+      "adjclose": 80.6978,
+      "close": 87.6
+    },
+    {
+      "date": "2022-09",
+      "adjclose": 73.0081,
+      "close": 78.88
+    },
+    {
+      "date": "2022-10",
+      "adjclose": 77.6637,
+      "close": 83.91
+    },
+    {
+      "date": "2022-11",
+      "adjclose": 84.0964,
+      "close": 90.86
+    },
+    {
+      "date": "2022-12",
+      "adjclose": 80.3647,
+      "close": 86.19
+    },
+    {
+      "date": "2023-01",
+      "adjclose": 86.5093,
+      "close": 92.78
+    },
+    {
+      "date": "2023-02",
+      "adjclose": 83.7587,
+      "close": 89.83
+    },
+    {
+      "date": "2023-03",
+      "adjclose": 86.1459,
+      "close": 92.09
+    },
+    {
+      "date": "2023-04",
+      "adjclose": 87.3714,
+      "close": 93.4
+    },
+    {
+      "date": "2023-05",
+      "adjclose": 86.3143,
+      "close": 92.27
+    },
+    {
+      "date": "2023-06",
+      "adjclose": 91.3274,
+      "close": 96.98
+    },
+    {
+      "date": "2023-07",
+      "adjclose": 94.727,
+      "close": 100.59
+    },
+    {
+      "date": "2023-08",
+      "adjclose": 92.0337,
+      "close": 97.73
+    },
+    {
+      "date": "2023-09",
+      "adjclose": 88.1179,
+      "close": 93.18
+    },
+    {
+      "date": "2023-10",
+      "adjclose": 85.5456,
+      "close": 90.46
+    },
+    {
+      "date": "2023-11",
+      "adjclose": 93.2529,
+      "close": 98.61
+    },
+    {
+      "date": "2023-12",
+      "adjclose": 98.0624,
+      "close": 102.88
+    },
+    {
+      "date": "2024-01",
+      "adjclose": 98.0624,
+      "close": 102.88
+    },
+    {
+      "date": "2024-02",
+      "adjclose": 102.4661,
+      "close": 107.5
+    },
+    {
+      "date": "2024-03",
+      "adjclose": 105.7338,
+      "close": 110.5
+    },
+    {
+      "date": "2024-04",
+      "adjclose": 101.9446,
+      "close": 106.54
+    },
+    {
+      "date": "2024-05",
+      "adjclose": 106.6333,
+      "close": 111.44
+    },
+    {
+      "date": "2024-06",
+      "adjclose": 108.3245,
+      "close": 112.63
+    },
+    {
+      "date": "2024-07",
+      "adjclose": 110.4693,
+      "close": 114.86
+    },
+    {
+      "date": "2024-08",
+      "adjclose": 113.0468,
+      "close": 117.54
+    },
+    {
+      "date": "2024-09",
+      "adjclose": 115.5299,
+      "close": 119.7
+    },
+    {
+      "date": "2024-10",
+      "adjclose": 113.0108,
+      "close": 117.09
+    },
+    {
+      "date": "2024-11",
+      "adjclose": 117.6919,
+      "close": 121.94
+    },
+    {
+      "date": "2024-12",
+      "adjclose": 114.236,
+      "close": 117.48
+    },
+    {
+      "date": "2025-01",
+      "adjclose": 117.7269,
+      "close": 121.07
+    },
+    {
+      "date": "2025-02",
+      "adjclose": 117.2407,
+      "close": 120.57
+    },
+    {
+      "date": "2025-03",
+      "adjclose": 113.1165,
+      "close": 115.95
+    },
+    {
+      "date": "2025-04",
+      "adjclose": 113.7506,
+      "close": 116.6
+    },
+    {
+      "date": "2025-05",
+      "adjclose": 120.3552,
+      "close": 123.37
+    },
+    {
+      "date": "2025-06",
+      "adjclose": 125.9796,
+      "close": 128.52
+    },
+    {
+      "date": "2025-07",
+      "adjclose": 127.3617,
+      "close": 129.93
+    },
+    {
+      "date": "2025-08",
+      "adjclose": 131.1258,
+      "close": 133.77
+    },
+    {
+      "date": "2025-09",
+      "adjclose": 135.5465,
+      "close": 137.8
+    },
+    {
+      "date": "2025-10",
+      "adjclose": 138.2908,
+      "close": 140.59
+    },
+    {
+      "date": "2025-11",
+      "adjclose": 138.5859,
+      "close": 140.89
+    },
+    {
+      "date": "2025-12",
+      "adjclose": 139.8636,
+      "close": 141.06
+    },
+    {
+      "date": "2026-01",
+      "adjclose": 144.2164,
+      "close": 145.45
+    },
+    {
+      "date": "2026-02",
+      "adjclose": 146.5861,
+      "close": 147.84
+    },
+    {
+      "date": "2026-03",
+      "adjclose": 137.469,
+      "close": 138.32
+    },
+    {
+      "date": "2026-04",
+      "adjclose": 150.2697,
+      "close": 151.2
+    },
+    {
+      "date": "2026-05",
+      "adjclose": 157.1471,
+      "close": 158.12
+    },
+    {
+      "date": "2026-06",
+      "adjclose": 156.5478,
+      "close": 156.95
+    },
+    {
+      "date": "2026-07",
+      "adjclose": 155.4606,
+      "close": 155.86
+    },
+    {
+      "date": "2026-08",
+      "adjclose": 160.1386,
+      "close": 160.55
+    },
+    {
+      "date": "2026-09",
+      "adjclose": 157.85,
+      "close": 157.85
+    }
+  ]
+}

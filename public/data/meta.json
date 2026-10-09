@@ -1,0 +1,33 @@
+{
+  "generated": "2026-10-09",
+  "files": {
+    "prices/SPY.json": {
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?interval=1mo&range=max&events=div%7Csplit",
+      "retrieved": "2026-10-09",
+      "from": "1993-02",
+      "to": "2026-09",
+      "records": 404
+    },
+    "prices/VOO.json": {
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/VOO?interval=1mo&range=max&events=div%7Csplit",
+      "retrieved": "2026-10-09",
+      "from": "2010-10",
+      "to": "2026-09",
+      "records": 192
+    },
+    "prices/VT.json": {
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/VT?interval=1mo&range=max&events=div%7Csplit",
+      "retrieved": "2026-10-09",
+      "from": "2008-07",
+      "to": "2026-09",
+      "records": 219
+    },
+    "fx/usdczk.json": {
+      "source": "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/rok.txt?rok=RRRR",
+      "retrieved": "2026-10-09",
+      "from": "2008-01",
+      "to": "2026-09",
+      "records": 225
+    }
+  }
+}
