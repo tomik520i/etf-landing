@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-// Basic auth řeší Apache (deploy/INSTALL.md, krok 5). Tady jen hlavičky a čtení agregací.
+// Analytika. Basic auth řeší Apache (deploy/INSTALL.md, krok 5). Tady jen hlavičky a čtení agregací (jen SELECT).
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 header('Content-Type: text/html; charset=utf-8');
@@ -9,9 +9,20 @@ header('Content-Type: text/html; charset=utf-8');
 require __DIR__ . '/../../config.php';
 date_default_timezone_set('Europe/Prague');
 
+const NIL_SESSION = '00000000-0000-4000-8000-000000000000';
+const MIN_VISITS = 100;
+const MAX_RANGE_DAYS = 730;
+
+// ---------------------------------------------------------------- pomocné funkce
+
 function h(mixed $s): string
 {
     return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
+}
+
+function num(int|float $n, int $dec = 0): string
+{
+    return number_format($n, $dec, ',', "\u{00A0}");
 }
 
 function parse_date(mixed $v): ?DateTimeImmutable
@@ -27,10 +38,183 @@ function parse_date(mixed $v): ?DateTimeImmutable
     return $d;
 }
 
-function pct(int $a, int $b): string
+/** Podíl v procentech jako číslo (0 při dělení nulou). */
+function pctf(int|float $a, int|float $b): float
 {
-    return $b > 0 ? number_format($a / $b * 100, 1, ',', ' ') . ' %' : '–';
+    return $b > 0 ? $a / $b * 100 : 0.0;
 }
+
+/** Podíl v procentech jako text. */
+function pct(int|float $a, int|float $b): string
+{
+    return $b > 0 ? num($a / $b * 100, 1) . ' %' : '–';
+}
+
+/** Rozdíl v procentních bodech se znaménkem. */
+function pp(float $v): string
+{
+    return ($v > 0 ? '+' : ($v < 0 ? '−' : '')) . num(abs($v), 2) . ' p. b.';
+}
+
+/** Chybová funkce erf – Abramowitz–Stegun 7.1.26 (chyba < 1,5e-7). */
+function erf_as(float $x): float
+{
+    $sign = $x < 0 ? -1.0 : 1.0;
+    $x = abs($x);
+    $t = 1.0 / (1.0 + 0.3275911 * $x);
+    $y = 1.0 - ((((1.061405429 * $t - 1.453152027) * $t + 1.421413741) * $t - 0.284496736) * $t + 0.254829592)
+        * $t * exp(-$x * $x);
+    return $sign * $y;
+}
+
+function norm_cdf(float $z): float
+{
+    return 0.5 * (1.0 + erf_as($z / M_SQRT2));
+}
+
+/**
+ * Dvouvýběrový z-test pro podíly (oboustranný) + 95% CI rozdílu (B − A, normální aproximace).
+ * Vrací null, když některý výběr nemá návštěvy.
+ * @return array{diff:float,lo:float,hi:float,z:float,p:float}|null  rozdíl a meze v p. b.
+ */
+function ztest(int $xa, int $na, int $xb, int $nb): ?array
+{
+    if ($na <= 0 || $nb <= 0) {
+        return null;
+    }
+    $pa = $xa / $na;
+    $pb = $xb / $nb;
+    $diff = $pb - $pa;
+    $se = sqrt($pa * (1 - $pa) / $na + $pb * (1 - $pb) / $nb);
+    $pool = ($xa + $xb) / ($na + $nb);
+    $se0 = sqrt($pool * (1 - $pool) * (1 / $na + 1 / $nb));
+    if ($se0 > 0) {
+        $z = $diff / $se0;
+        $p = min(1.0, max(0.0, 2 * (1 - norm_cdf(abs($z)))));
+    } else {
+        $z = 0.0;
+        $p = 1.0;
+    }
+    return [
+        'diff' => $diff * 100,
+        'lo' => ($diff - 1.96 * $se) * 100,
+        'hi' => ($diff + 1.96 * $se) * 100,
+        'z' => $z,
+        'p' => $p,
+    ];
+}
+
+/**
+ * Společný úvod dotazů: CTE ts = množina testovacích session, ev = eventy v období
+ * po aplikaci filtrů varianty a testů. Dotazy čtou z "ev".
+ * @return array{0:string,1:array}  [sql prefix, parametry prefixu]
+ */
+function ev_cte(array $f, bool $anyVariant, ?int $testMode): array
+{
+    $sql = 'WITH ts AS (SELECT session_id FROM events WHERE JSON_VALUE(props, \'$.test\') IS NOT NULL '
+        . 'UNION SELECT \'' . NIL_SESSION . '\'), '
+        . 'ev AS (SELECT session_id, event, ad_variant, props, created_at FROM events '
+        . 'WHERE created_at >= ? AND created_at < ?';
+    $params = [$f['fromSql'], $f['toSql']];
+    if (!$anyVariant) {
+        if ($f['variant'] === 'a' || $f['variant'] === 'b') {
+            $sql .= ' AND ad_variant = ?';
+            $params[] = $f['variant'];
+        } elseif ($f['variant'] === 'none') {
+            $sql .= ' AND ad_variant IS NULL';
+        }
+    }
+    $mode = $testMode ?? $f['test'];
+    if ($mode === 0) {
+        $sql .= ' AND session_id NOT IN (SELECT session_id FROM ts)';
+    } elseif ($mode === 1) {
+        $sql .= ' AND session_id IN (SELECT session_id FROM ts)';
+    }
+    return [$sql . ') ', $params];
+}
+
+/**
+ * Spustí dotaz nad CTE "ev" (prepared statement). $params = parametry vlastního dotazu.
+ * @return list<array<string,mixed>>
+ */
+function q(PDO $pdo, array $f, string $sql, array $params = [], bool $anyVariant = false, ?int $testMode = null): array
+{
+    [$prefix, $pre] = ev_cte($f, $anyVariant, $testMode);
+    $stmt = $pdo->prepare($prefix . $sql);
+    $stmt->execute(array_merge($pre, $params));
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/** Spustí dotaz bez CTE (tabulky leads / unsubscribes). */
+function q_plain(PDO $pdo, string $sql, array $params): array
+{
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function placeholders(array $items): string
+{
+    return implode(',', array_fill(0, count($items), '?'));
+}
+
+function cnt(array $byV, string $variant, string $event): int
+{
+    return (int) ($byV[$variant][$event] ?? 0);
+}
+
+/** Inline SVG sloupcový graf: návštěvy (muted) a leady (akcent) po bucketech. */
+function trend_svg(array $buckets, array $rows, bool $weekly): string
+{
+    $n = count($buckets);
+    if ($n === 0) {
+        return '';
+    }
+    $W = max(640, $n * 16);
+    $H = 220;
+    $padL = 40;
+    $padB = 28;
+    $padT = 10;
+    $plotW = $W - $padL - 6;
+    $plotH = $H - $padB - $padT;
+    $max = 1;
+    foreach ($buckets as $b) {
+        $max = max($max, (int) ($rows[$b]['v'] ?? 0));
+    }
+    $slot = $plotW / $n;
+    $bw = max(2.0, $slot * 0.38);
+    $f = static fn(float $x): string => number_format($x, 1, '.', '');
+    $svg = '<svg viewBox="0 0 ' . $W . ' ' . $H . '" width="100%" role="img" aria-label="Sloupcový graf návštěv a leadů po '
+        . ($weekly ? 'týdnech' : 'dnech') . '" style="display:block;min-width:' . min($W, 640) . 'px">';
+    $svg .= '<line x1="' . $padL . '" y1="' . ($padT + $plotH) . '" x2="' . ($W - 6) . '" y2="' . ($padT + $plotH)
+        . '" stroke="#2A3035"/>';
+    $svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 10) . '" text-anchor="end" fill="#9BA1A6" font-size="11">'
+        . h($max) . '</text>';
+    $svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + $plotH) . '" text-anchor="end" fill="#9BA1A6" font-size="11">0</text>';
+    foreach ($buckets as $i => $b) {
+        $v = (int) ($rows[$b]['v'] ?? 0);
+        $l = (int) ($rows[$b]['l'] ?? 0);
+        $x = $padL + $i * $slot + ($slot - 2 * $bw - 1) / 2;
+        $hv = $v / $max * $plotH;
+        $hl = $l / $max * $plotH;
+        $label = ($weekly ? 'týden od ' : '') . $b . ': návštěvy ' . $v . ', leady ' . $l;
+        $svg .= '<g><title>' . h($label) . '</title>';
+        $svg .= '<rect x="' . $f($x) . '" y="' . $f($padT + $plotH - $hv) . '" width="' . $f($bw) . '" height="' . $f($hv)
+            . '" fill="#9BA1A6"/>';
+        $svg .= '<rect x="' . $f($x + $bw + 1) . '" y="' . $f($padT + $plotH - $hl) . '" width="' . $f($bw) . '" height="' . $f($hl)
+            . '" fill="#F2A541"/></g>';
+    }
+    $idx = array_values(array_unique([0, intdiv($n - 1, 2), $n - 1]));
+    foreach ($idx as $i) {
+        $cx = $padL + $i * $slot + $slot / 2;
+        $anchor = $i === 0 ? 'start' : ($i === $n - 1 ? 'end' : 'middle');
+        $svg .= '<text x="' . $f($cx) . '" y="' . ($H - 8) . '" text-anchor="' . $anchor . '" fill="#9BA1A6" font-size="11">'
+            . h($buckets[$i]) . '</text>';
+    }
+    return $svg . '</svg>';
+}
+
+// ---------------------------------------------------------------- filtry (GET, validované)
 
 $today = new DateTimeImmutable('today');
 $to = parse_date($_GET['to'] ?? null) ?? $today;
@@ -38,93 +222,148 @@ $from = parse_date($_GET['from'] ?? null) ?? $to->modify('-29 days');
 if ($from > $to) {
     [$from, $to] = [$to, $from];
 }
-$fromSql = $from->format('Y-m-d 00:00:00');
-$toSql = $to->modify('+1 day')->format('Y-m-d 00:00:00'); // exkluzivní horní mez
+$clamped = false;
+if ($from < $to->modify('-' . MAX_RANGE_DAYS . ' days')) {
+    $from = $to->modify('-' . MAX_RANGE_DAYS . ' days');
+    $clamped = true;
+}
+$variant = is_string($_GET['variant'] ?? null) && in_array($_GET['variant'], ['all', 'a', 'b', 'none'], true)
+    ? $_GET['variant'] : 'all';
+$testRaw = is_string($_GET['test'] ?? null) ? $_GET['test'] : '0';
+$test = in_array($testRaw, ['0', '1', '2'], true) ? (int) $testRaw : 0;
+
+$f = [
+    'fromSql' => $from->format('Y-m-d 00:00:00'),
+    'toSql' => $to->modify('+1 day')->format('Y-m-d 00:00:00'), // exkluzivní horní mez
+    'variant' => $variant,
+    'test' => $test,
+];
+
+$variantLabels = ['all' => 'Všechny', 'a' => 'Varianta A', 'b' => 'Varianta B', 'none' => 'Bez varianty'];
+$testLabels = ['0' => 'Vyloučit testovací', '1' => 'Jen testovací', '2' => 'Vše'];
 
 $steps = [
     'page_view' => 'Zobrazení stránky',
+    'scroll_50' => 'Scroll 50 %',
     'calc_interact' => 'Práce s kalkulačkou',
-    'cta_click' => 'Klik na CTA',
+    'calc_result_viewed' => 'Zobrazený výsledek',
+    'form_focus' => 'Začátek vyplňování formuláře',
     'form_submit' => 'Odeslání formuláře',
     'form_success' => 'Lead (úspěch)',
 ];
-$cols = ['a' => 'Varianta A', 'b' => 'Varianta B', 'none' => 'Bez varianty', 'all' => 'Celkem'];
+$countEvents = array_values(array_unique(array_merge(array_keys($steps), ['scroll_90'])));
+
+// ---------------------------------------------------------------- data
 
 $error = null;
-$funnel = [];
-$leadsTotal = $leadsPeriod = $unsubPeriod = $unsubTotal = 0;
-$leadsByVariant = $leadsBySource = $daily = [];
-$days = [];
+$D = [];
+$days = ($to->diff($from)->days ?? 0) + 1;
+$weekly = $days > 90;
 
 try {
     $pdo = db();
-    $in = implode(',', array_fill(0, count($steps), '?'));
-    $stepKeys = array_keys($steps);
 
-    $stmt = $pdo->prepare(
-        "SELECT ad_variant, event, COUNT(DISTINCT session_id) AS c FROM events
-         WHERE created_at >= ? AND created_at < ? AND event IN ($in)
-         GROUP BY ad_variant, event"
-    );
-    $stmt->execute([$fromSql, $toSql, ...$stepKeys]);
-    foreach ($stmt as $r) {
+    // Unikátní session podle eventu (celkově, respektuje všechny filtry).
+    $tot = [];
+    foreach (q($pdo, $f, 'SELECT event, COUNT(DISTINCT session_id) AS c FROM ev WHERE event IN (' . placeholders($countEvents)
+        . ') GROUP BY event', $countEvents) as $r) {
+        $tot[$r['event']] = (int) $r['c'];
+    }
+    $D['tot'] = $tot;
+
+    // Podle variant (filtr varianty se zde ignoruje, aby šlo srovnat A a B).
+    $abEvents = ['page_view', 'scroll_50', 'scroll_90', 'calc_interact', 'form_focus', 'form_submit', 'form_success'];
+    $byV = [];
+    foreach (q($pdo, $f, 'SELECT ad_variant, event, COUNT(DISTINCT session_id) AS c FROM ev WHERE event IN ('
+        . placeholders($abEvents) . ') GROUP BY ad_variant, event', $abEvents, true) as $r) {
         $k = $r['ad_variant'] === 'a' || $r['ad_variant'] === 'b' ? $r['ad_variant'] : 'none';
-        $funnel[$k][$r['event']] = (int) $r['c'];
+        $byV[$k][$r['event']] = (int) $r['c'];
     }
+    $D['byV'] = $byV;
 
-    $stmt = $pdo->prepare(
-        "SELECT event, COUNT(DISTINCT session_id) AS c FROM events
-         WHERE created_at >= ? AND created_at < ? AND event IN ($in) GROUP BY event"
-    );
-    $stmt->execute([$fromSql, $toSql, ...$stepKeys]);
-    foreach ($stmt as $r) {
-        $funnel['all'][$r['event']] = (int) $r['c'];
+    // CTA a formuláře podle pozice.
+    $posEvents = ['cta_click', 'form_focus', 'form_submit', 'form_success'];
+    $pos = [];
+    foreach (q($pdo, $f, 'SELECT event, JSON_VALUE(props, \'$.position\') AS pos, COUNT(DISTINCT session_id) AS c FROM ev WHERE event IN ('
+        . placeholders($posEvents) . ') GROUP BY event, pos', $posEvents) as $r) {
+        $pos[(string) ($r['pos'] ?? '(neuvedeno)')][$r['event']] = (int) $r['c'];
     }
+    $D['pos'] = $pos;
 
-    $leadsTotal = (int) $pdo->query('SELECT COUNT(*) FROM leads')->fetchColumn();
-    $unsubTotal = (int) $pdo->query('SELECT COUNT(*) FROM unsubscribes')->fetchColumn();
+    // Chyby formuláře.
+    $D['errors'] = q($pdo, $f, 'SELECT COALESCE(JSON_VALUE(props, \'$.reason\'), \'(neuvedeno)\') AS reason, '
+        . 'COUNT(*) AS n, COUNT(DISTINCT session_id) AS s FROM ev WHERE event = ? GROUP BY reason ORDER BY n DESC', ['form_error']);
 
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM leads WHERE created_at >= ? AND created_at < ?');
-    $stmt->execute([$fromSql, $toSql]);
-    $leadsPeriod = (int) $stmt->fetchColumn();
+    // Zdroje návštěv (utm_source z page_view; leady = session s form_success).
+    $D['sources'] = q($pdo, $f, 'SELECT COALESCE(NULLIF(pv.utm, \'\'), \'(přímý / bez UTM)\') AS source_label, '
+        . 'COUNT(*) AS visits, SUM(fs.session_id IS NOT NULL) AS leads '
+        . 'FROM (SELECT session_id, MIN(JSON_VALUE(props, \'$.utm_source\')) AS utm FROM ev WHERE event = ? GROUP BY session_id) pv '
+        . 'LEFT JOIN (SELECT DISTINCT session_id FROM ev WHERE event = ?) fs ON fs.session_id = pv.session_id '
+        . 'GROUP BY source_label ORDER BY visits DESC, source_label ASC LIMIT 30', ['page_view', 'form_success']);
 
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM unsubscribes WHERE created_at >= ? AND created_at < ?');
-    $stmt->execute([$fromSql, $toSql]);
-    $unsubPeriod = (int) $stmt->fetchColumn();
-
-    $stmt = $pdo->prepare(
-        'SELECT ad_variant, COUNT(*) AS c FROM leads WHERE created_at >= ? AND created_at < ?
-         GROUP BY ad_variant ORDER BY c DESC'
-    );
-    $stmt->execute([$fromSql, $toSql]);
-    $leadsByVariant = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt = $pdo->prepare(
-        'SELECT utm_source, COUNT(*) AS c FROM leads WHERE created_at >= ? AND created_at < ?
-         GROUP BY utm_source ORDER BY c DESC LIMIT 50'
-    );
-    $stmt->execute([$fromSql, $toSql]);
-    $leadsBySource = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Eventy po dnech: posledních 14 dní (nezávisle na filtru).
-    for ($i = 0; $i < 14; $i++) {
-        $days[] = $today->modify("-$i days")->format('Y-m-d');
+    // Trend po dnech / týdnech (bucket = datum dne nebo pondělí týdne; výraz je konstanta, ne vstup).
+    $bucketExpr = $weekly ? 'DATE(created_at - INTERVAL WEEKDAY(created_at) DAY)' : 'DATE(created_at)';
+    $trend = [];
+    foreach (q($pdo, $f, "SELECT $bucketExpr AS bucket, "
+        . 'COUNT(DISTINCT CASE WHEN event = ? THEN session_id END) AS v, '
+        . 'COUNT(DISTINCT CASE WHEN event = ? THEN session_id END) AS l '
+        . 'FROM ev GROUP BY bucket ORDER BY bucket', ['page_view', 'form_success']) as $r) {
+        $trend[(string) $r['bucket']] = ['v' => (int) $r['v'], 'l' => (int) $r['l']];
     }
-    $stmt = $pdo->prepare(
-        'SELECT DATE(created_at) AS d, event, COUNT(*) AS c FROM events
-         WHERE created_at >= ? GROUP BY d, event'
-    );
-    $stmt->execute([$today->modify('-13 days')->format('Y-m-d 00:00:00')]);
-    foreach ($stmt as $r) {
-        $daily[$r['d']][$r['event']] = (int) $r['c'];
+    $D['trend'] = $trend;
+
+    // Kvalita dat.
+    $qr = q($pdo, $f, 'SELECT COUNT(*) AS n, COUNT(DISTINCT session_id) AS s, MAX(created_at) AS last_at FROM ev');
+    $D['quality'] = $qr[0] ?? ['n' => 0, 's' => 0, 'last_at' => null];
+    $tr = q($pdo, $f, 'SELECT COUNT(DISTINCT session_id) AS s FROM ev', [], true, 1);
+    $D['testSessions'] = (int) ($tr[0]['s'] ?? 0);
+
+    // Leady a odhlášení v DB (filtr testů tu nejde použít – tabulky nemají session_id).
+    $sqlL = 'SELECT COUNT(*) AS c FROM leads WHERE created_at >= ? AND created_at < ?';
+    $pl = [$f['fromSql'], $f['toSql']];
+    if ($variant === 'a' || $variant === 'b') {
+        $sqlL .= ' AND ad_variant = ?';
+        $pl[] = $variant;
+    } elseif ($variant === 'none') {
+        $sqlL .= ' AND ad_variant IS NULL';
     }
+    $D['leadsDb'] = (int) (q_plain($pdo, $sqlL, $pl)[0]['c'] ?? 0);
+    $D['unsub'] = (int) (q_plain($pdo, 'SELECT COUNT(*) AS c FROM unsubscribes WHERE created_at >= ? AND created_at < ?',
+        [$f['fromSql'], $f['toSql']])[0]['c'] ?? 0);
 } catch (Throwable $e) {
     error_log('admin: ' . get_class($e) . ': ' . $e->getMessage());
     $error = 'Data se nepodařilo načíst.';
 }
 
-$allEvents = ['page_view', 'scroll_50', 'scroll_90', 'calc_interact', 'calc_result_viewed',
-    'cta_click', 'form_focus', 'form_submit', 'form_success', 'form_error'];
+// ---------------------------------------------------------------- odvozené hodnoty
+
+$visits = $leads = 0;
+$buckets = [];
+$ab = null;
+if ($error === null) {
+    $visits = $D['tot']['page_view'] ?? 0;
+    $leads = $D['tot']['form_success'] ?? 0;
+
+    $cur = $weekly ? $from->modify('monday this week') : $from;
+    while ($cur <= $to) {
+        $buckets[] = $cur->format('Y-m-d');
+        $cur = $cur->modify($weekly ? '+7 days' : '+1 day');
+    }
+
+    $na = cnt($D['byV'], 'a', 'page_view');
+    $nb = cnt($D['byV'], 'b', 'page_view');
+    $xa = cnt($D['byV'], 'a', 'form_success');
+    $xb = cnt($D['byV'], 'b', 'form_success');
+    $z = ztest($xa, $na, $xb, $nb);
+    if ($na < MIN_VISITS || $nb < MIN_VISITS) {
+        $verdict = 'Málo dat – zatím nerozhodovat';
+    } elseif ($z !== null && $z['p'] < 0.05) {
+        $verdict = 'Rozdíl je statisticky významný';
+    } else {
+        $verdict = 'Rozdíl zatím není průkazný';
+    }
+    $ab = compact('na', 'nb', 'xa', 'xb', 'z', 'verdict');
+}
 ?>
 <!doctype html>
 <html lang="cs">
@@ -132,89 +371,241 @@ $allEvents = ['page_view', 'scroll_50', 'scroll_90', 'calc_interact', 'calc_resu
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Admin – funnel</title>
+<title>Analytika</title>
 <style>
-body{margin:0;background:#0E1113;color:#ECE9E3;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+:root{--bg:#0E1113;--surface:#161A1D;--surface-2:#1D2226;--border:#2A3035;--text:#ECE9E3;--muted:#9BA1A6;--accent:#F2A541;--accent-ink:#1A1205;--fee:#E8735A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;font-variant-numeric:tabular-nums}
 main{max-width:1100px;margin:0 auto}
-h1{font-size:1.5rem;margin:0 0 16px}h2{font-size:1.1rem;margin:0 0 12px}
-.card{background:#161A1D;border:1px solid #2A3035;border-radius:16px;padding:20px;margin-bottom:16px;overflow-x:auto}
+h1{font-size:1.6rem;margin:0 0 4px}h2{font-size:1.1rem;margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;overflow-x:auto}
+.scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-th,td{padding:8px 10px;text-align:right;border-bottom:1px solid #2A3035;white-space:nowrap}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
-th{color:#9BA1A6;font-weight:600}
-.m{color:#9BA1A6;font-size:13px}.acc{color:#F2A541;font-weight:700}
-form{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
-label{display:flex;flex-direction:column;gap:4px;color:#9BA1A6;font-size:13px}
-input,button{background:#1D2226;color:#ECE9E3;border:1px solid #2A3035;border-radius:8px;padding:8px 10px;font:inherit}
-button{background:#F2A541;color:#1A1205;border:0;font-weight:700;cursor:pointer}
-.err{color:#E8735A}
+th{color:var(--muted);font-weight:600}
+.m{color:var(--muted);font-size:13px}.acc{color:var(--accent);font-weight:700}.bad{color:var(--fee)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px}
+.kpi .v{font-size:1.9rem;font-weight:800;line-height:1.2}.kpi .l{color:var(--muted);font-size:13px}
+form.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;color:var(--muted);font-size:13px}
+input,select,button{background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font:inherit}
+button{background:var(--accent);color:var(--accent-ink);border:0;font-weight:700;cursor:pointer}
+details{margin:6px 0 16px}summary{cursor:pointer;color:var(--muted);font-size:13px}
+details ul{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:13px}
+.bar{background:var(--surface-2);border-radius:6px;height:14px;min-width:160px;width:100%}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.verdict{font-size:1.1rem;font-weight:700;margin:12px 0 0}
+.legend{display:flex;gap:16px;margin-top:8px;color:var(--muted);font-size:13px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.err{color:var(--fee)}
 </style>
 </head>
 <body>
 <main>
-<h1>Funnel – aijunior</h1>
+<h1>Analytika</h1>
+<p class="m" style="margin:0">aijunior – měření návštěv a konverzí</p>
+<details>
+  <summary>Popis metrik</summary>
+  <ul>
+    <li><strong>Dlaždice:</strong> návštěva = unikátní session s page_view, lead = unikátní session s form_success; konverze je jejich podíl.</li>
+    <li><strong>Funnel:</strong> kolik unikátních session dosáhlo každého kroku; čti pruh jako podíl z návštěv a % z předchozího kroku jako místo, kde lidé odpadají.</li>
+    <li><strong>A/B srovnání:</strong> porovnává konverzi variant A a B (rozdíl B − A, 95% interval a z-test); p &lt; 0,05 je průkazný rozdíl, při méně než 100 návštěvách varianty nerozhoduj.</li>
+    <li><strong>Hloubka scrollu:</strong> podíl návštěv, které dojely do 50 % a 90 % stránky; nízké číslo značí slabý úvod nebo dlouhou stránku.</li>
+    <li><strong>CTA a formuláře:</strong> kolik session kliklo na tlačítko, začalo a odeslalo formulář podle jeho umístění; porovnej, které umístění funguje.</li>
+    <li><strong>Chyby formuláře:</strong> kolikrát a u kolika session formulář skončil chybou podle důvodu; vysoké hodnoty u server/network značí technický problém.</li>
+    <li><strong>Zdroje návštěv:</strong> návštěvy, leady a konverze podle utm_source z příchodu na stránku; hledej zdroje s dobrou konverzí, ne jen s velkým provozem.</li>
+    <li><strong>Trend:</strong> návštěvy a leady po dnech (u období nad 90 dní po týdnech); slouží k odhalení výpadků a dopadu kampaní.</li>
+    <li><strong>Kvalita dat:</strong> objem měření a počet vyloučených testovacích session; málo eventů na session značí chybějící měření.</li>
+  </ul>
+</details>
+
 <div class="card">
-  <form method="get">
+  <form method="get" class="filters">
     <label>Od <input type="date" name="from" value="<?= h($from->format('Y-m-d')) ?>"></label>
     <label>Do <input type="date" name="to" value="<?= h($to->format('Y-m-d')) ?>"></label>
+    <label>Varianta
+      <select name="variant">
+        <?php foreach ($variantLabels as $k => $lbl): ?>
+        <option value="<?= h($k) ?>"<?= $variant === $k ? ' selected' : '' ?>><?= h($lbl) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </label>
+    <label>Testovací návštěvy
+      <select name="test">
+        <?php foreach ($testLabels as $k => $lbl): ?>
+        <option value="<?= h($k) ?>"<?= (string) $test === (string) $k ? ' selected' : '' ?>><?= h($lbl) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </label>
     <button type="submit">Zobrazit</button>
   </form>
+  <?php if ($clamped): ?><p class="m">Období zkráceno na maximálně <?= h(MAX_RANGE_DAYS) ?> dní.</p><?php endif; ?>
 </div>
+
 <?php if ($error !== null): ?>
 <div class="card err"><?= h($error) ?></div>
 <?php else: ?>
-<div class="card">
-  <h2>Funnel (unikátní session) <span class="m"><?= h($from->format('j. n. Y')) ?> – <?= h($to->format('j. n. Y')) ?></span></h2>
-  <table>
-    <thead><tr><th>Krok</th><?php foreach ($cols as $label): ?><th><?= h($label) ?></th><?php endforeach; ?></tr></thead>
-    <tbody>
-    <?php $prevKey = null; foreach ($steps as $key => $label): ?>
-      <tr><td><?= h($label) ?></td>
-      <?php foreach (array_keys($cols) as $c):
-          $n = $funnel[$c][$key] ?? 0;
-          $prev = $prevKey !== null ? ($funnel[$c][$prevKey] ?? 0) : null; ?>
-        <td><?= h(number_format($n, 0, ',', ' ')) ?><?php if ($prev !== null): ?> <span class="m">(<?= h(pct($n, $prev)) ?>)</span><?php endif; ?></td>
-      <?php endforeach; ?></tr>
-    <?php $prevKey = $key; endforeach; ?>
-      <tr><td><strong>Celková konverze</strong><br><span class="m">zobrazení → lead</span></td>
-      <?php foreach (array_keys($cols) as $c): ?>
-        <td class="acc"><?= h(pct($funnel[$c]['form_success'] ?? 0, $funnel[$c]['page_view'] ?? 0)) ?></td>
-      <?php endforeach; ?></tr>
-    </tbody>
-  </table>
-  <p class="m">V závorce: přechod z předchozího kroku.</p>
+
+<!-- 1. KPI -->
+<div class="kpis">
+  <div class="kpi"><div class="l">Návštěvy</div><div class="v"><?= h(num($visits)) ?></div></div>
+  <div class="kpi"><div class="l">Leady (session)</div><div class="v acc"><?= h(num($leads)) ?></div></div>
+  <div class="kpi"><div class="l">Konverze návštěva → lead</div><div class="v"><?= h(pct($leads, $visits)) ?></div></div>
+  <div class="kpi"><div class="l">Leady v DB za období</div><div class="v"><?= h(num($D['leadsDb'])) ?></div>
+    <div class="m">Filtr testů se zde neuplatní.</div></div>
+  <div class="kpi"><div class="l">Odhlášení za období</div><div class="v"><?= h(num($D['unsub'])) ?></div></div>
 </div>
 
+<!-- 2. Funnel -->
 <div class="card">
-  <h2>Leady a odhlášení</h2>
-  <p>Leadů za období: <strong><?= h($leadsPeriod) ?></strong> <span class="m">(celkem od začátku: <?= h($leadsTotal) ?>)</span><br>
-  Odhlášení za období: <strong><?= h($unsubPeriod) ?></strong> <span class="m">(celkem od začátku: <?= h($unsubTotal) ?>)</span></p>
-  <table style="max-width:420px">
-    <thead><tr><th>Varianta</th><th>Leady</th></tr></thead><tbody>
-    <?php foreach ($leadsByVariant as $r): ?>
-      <tr><td><?= h($r['ad_variant'] === null ? 'bez varianty' : strtoupper((string) $r['ad_variant'])) ?></td><td><?= h($r['c']) ?></td></tr>
-    <?php endforeach; ?>
+  <h2>Funnel <span class="m"><?= h($from->format('j. n. Y')) ?> – <?= h($to->format('j. n. Y')) ?></span></h2>
+  <table>
+    <thead><tr><th>Krok</th><th>Session</th><th>% z předchozího</th><th>% z page_view</th><th style="text-align:left;width:40%">Podíl z návštěv</th></tr></thead>
+    <tbody>
+    <?php $prev = null; foreach ($steps as $key => $label):
+        $c = $D['tot'][$key] ?? 0;
+        $w = min(100.0, pctf($c, $visits)); ?>
+      <tr>
+        <td><?= h($label) ?> <span class="m"><?= h($key) ?></span></td>
+        <td><?= h(num($c)) ?></td>
+        <td><?= $prev === null ? '–' : h(pct($c, $prev)) ?></td>
+        <td><?= h(pct($c, $visits)) ?></td>
+        <td style="text-align:left"><div class="bar"><i style="width:<?= h(number_format($w, 1, '.', '')) ?>%"></i></div></td>
+      </tr>
+    <?php $prev = $c; endforeach; ?>
     </tbody>
   </table>
-  <br>
-  <table style="max-width:420px">
-    <thead><tr><th>utm_source</th><th>Leady</th></tr></thead><tbody>
-    <?php foreach ($leadsBySource as $r): ?>
-      <tr><td><?= h($r['utm_source'] ?? '(žádný)') ?></td><td><?= h($r['c']) ?></td></tr>
+  <p class="m">Session se do kroku počítá, jakmile má daný event – nezávisle na předchozích krocích, proto může být krok občas větší než ten předchozí.</p>
+</div>
+
+<!-- 3. A/B -->
+<div class="card">
+  <h2>A/B srovnání <span class="m">filtr varianty se tu ignoruje</span></h2>
+  <table>
+    <thead><tr><th>Metrika</th><th>Varianta A</th><th>Varianta B</th></tr></thead>
+    <tbody>
+      <tr><td>Návštěvy</td><td><?= h(num($ab['na'])) ?></td><td><?= h(num($ab['nb'])) ?></td></tr>
+      <tr><td>Leady</td><td><?= h(num($ab['xa'])) ?></td><td><?= h(num($ab['xb'])) ?></td></tr>
+      <tr><td><strong>Konverze</strong></td><td class="acc"><?= h(pct($ab['xa'], $ab['na'])) ?></td><td class="acc"><?= h(pct($ab['xb'], $ab['nb'])) ?></td></tr>
+      <?php foreach (['calc_interact' => 'Práce s kalkulačkou', 'form_focus' => 'Začátek vyplňování', 'form_submit' => 'Odeslání formuláře'] as $ev => $lbl): ?>
+      <tr><td><?= h($lbl) ?> <span class="m">% z návštěv</span></td>
+        <td><?= h(pct(cnt($D['byV'], 'a', $ev), $ab['na'])) ?></td>
+        <td><?= h(pct(cnt($D['byV'], 'b', $ev), $ab['nb'])) ?></td></tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+  <?php if ($ab['z'] !== null): ?>
+  <p style="margin:12px 0 0">Rozdíl konverzí (B − A): <strong><?= h(pp($ab['z']['diff'])) ?></strong><br>
+    95% interval spolehlivosti rozdílu: <strong><?= h(pp($ab['z']['lo'])) ?></strong> až <strong><?= h(pp($ab['z']['hi'])) ?></strong><br>
+    p-hodnota (dvouvýběrový z-test, oboustranný): <strong><?= h(num($ab['z']['p'], 4)) ?></strong></p>
+  <?php else: ?>
+  <p class="m" style="margin:12px 0 0">Rozdíl nelze spočítat – některá varianta nemá žádné návštěvy.</p>
+  <?php endif; ?>
+  <p class="verdict <?= $ab['verdict'] === 'Rozdíl je statisticky významný' ? 'acc' : '' ?>"><?= h($ab['verdict']) ?></p>
+  <p class="m">Normální aproximace; platí při dostatečném počtu leadů v obou variantách. Hranice pro rozhodnutí: <?= h(MIN_VISITS) ?> návštěv na variantu.</p>
+</div>
+
+<!-- 4. Scroll -->
+<div class="card">
+  <h2>Hloubka scrollu <span class="m">filtr varianty se tu ignoruje</span></h2>
+  <table>
+    <thead><tr><th>Varianta</th><th>Návštěvy</th><th>scroll 50 %</th><th>% návštěv</th><th>scroll 90 %</th><th>% návštěv</th></tr></thead>
+    <tbody>
+    <?php
+    $scrollRows = ['a' => 'Varianta A', 'b' => 'Varianta B', 'none' => 'Bez varianty'];
+    $sum = ['page_view' => 0, 'scroll_50' => 0, 'scroll_90' => 0];
+    foreach ($scrollRows as $k => $lbl):
+        $pv = cnt($D['byV'], $k, 'page_view'); $s5 = cnt($D['byV'], $k, 'scroll_50'); $s9 = cnt($D['byV'], $k, 'scroll_90');
+        $sum['page_view'] += $pv; $sum['scroll_50'] += $s5; $sum['scroll_90'] += $s9; ?>
+      <tr><td><?= h($lbl) ?></td><td><?= h(num($pv)) ?></td><td><?= h(num($s5)) ?></td><td><?= h(pct($s5, $pv)) ?></td><td><?= h(num($s9)) ?></td><td><?= h(pct($s9, $pv)) ?></td></tr>
     <?php endforeach; ?>
+      <tr><td><strong>Celkem</strong></td><td><?= h(num($sum['page_view'])) ?></td><td><?= h(num($sum['scroll_50'])) ?></td><td class="acc"><?= h(pct($sum['scroll_50'], $sum['page_view'])) ?></td><td><?= h(num($sum['scroll_90'])) ?></td><td class="acc"><?= h(pct($sum['scroll_90'], $sum['page_view'])) ?></td></tr>
     </tbody>
   </table>
 </div>
 
+<!-- 5. CTA a formuláře -->
 <div class="card">
-  <h2>Eventy po dnech <span class="m">posledních 14 dní, počet řádků</span></h2>
+  <h2>CTA a formuláře podle pozice</h2>
+  <?php
+  $posRows = ['hero', '1', '2'];
+  foreach (array_keys($D['pos']) as $k) {
+      if (!in_array((string) $k, $posRows, true)) {
+          $posRows[] = (string) $k;
+      }
+  }
+  $posCols = ['cta_click' => 'cta_click', 'form_focus' => 'form_focus', 'form_submit' => 'form_submit', 'form_success' => 'form_success'];
+  ?>
   <table>
-    <thead><tr><th>Den</th><?php foreach ($allEvents as $ev): ?><th><?= h($ev) ?></th><?php endforeach; ?></tr></thead>
+    <thead><tr><th>Pozice</th><?php foreach ($posCols as $lbl): ?><th><?= h($lbl) ?></th><?php endforeach; ?></tr></thead>
     <tbody>
-    <?php foreach ($days as $d): ?>
-      <tr><td><?= h($d) ?></td>
-      <?php foreach ($allEvents as $ev): ?><td><?= h($daily[$d][$ev] ?? 0) ?></td><?php endforeach; ?></tr>
+    <?php foreach ($posRows as $p): ?>
+      <tr><td><?= h($p) ?></td><?php foreach (array_keys($posCols) as $ev): ?><td><?= h(num((int) ($D['pos'][$p][$ev] ?? 0))) ?></td><?php endforeach; ?></tr>
     <?php endforeach; ?>
+    </tbody>
+  </table>
+  <p class="m">Unikátní session. Pozice „hero“ = tlačítko v úvodu, 1 a 2 = první a druhý formulář / CTA.</p>
+</div>
+
+<!-- 6. Chyby formuláře -->
+<div class="card">
+  <h2>Chyby formuláře</h2>
+  <table>
+    <thead><tr><th>Důvod</th><th>Eventy</th><th>Unikátní session</th></tr></thead>
+    <tbody>
+    <?php foreach ($D['errors'] as $r): ?>
+      <tr><td class="bad"><?= h($r['reason']) ?></td><td><?= h(num((int) $r['n'])) ?></td><td><?= h(num((int) $r['s'])) ?></td></tr>
+    <?php endforeach; ?>
+    <?php if (!$D['errors']): ?><tr><td colspan="3" class="m">Žádné chyby v tomto období.</td></tr><?php endif; ?>
+    </tbody>
+  </table>
+</div>
+
+<!-- 7. Zdroje -->
+<div class="card">
+  <h2>Zdroje návštěv <span class="m">utm_source, max. 30 řádků</span></h2>
+  <table>
+    <thead><tr><th>Zdroj</th><th>Návštěvy</th><th>Leady</th><th>Konverze</th></tr></thead>
+    <tbody>
+    <?php foreach ($D['sources'] as $r): ?>
+      <tr><td><?= h($r['source_label']) ?></td><td><?= h(num((int) $r['visits'])) ?></td><td><?= h(num((int) $r['leads'])) ?></td><td><?= h(pct((int) $r['leads'], (int) $r['visits'])) ?></td></tr>
+    <?php endforeach; ?>
+    <?php if (!$D['sources']): ?><tr><td colspan="4" class="m">Žádná data.</td></tr><?php endif; ?>
+    </tbody>
+  </table>
+</div>
+
+<!-- 8. Trend -->
+<div class="card">
+  <h2>Trend po <?= $weekly ? 'týdnech' : 'dnech' ?> <span class="m"><?= $weekly ? 'období přes 90 dní, týden začíná v pondělí' : 'návštěvy a leady' ?></span></h2>
+  <div class="scroll"><?= trend_svg($buckets, $D['trend'], $weekly) ?></div>
+  <div class="legend"><span><b style="background:#9BA1A6"></b>Návštěvy</span><span><b style="background:#F2A541"></b>Leady</span></div>
+  <div class="scroll" style="margin-top:12px">
+  <table>
+    <thead><tr><th><?= $weekly ? 'Týden od' : 'Den' ?></th><th>Návštěvy</th><th>Leady</th><th>Konverze</th></tr></thead>
+    <tbody>
+    <?php foreach (array_reverse($buckets) as $b):
+        $v = (int) ($D['trend'][$b]['v'] ?? 0); $l = (int) ($D['trend'][$b]['l'] ?? 0); ?>
+      <tr><td><?= h($b) ?></td><td><?= h(num($v)) ?></td><td><?= h(num($l)) ?></td><td><?= h(pct($l, $v)) ?></td></tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- 9. Kvalita dat -->
+<div class="card">
+  <h2>Kvalita dat</h2>
+  <?php $qn = (int) $D['quality']['n']; $qs = (int) $D['quality']['s']; ?>
+  <table style="max-width:560px">
+    <tbody>
+      <tr><td>Eventů v období</td><td><?= h(num($qn)) ?></td></tr>
+      <tr><td>Unikátních session</td><td><?= h(num($qs)) ?></td></tr>
+      <tr><td>Průměr eventů na session</td><td><?= $qs > 0 ? h(num($qn / $qs, 1)) : '–' ?></td></tr>
+      <tr><td>Testovací session v období <span class="m">(při volbě „Vyloučit“ nejsou v číslech výše)</span></td><td><?= h(num($D['testSessions'])) ?></td></tr>
+      <tr><td>Poslední event (dle filtru)</td><td><?= $D['quality']['last_at'] !== null ? h($D['quality']['last_at']) : '–' ?></td></tr>
     </tbody>
   </table>
 </div>

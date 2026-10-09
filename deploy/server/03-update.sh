@@ -24,3 +24,6 @@ sed -i -E 's/^ServerTokens .*/ServerTokens Prod/; s/^ServerSignature .*/ServerSi
 apache2ctl configtest
 systemctl reload apache2
 echo "Aktualizováno na $(git -C "$APP_DIR" log -1 --format='%h %s')"
+
+echo; echo "=== Test měření a analytiky ==="
+bash "$APP_DIR/deploy/server/smoke-analytics.sh"
