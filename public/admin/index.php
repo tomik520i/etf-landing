@@ -229,8 +229,9 @@ if ($from < $to->modify('-' . MAX_RANGE_DAYS . ' days')) {
 }
 $variant = is_string($_GET['variant'] ?? null) && in_array($_GET['variant'], ['all', 'a', 'b', 'none'], true)
     ? $_GET['variant'] : 'all';
-$testRaw = is_string($_GET['test'] ?? null) ? $_GET['test'] : '0';
-$test = in_array($testRaw, ['0', '1', '2'], true) ? (int) $testRaw : 0;
+// Výchozí = vše: počítá se každá návštěva; vyloučení testovacích je volitelné
+$testRaw = is_string($_GET['test'] ?? null) ? $_GET['test'] : '2';
+$test = in_array($testRaw, ['0', '1', '2'], true) ? (int) $testRaw : 2;
 
 $f = [
     'fromSql' => $from->format('Y-m-d 00:00:00'),
@@ -240,7 +241,7 @@ $f = [
 ];
 
 $variantLabels = ['all' => 'Všechny', 'a' => 'Varianta A', 'b' => 'Varianta B', 'none' => 'Bez varianty'];
-$testLabels = ['0' => 'Vyloučit testovací', '1' => 'Jen testovací', '2' => 'Vše'];
+$testLabels = ['2' => 'Vše', '0' => 'Vyloučit testovací (?test=1)', '1' => 'Jen testovací'];
 
 $steps = [
     'page_view' => 'Zobrazení stránky',
@@ -604,7 +605,7 @@ details ul{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:13px}
       <tr><td>Eventů v období</td><td><?= h(num($qn)) ?></td></tr>
       <tr><td>Unikátních session</td><td><?= h(num($qs)) ?></td></tr>
       <tr><td>Průměr eventů na session</td><td><?= $qs > 0 ? h(num($qn / $qs, 1)) : '–' ?></td></tr>
-      <tr><td>Testovací session v období <span class="m">(při volbě „Vyloučit“ nejsou v číslech výše)</span></td><td><?= h(num($D['testSessions'])) ?></td></tr>
+      <tr><td>Testovací session v období <span class="m">(označené ?test=1; vyloučit je jde filtrem nahoře)</span></td><td><?= h(num($D['testSessions'])) ?></td></tr>
       <tr><td>Poslední event (dle filtru)</td><td><?= $D['quality']['last_at'] !== null ? h($D['quality']['last_at']) : '–' ?></td></tr>
     </tbody>
   </table>

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # End-to-end test měření: event.php → MariaDB → analytika (/admin/).
-# Posílá jen TESTOVACÍ eventy (props.test) – v ostrých číslech analytiky se neobjeví.
+# Posílá jen TESTOVACÍ eventy (props.test) a na konci je z DB smaže (jako root přes unix socket),
+# takže v číslech analytiky nezůstanou.
 # Spuštění: sudo bash /var/www/aijunior/deploy/server/smoke-analytics.sh
 set -uo pipefail
 
@@ -40,6 +41,10 @@ grep -qiE '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}' <<<"$(admin "test=2")" && bad 
 echo; echo "=== 2/3 Testovací návštěva projde celým funnelem ==="
 before=$(admin "test=1" | val 'Testovací session v období')
 SID=$(cat /proc/sys/kernel/random/uuid)
+cleanup() {
+  mariadb etf_lp -e "DELETE FROM events WHERE session_id IN ('$SID', '00000000-0000-4000-8000-000000000000')"     && echo "Úklid: testovací eventy smazány."
+}
+trap cleanup EXIT
 send() { curl -s -o /dev/null -w '%{http_code}' -H "Host: $HOST" -X POST -H 'Content-Type: text/plain' \
   --data "{\"session_id\":\"$SID\",\"event\":\"$1\",\"ad_variant\":\"a\",\"props\":$2}" "$B/api/event.php"; }
 codes=""

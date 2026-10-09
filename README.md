@@ -3,6 +3,7 @@
 Landing page pro českého drobného investora: kalkulačka „kolik budu mít za X let“ se srovnáním ETF z NYSE a jejich UCITS ekvivalentů, které jde reálně koupit z ČR.
 
 - Web: https://aijunior.opicebot.cz
+- Analytika (funnel, A/B, zdroje): https://aijunior.opicebot.cz/admin/ – přihlášení `admin` / `admin` (záměrně veřejné: stránka ukazuje jen souhrnná čísla, žádné e-maily ani osobní údaje)
 - Zrcadlo (jen statika): GitHub Pages *(připravuje se)*
 
 > Rozpracováno – průběh: [`docs/STAV.md`](docs/STAV.md). Plán: [`docs/zadanie-B-poznamky.md`](docs/zadanie-B-poznamky.md), pravidla pro AI: [`CLAUDE.md`](CLAUDE.md).
