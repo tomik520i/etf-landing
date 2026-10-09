@@ -53,7 +53,7 @@ async function configure() {
         ...r, x:r.x-scrollX, y:r.y-scrollY,
         // Feather stays inside the normal field so displacement reaches zero
         // continuously at the interior instead of creating a cut-out seam.
-        depth:48, feather:r.radius, curve:1.5, chroma:0.6, tint:[.06,.14,.23,.025], glint:.12,
+        depth:36, feather:r.radius, curve:1.8, chroma:0.6, tint:[.06,.14,.23,.025], glint:.12,
       }));
       gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
       pass.render({sourceTexture:texture, resolution:[w,h], lenses});
