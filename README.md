@@ -7,11 +7,20 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 | **Web** | https://aijunior.opicebot.cz (varianty reklamy: [`?ad=a`](https://aijunior.opicebot.cz/?ad=a), [`?ad=b`](https://aijunior.opicebot.cz/?ad=b)) |
 | **Analytika** | https://aijunior.opicebot.cz/admin/ – přihlášení `admin` / `admin` (záměrně veřejné: jen souhrnná čísla, žádné e-maily ani osobní údaje) |
 | **Zrcadlo** | https://tomik520i.github.io/etf-landing/ – statika na GitHub Pages; formulář a měření posílá přes CORS na vlastní server |
-| **Reklamy** | [`content/texty.md`](content/texty.md), sekce `reklamy` (verze A a B) |
+| **Reklamy** | [`docs/reklamy.md`](docs/reklamy.md) – kde běží, odkazy, texty a co mění na stránce |
 | **AI log** | [`ai-log/`](ai-log/) – exporty konverzací, [kde se AI spletla](ai-log/errors.md), [tokeny a cena](ai-log/usage.md) |
 | **Průběh** | [`docs/STAV.md`](docs/STAV.md) |
 
 ---
+
+## Reklamy A/B v kostce
+
+Reklamy **nejsou na webu** – běží na Instagramu/Facebooku/TikToku a vedou na stránku přes odkaz s parametrem `?ad=a` nebo `?ad=b` (+ UTM). Parametr změní **úvod stránky a startovní scénář kalkulačky**, aby stránka navázala přesně na to, co člověk viděl v reklamě:
+
+- **A – šok z poplatků:** „Kolik by tě od roku 2011 stál 1% poplatek navíc?“, kalkulačka od 2011 → 1 365 315 Kč, poplatek 136 856 Kč
+- **B – příběh:** „2 000 Kč měsíčně od 2010: kolik je dnes?“, kalkulačka od 2010 → 1 608 004 Kč
+
+Varianta se ukládá ke každému eventu i leadu a analytika je porovná (konverze, z-test). Podrobně: [`docs/reklamy.md`](docs/reklamy.md).
 
 ## Cílová skupina a výměna hodnoty
 
@@ -90,7 +99,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 - **Review každého výstupu agenta:** texty proti datům, kód proti specifikaci a bezpečnosti, web v prohlížeči (mobil 375 px, desktop, obě varianty reklamy).
 - **Server:** úpravy produkčního `haproxy.cfg` nejdřív nanečisto na kopii; skripty se zálohou a automatickým vrácením.
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
-- **Lighthouse (mobil):** před redesignem 95 / 100 / 100 / 100 na produkci; po redesignu viz [`docs/STAV.md`](docs/STAV.md).
+- **Lighthouse (mobil, produkce, po redesignu a interakcích):** výkon 91, přístupnost 100, best practices 100, SEO 100 (před redesignem 95 / 100 / 100 / 100).
 
 **Kde se AI spletla:** 25 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.

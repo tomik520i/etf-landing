@@ -50,7 +50,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
 - 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 25 záznamů)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
-- ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla – dělá uživatel
+- 🔄 Export konverzace (v desktopové aplikaci `/export` není – export přes aplikaci) a kontrola, že v něm nejsou hesla
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
 - ⬜ Odeslat e-mail s odkazy
 
@@ -65,4 +65,12 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Sloučení do `main` (`c5c2aab`), push, GitHub Pages
 - ✅ 1. nasazení: test měření „selhal“ kvůli chybě parseru v testu → **automatický návrat** na předchozí verzi zafungoval (errors #23); po opravě nasazeno `48c68c4`, VŠE OK
 - ✅ Na přání uživatele (Claude Code): plynulé rozbalování FAQ, 3D náklon karet fondů a SPIVA za kurzorem s odleskem, jemné zvednutí ostatních karet – jen myš, ne dotyk; s „omezit pohyb“ vypnuto
-- ⬜ Nasazení interakcí + ověření produkce (web, formuláře, měření, admin, Lighthouse, Pages)
+- ✅ Nasazeno `b667f92` (záloha DB, kontroly, test měření VŠE OK)
+- ✅ Ověření produkce (bez odesílání e-mailů a s blokovaným měřením, aby se neznečistila analytika):
+  - `?ad=a` 1 365 315 Kč, `?ad=b` 1 608 004 Kč; fondy VT 1 163 047 / 1 021 112 (od 2011), VOO 1 371 440 = nezávislý výpočet
+  - oba formuláře validují; FAQ plynule; náklon karet; `.env` a `_bootstrap.php` 403; admin 401 bez hesla; CORS jen pro GitHub Pages; TLS do 7. 1. 2027
+  - měření + admin s reálnou DB: test na serveru (event.php → MariaDB → analytika, 9 kombinací filtrů, bez e-mailů ve stránce) – VŠE OK
+  - Lighthouse mobil (produkce): **91 / 100 / 100 / 100**
+  - GitHub Pages: nový design i interakce nasazené, PHP na zrcadle není
+- ✅ Vysvětlení reklam A/B: [`docs/reklamy.md`](reklamy.md)
+- ⬜ Neověřeno: admin vizuálně na produkci za heslem (ověřen přes CLI na serveru), plynulost skla a animací na reálném slabším telefonu

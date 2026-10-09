@@ -52,3 +52,13 @@ Na předplatném jde o **odhad ekvivalentu API ceny podle ceníku v ccusage**, n
 **Spotřeba neověřená.** ccusage na tomto počítači ukazuje Codex session `gpt-6-astra` s poslední aktivitou 2026-10-09 19:59 UTC (input 96 998, output 23 601, cache čtení 2 561 792 tokenů, odhad 4,71 USD), ale bez cesty k projektu – nedá se jednoznačně potvrdit, že jde o práci na tomto designu. Proto číslo neuvádím jako cenu designu. Starší Codex session ze stejného dne (00:44 UTC, 550,20 USD) proběhla před zadáním designu a k tomuto projektu ji také nelze přiřadit.
 
 Tato čísla jsou stav v době zápisu; review, nasazení a závěrečná kontrola pokračují ve stejné Claude session.
+
+## Konečný stav session-01 – 2026-10-09 ~20:30 UTC (ccusage)
+| Model | Input tok | Output tok | Cache zápis | Cache čtení | Odhad USD |
+|---|---:|---:|---:|---:|---:|
+| claude-opus-5-5 | 498 | 259 751 | 490 636 | 74 824 285 | 24,09 |
+| claude-sonnet-5-5 | 146 | 7 142* | 505 595 | 5 196 460 | 1,86 |
+| claude-haiku-5-5 | 32 | 101* | 105 432 | 836 649 | 0,02 |
+| **Claude Code celkem** | | | | | **25,96** |
+
+Zahrnuje i review, dokončení a 3× nasazení designu. Design od Codexu – viz výše, spotřeba neověřená.
