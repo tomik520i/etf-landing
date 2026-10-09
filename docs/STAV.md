@@ -28,8 +28,9 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Formulář (e-mail + GDPR souhlas) – test proti API až na serveru
 
 ## 5. Backend a měření
-- ⬜ Doplnit správce osobních údajů, kontakt, dobu uložení (čeká na rozhodnutí)
-- ⬜ `php -l` a test API na serveru
+- ✅ Správce osobních údajů, kontakt, doba uložení
+- ✅ `php -l` a test API na serveru
+- ⬜ Resend: ověření domény opicebot.cz + API klíč v .env, test odeslání PDF
 - ✅ `lead.php` – uložení kontaktu + e-mail s PDF (Resend)
 - ✅ PDF „srovnání + jak koupit z ČR“ (4 strany)
 - ✅ `event.php` – měření průchodu stránkou (funnel)
@@ -39,14 +40,14 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Postup a konfigurace připraveny (`deploy/`)
 - ✅ DNS `aijunior.opicebot.cz` → veřejná IP funguje
 - ✅ SSH přístup ověřen (klíčem)
-- ⬜ Instalace Apache, PHP, MariaDB
-- ⬜ Certifikát Let's Encrypt + backend v HAProxy
-- ⬜ Nasazení kódu, test zvenku
+- ✅ Instalace Apache, PHP, MariaDB (skript 01, testy OK)
+- ✅ Certifikát Let's Encrypt + backend v HAProxy (skript 02)
+- ✅ Nasazení kódu, test zvenku – https://aijunior.opicebot.cz
 - ⬜ GitHub Pages zrcadlo
 
 ## 7. Odevzdání
 - ⬜ README (cílovka, pořadí sekcí, konverze, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 13 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 14 záznamů)
 - ⬜ `ai-log/usage.md` – tokeny a cena
 - ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla
 - ⬜ Test na mobilu + Lighthouse
