@@ -5,7 +5,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik budu mít z
 - Web: https://aijunior.opicebot.cz *(připravuje se)*
 - Zrcadlo (jen statika): GitHub Pages *(připravuje se)*
 
-> Rozpracováno. Plán: [`docs/zadanie-B-poznamky.md`](docs/zadanie-B-poznamky.md), pravidla pro AI: [`CLAUDE.md`](CLAUDE.md).
+> Rozpracováno – průběh: [`docs/STAV.md`](docs/STAV.md). Plán: [`docs/zadanie-B-poznamky.md`](docs/zadanie-B-poznamky.md), pravidla pro AI: [`CLAUDE.md`](CLAUDE.md).
 
 ## Stack
 - Frontend: statické HTML/CSS + vanilla JS, data jako statické JSON
