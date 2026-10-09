@@ -71,7 +71,7 @@ Příklad pro podtext hero B (přesné hodnoty): {od} = 01/2010, {do} = 09/2026,
 - Základy daní: časový test 3 roky a hranice 100 000 Kč ročních příjmů z prodeje.
 **label_email:** Tvůj e-mail
 **placeholder:** jmeno@email.cz
-**souhlas:** Souhlasím se zpracováním e-mailu za účelem zaslání PDF a navazujících e-mailů o investování. Správce: {{SPRAVCE}}. Souhlas můžu kdykoli odvolat. Více v [zásadách zpracování osobních údajů](#zasady).
+**souhlas:** Souhlasím se zpracováním e-mailu za účelem zaslání PDF a navazujících e-mailů o investování. Správce: provozovatel webu aijunior.opicebot.cz (tomik520i@seznam.cz). Souhlas můžu kdykoli odvolat. Více v [zásadách zpracování osobních údajů](#zasady).
 **tlacitko:** Pošlete mi PDF
 **mikrotext:** Žádný spam. Odhlásíš se jedním klikem.
 
@@ -147,22 +147,22 @@ Příklad pro podtext hero B (přesné hodnoty): {od} = 01/2010, {do} = 09/2026,
 **zdroje:** Ceny ETF: Yahoo Finance (adjusted close), staženo 09. 10. 2026. Kurz USD/CZK: ČNB. Poplatky a parametry fondů: emitenti SPDR/State Street a Vanguard a justETF, k 09. 10. 2026. Statistika aktivních fondů: S&P Dow Jones Indices, SPIVA U.S. Scorecard Year-End 2025 (data k 31. 12. 2025).
 **varovani_1:** Minulé výnosy nezaručují budoucí výnosy.
 **varovani_2:** Nejedná se o investiční doporučení, informace mají vzdělávací charakter. Hodnota investice může klesat i stoupat.
-**spravce:** Správce osobních údajů: {{SPRAVCE}}.
+**spravce:** Správce osobních údajů: provozovatel webu aijunior.opicebot.cz (tomik520i@seznam.cz).
 **odkaz_zasady:** Zásady zpracování osobních údajů (#zasady)
 
 ## zasady
 
 **nadpis:** Zásady zpracování osobních údajů
 **text:**
-Správce: {{SPRAVCE}}, kontakt: {{KONTAKT}}.
+Správce: provozovatel webu aijunior.opicebot.cz, kontakt: tomik520i@seznam.cz.
 
 Co zpracováváme: tvůj e-mail a informaci o souhlasu. Případně označení reklamy, ze které ses na web dostal(a) (například kampaň).
 
 Proč: abychom ti poslali PDF a navazující e-maily o investování. Právním základem je tvůj souhlas.
 
-Jak dlouho: do odvolání souhlasu, nejdéle {{DOBA_ULOZENI}}. E-mail ti pomáhá odesílat zpracovatel, služba Resend.
+Jak dlouho: do odvolání souhlasu, nejdéle 2 roky od udělení souhlasu. E-mail ti pomáhá odesílat zpracovatel, služba Resend.
 
-Tvoje práva: máš právo na přístup, opravu, výmaz, omezení zpracování a přenositelnost. Souhlas můžeš kdykoli odvolat, stačí odkaz pro odhlášení v každém e-mailu nebo zpráva na {{KONTAKT}}. Odvolání nemá vliv na dřívější zpracování. Máš také právo podat stížnost u Úřadu pro ochranu osobních údajů.
+Tvoje práva: máš právo na přístup, opravu, výmaz, omezení zpracování a přenositelnost. Souhlas můžeš kdykoli odvolat, stačí odkaz pro odhlášení v každém e-mailu nebo zpráva na tomik520i@seznam.cz. Odvolání nemá vliv na dřívější zpracování. Máš také právo podat stížnost u Úřadu pro ochranu osobních údajů.
 
 Cookies a měření: web nepoužívá cookies. Měříme návštěvnost vlastním nástrojem bez IP adres a bez osobních údajů. Anonymní identifikátor relace je jen v paměti prohlížeče a po zavření se ztratí.
 
@@ -180,7 +180,7 @@ Až budeš chtít, vrať se na kalkulačku a zkus jinou částku nebo jiný fond
 
 Další e-maily nechceš? Odhlásíš se jedním klikem: {unsubscribe_url}
 
-{{SPRAVCE}}
+provozovatel webu aijunior.opicebot.cz (tomik520i@seznam.cz)
 
 ## reklamy
 
