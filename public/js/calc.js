@@ -1,4 +1,4 @@
-// Výpočetní jádro kalkulačky. Čisté funkce bez DOM – testy: `node --test tests/`.
+// Výpočetní jádro kalkulačky. Čisté funkce bez DOM – testy: `npm test`.
 //
 // Model historického spoření (backtest):
 //   - každý měsíc investuješ `monthlyCzk` Kč,
@@ -10,6 +10,9 @@
 //
 // `extraFeePct` = dodatečný roční poplatek (např. 1 % u dražšího fondu nebo
 // správce), strhává se měsíčně z držené hodnoty: podíly × (1 − p)^(1/12).
+// Poplatek se v obou funkcích strhává za přesně ty měsíce, kdy jsou peníze
+// investované: backtest nakupuje na KONCI měsíce (první měsíc bez výnosu i
+// poplatku), projekce vkládá na ZAČÁTKU měsíce (první měsíc s výnosem i poplatkem).
 
 /** Spojí ceny a kurzy podle měsíce (jen měsíce, kde existuje obojí). */
 export function alignSeries(prices, fx) {
