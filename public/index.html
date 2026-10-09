@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__lpReady)document.documentElement.classList.remove('js')},3000)</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulačka ETF: kolik by z 2 000 Kč měsíčně dnes bylo</title>
+<meta name="description" content="Spočítej si, co by udělaly pravidelné vklady do S&P 500 od roku 2010 i s poplatky. Zdarma, bez e-mailu. Data k 09/2026, historie nezaručuje budoucnost.">
+<meta name="theme-color" content="#0E1113">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Kolik by z 2 000 Kč měsíčně dnes bylo?">
+<meta property="og:description" content="Kalkulačka s reálnými daty od roku 2010: co udělají poplatky a kurz. A jak koupit stejné ETF z Česka.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1113'/%3E%3Cpath d='M6 24l7-8 5 4 8-11' fill='none' stroke='%23F2A541' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&display=swap&subset=latin-ext" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap"><a class="logo" href="./"><span class="logo-mark" aria-hidden="true"></span>Kalkulačka ETF</a></div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-h1">
+    <div class="wrap">
+      <p class="eyebrow" id="hero-eyebrow">Kalkulačka ETF</p>
+      <h1 id="hero-h1">Kolik by z tvých vkladů dnes bylo?</h1>
+      <p class="sub" id="hero-sub">Zadej měsíční částku a uvidíš, co by udělaly pravidelné nákupy ETF na reálných datech i s poplatky. Bez e-mailu.</p>
+      <a class="btn btn-hero" id="hero-cta" href="#kalkulacka">Spočítej si to</a>
+      <p class="podtext" id="hero-podtext">Výpočet je z historických dat do 09/2026. Minulé výnosy nezaručují budoucí výnosy.</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="kalkulacka" aria-labelledby="calc-h2">
+    <div class="card calc">
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <h2 id="calc-h2">Spočítej si to s vlastní částkou</h2>
+          <p class="lead">Vyber fond, zadej měsíční vklad a uvidíš, jak by si na reálných datech vedl i s poplatkem navíc.</p>
+
+          <div class="field">
+            <label for="in-monthly">Měsíční vklad (Kč)</label>
+            <div class="num-row">
+              <input id="in-monthly-range" class="range" type="range" min="500" max="20000" step="500" value="2000" aria-label="Měsíční vklad (Kč), posuvník">
+              <input id="in-monthly" class="num" type="number" inputmode="numeric" min="500" max="20000" step="500" value="2000">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label for="in-year">Investuju od roku</label><output id="out-year" for="in-year">2010</output></div>
+            <input id="in-year" class="range" type="range" min="2008" max="2025" step="1" value="2010">
+          </div>
+
+          <fieldset class="field seg" id="in-fund">
+            <legend>Fond</legend>
+            <div class="seg-row">
+              <input type="radio" name="fund" id="fund-SPY" value="SPY" checked><label for="fund-SPY">SPY</label>
+              <input type="radio" name="fund" id="fund-VOO" value="VOO"><label for="fund-VOO">VOO</label>
+              <input type="radio" name="fund" id="fund-VT" value="VT"><label for="fund-VT">VT</label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <div class="label-row"><label for="in-fee">Poplatek navíc (% ročně)</label><output id="out-fee" for="in-fee">1,0 %</output></div>
+            <input id="in-fee" class="range" type="range" min="0" max="2.5" step="0.1" value="1" aria-describedby="fee-hint">
+            <p class="hint" id="fee-hint">Co kdyby fond stál o tolik víc, než stojí ve skutečnosti.</p>
+          </div>
+        </div>
+
+        <div class="calc-result" id="result">
+          <h3 class="result-title" id="res-title">Výsledek za období 01/2010 až 09/2026</h3>
+          <p class="big" aria-live="polite"><span id="res-value-num">–</span> <span class="cur">Kč</span></p>
+          <ul class="stats" id="res-stats"></ul>
+          <div class="chart-wrap" id="chart-wrap">
+            <svg id="chart" role="img" aria-label="Graf vývoje investice"></svg>
+            <ul class="legend" id="legend">
+              <li><i class="sw sw-value"></i>Hodnota</li>
+              <li><i class="sw sw-fee"></i>S poplatkem navíc</li>
+              <li><i class="sw sw-inv"></i>Vloženo</li>
+            </ul>
+          </div>
+          <p class="note" id="res-fx-note">Fond je v dolarech, takže když koruna oproti dolaru zeslábne, tvůj výsledek v korunách roste, a když zesílí, klesá.</p>
+          <p class="note" id="res-warn">Jde o historii za období 01/2010 až 09/2026. Minulé výnosy nezaručují budoucí výnosy.</p>
+          <p class="note" id="res-error" hidden></p>
+        </div>
+      </div>
+      <p class="method">Výnosy počítáme z adjusted close z Yahoo Finance, takže zahrnují reinvestované dividendy. Vklady přepočítáváme kurzem ČNB v daném měsíci. Výsledek je bez daní a bez poplatků tvého brokera.</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="pdf" aria-labelledby="cta1-h2">
+    <div class="card cta reveal">
+      <div class="cta-text">
+        <h2 id="cta1-h2">Chceš to celé v jednom PDF?</h2>
+        <p class="lead">Pošleme ti srovnání ETF a postup, jak je koupit z Česka. Dostaneš:</p>
+        <ul class="checks">
+          <li>Srovnání SPY, VOO a VT: poplatky (TER), co sledují a jak se vyplácí dividendy.</li>
+          <li>U každého fondu jeho UCITS ekvivalent, který jde koupit z ČR, s tickery a ISIN.</li>
+          <li>Postup krok za krokem: jak vybrat brokera, otevřít účet a zadat první nákup.</li>
+          <li>Základy daní: časový test 3 roky a hranice 100 000 Kč ročních příjmů z prodeje.</li>
+        </ul>
+      </div>
+      <div class="cta-form">
+        <div class="form-wrap" data-form-wrap aria-live="polite">
+          <form class="lead-form" data-position="1" novalidate>
+            <div class="field">
+              <label for="f1-email">Tvůj e-mail</label>
+              <input id="f1-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="jmeno@email.cz" required aria-describedby="f1-email-err">
+              <p class="field-error" id="f1-email-err" data-err="email" hidden>Tenhle e-mail nevypadá správně. Zkontroluj ho prosím, třeba zavináč nebo koncovku.</p>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="f1-web">Web</label>
+              <input id="f1-web" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="field">
+              <div class="consent">
+                <input id="f1-consent" name="consent" type="checkbox" aria-describedby="f1-consent-err">
+                <label for="f1-consent">Souhlasím se zpracováním e-mailu za účelem zaslání PDF a navazujících e-mailů o investování. Správce: {{SPRAVCE}}. Souhlas můžu kdykoli odvolat. Více v <a href="zasady.html" target="_blank" rel="noopener">zásadách zpracování osobních údajů</a>.</label>
+              </div>
+              <p class="field-error" id="f1-consent-err" data-err="consent" hidden>Bez souhlasu ti PDF poslat nemůžeme. Zaškrtni ho prosím.</p>
+            </div>
+            <button class="btn" type="submit">Pošlete mi PDF</button>
+            <p class="form-error" data-err="server" hidden>Něco se nepovedlo a e-mail jsme neodeslali. Zkus to prosím za chvíli znovu.</p>
+            <p class="micro">Žádný spam. Odhlásíš se jedním klikem.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="spiva" aria-labelledby="spiva-h2">
+    <div class="card reveal spiva">
+      <h2 id="spiva-h2">Aktivní správci většinou index nepřekonají</h2>
+      <p class="lead">Podle zprávy SPIVA U.S. Year-End 2025 za rok 2025 zaostalo za indexem S&amp;P 500 zhruba 79 % aktivních fondů velkých amerických firem. Za 10 let to bylo zhruba 86 %, za 15 let zhruba 90 % a za 20 let zhruba 93 %. Proto v kalkulačce porovnáváme levné indexové ETF. Jde o historii, budoucnost nezaručuje.</p>
+      <ul class="bars">
+        <li><span class="bar-label">1 rok</span><span class="bar" aria-hidden="true"><span class="bar-fill w-79"></span></span><span class="bar-val">78,78 %</span></li>
+        <li><span class="bar-label">10 let</span><span class="bar" aria-hidden="true"><span class="bar-fill w-86"></span></span><span class="bar-val">85,59 %</span></li>
+        <li><span class="bar-label">15 let</span><span class="bar" aria-hidden="true"><span class="bar-fill w-90"></span></span><span class="bar-val">89,93 %</span></li>
+        <li><span class="bar-label">20 let</span><span class="bar" aria-hidden="true"><span class="bar-fill w-93"></span></span><span class="bar-val">92,89 %</span></li>
+      </ul>
+      <p class="note">Zdroj: S&amp;P Dow Jones Indices, SPIVA U.S. Scorecard Year-End 2025, Report 1a, All Large-Cap Funds vs. S&amp;P 500, data k 31. 12. 2025. Přesně: 78,78 % (1 rok), 85,59 % (10 let), 89,93 % (15 let), 92,89 % (20 let).</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="fondy" aria-labelledby="fondy-h2">
+    <div class="section-head reveal">
+      <h2 id="fondy-h2">Fondy, které porovnáváme, a ty, které opravdu koupíš</h2>
+      <p class="lead">Porovnáváme americké ETF z NYSE Arca, protože mají nejdelší historii. Jenže evropské brokery je malým investorům neprodají, protože u nich chybí povinný klíčový informační dokument (pravidla PRIIPs). Proto ke každému ukazujeme irský UCITS fond, který koupíš z Česka.</p>
+    </div>
+    <div class="funds">
+      <article class="card fund reveal">
+        <h3 class="ticker">SPY</h3>
+        <p>ETF na index S&amp;P 500 (500 největších amerických firem), obchoduje se od roku 1993. Roční poplatek (TER) 0,0945 %.</p>
+        <div class="ucits"><p class="ucits-label">Co koupíš z ČR</p><p>iShares Core S&amp;P 500 UCITS ETF (SXR8, na londýnské burze CSPX), TER 0,07 %. Stejný index, alternativa je VUAA s TER 0,07 %.</p></div>
+      </article>
+      <article class="card fund reveal">
+        <h3 class="ticker">VOO</h3>
+        <p>Vanguard ETF na stejný index S&amp;P 500 jako SPY, jen s nižším poplatkem. Roční poplatek (TER) 0,03 %.</p>
+        <div class="ucits"><p class="ucits-label">Co koupíš z ČR</p><p>Stejný index kopíruje SXR8/CSPX (TER 0,07 %) nebo Vanguard S&amp;P 500 UCITS ETF, VUAA (TER 0,07 %).</p></div>
+      </article>
+      <article class="card fund reveal">
+        <h3 class="ticker">VT</h3>
+        <p>Vanguard ETF na akcie z celého světa, USA i ostatní trhy. Roční poplatek (TER) 0,06 %.</p>
+        <div class="ucits"><p class="ucits-label">Co koupíš z ČR</p><p>Nejbližší je Vanguard FTSE All-World UCITS ETF, VWCE (TER 0,14 %). Není to stejný fond, sleduje trochu jiný index.</p></div>
+      </article>
+    </div>
+    <p class="note fund-note">TER k 09/2026 podle emitentů a justETF.</p>
+  </section>
+
+  <section class="wrap" id="pdf-2" aria-labelledby="cta2-h2">
+    <div class="card cta reveal">
+      <div class="cta-text">
+        <h2 id="cta2-h2">Jsi na konci stránky. PDF si vezmi s sebou</h2>
+        <p class="lead">V jednom souboru: srovnání SPY, VOO a VT, jejich UCITS ekvivalenty a postup nákupu z Česka krok za krokem.</p>
+        <ul class="checks">
+          <li>Srovnání SPY, VOO a VT: poplatky (TER), co sledují a jak se vyplácí dividendy.</li>
+          <li>U každého fondu jeho UCITS ekvivalent, který jde koupit z ČR, s tickery a ISIN.</li>
+          <li>Postup krok za krokem: jak vybrat brokera, otevřít účet a zadat první nákup.</li>
+          <li>Základy daní: časový test 3 roky a hranice 100 000 Kč ročních příjmů z prodeje.</li>
+        </ul>
+      </div>
+      <div class="cta-form">
+        <div class="form-wrap" data-form-wrap aria-live="polite">
+          <form class="lead-form" data-position="2" novalidate>
+            <div class="field">
+              <label for="f2-email">Tvůj e-mail</label>
+              <input id="f2-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="jmeno@email.cz" required aria-describedby="f2-email-err">
+              <p class="field-error" id="f2-email-err" data-err="email" hidden>Tenhle e-mail nevypadá správně. Zkontroluj ho prosím, třeba zavináč nebo koncovku.</p>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="f2-web">Web</label>
+              <input id="f2-web" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="field">
+              <div class="consent">
+                <input id="f2-consent" name="consent" type="checkbox" aria-describedby="f2-consent-err">
+                <label for="f2-consent">Souhlasím se zpracováním e-mailu za účelem zaslání PDF a navazujících e-mailů o investování. Správce: {{SPRAVCE}}. Souhlas můžu kdykoli odvolat. Více v <a href="zasady.html" target="_blank" rel="noopener">zásadách zpracování osobních údajů</a>.</label>
+              </div>
+              <p class="field-error" id="f2-consent-err" data-err="consent" hidden>Bez souhlasu ti PDF poslat nemůžeme. Zaškrtni ho prosím.</p>
+            </div>
+            <button class="btn" type="submit">Pošlete mi PDF</button>
+            <p class="form-error" data-err="server" hidden>Něco se nepovedlo a e-mail jsme neodeslali. Zkus to prosím za chvíli znovu.</p>
+            <p class="micro">Žádný spam. Odhlásíš se jedním klikem.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="faq" aria-labelledby="faq-h2">
+    <div class="card reveal faq">
+      <h2 id="faq-h2">Otázky, které se ptají skoro všichni</h2>
+      <details><summary>Můžu tyhle ETF koupit z ČR?</summary><p>Americké SPY, VOO a VT většinou ne. Brokeři v EU je malým investorům neprodávají, protože tyto fondy nemají evropský klíčový informační dokument. Místo nich koupíš irské UCITS ETF na stejný nebo podobný index. Dostupnost si před založením účtu ověř u konkrétního brokera.</p></details>
+      <details><summary>Jak je to s daněmi?</summary><p>V ČR je prodej cenných papírů osvobozený, když je držíš déle než 3 roky. Osvobozené jsou i příjmy z prodeje do 100 000 Kč za rok. Testy se nekombinují. Zdanění dividend tu neřešíme. Není to daňové poradenství, pravidla si ověř u finanční správy.</p></details>
+      <details><summary>Kolik potřebuju na začátek?</summary><p>Záleží na brokeru a fondu. Řada brokerů umožňuje nákup od ceny jednoho podílu nebo i zlomků podílů. Kalkulačka počítá s pravidelným měsíčním vkladem. Zkus si ho nastavit podle toho, co ti zbývá každý měsíc, a poplatky brokera si porovnej předem.</p></details>
+      <details><summary>Co když trh spadne?</summary><p>Hodnota fondu může klesnout, i výrazně, a nikdo nezaručí, že se vrátí. Kalkulačka i data SPIVA ukazují jen minulost za uvedená období. Například S&amp;P 500 (SPY) mezi 10/2007 a 02/2009 klesl o 51 % a na předchozí maximum se vrátil až v 03/2012 (měsíční data s dividendami). Investuj jen peníze, které v dohledné době nepotřebuješ.</p></details>
+      <details><summary>Proč ne bitcoin nebo jednotlivé akcie?</summary><p>Nezakazujeme je. Jen jsme se zaměřili na fondy, které drží stovky nebo tisíce firem najednou, takže nestavíš na jedné. U jednotlivých akcií a kryptoměn je rozptyl výsledků výrazně větší. Rozhodnutí je na tobě.</p></details>
+      <details><summary>Je to investiční doporučení?</summary><p>Ne. Stránka má vzdělávací charakter, ukazuje historická data a nezná tvoji situaci. Minulé výnosy nezaručují budoucí výnosy. Před rozhodnutím si zjisti víc nebo se poraď s licencovaným poradcem.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap reveal">
+    <h2 class="foot-h">Zdroje dat</h2>
+    <p>Ceny ETF: Yahoo Finance (adjusted close), staženo 09. 10. 2026. Kurz USD/CZK: ČNB. Poplatky a parametry fondů: emitenti SPDR/State Street a Vanguard a justETF, k 09. 10. 2026. Statistika aktivních fondů: S&amp;P Dow Jones Indices, SPIVA U.S. Scorecard Year-End 2025 (data k 31. 12. 2025).</p>
+    <p class="warn">Minulé výnosy nezaručují budoucí výnosy.</p>
+    <p class="warn">Nejedná se o investiční doporučení, informace mají vzdělávací charakter. Hodnota investice může klesat i stoupat.</p>
+    <p>Správce osobních údajů: {{SPRAVCE}}.</p>
+    <p><a href="zasady.html">Zásady zpracování osobních údajů</a></p>
+  </div>
+</footer>
+</body>
+</html>

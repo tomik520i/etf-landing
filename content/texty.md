@@ -13,10 +13,10 @@ Data k 09/2026. Ceny: Yahoo Finance (adjusted close, tj. s reinvestovanými divi
 
 Reklama A, šok z poplatků.
 
-**eyebrow:** Poplatky za 15 let
-**h1:** Kolik tě za 15 let stojí 1% poplatek navíc?
-**sub:** Při 2 000 Kč měsíčně do S&P 500 by to bylo zhruba 112 000 Kč. Spočítej si to s vlastní částkou.
-**podtext:** Historická data 10/2011 až 09/2026 (Yahoo Finance, ČNB). Vloženo 360 000 Kč, hodnota 1 190 617 Kč, rozdíl kvůli 1% poplatku navíc 111 917 Kč. Minulé výnosy nezaručují budoucí výnosy.
+**eyebrow:** Poplatky od roku 2011
+**h1:** Kolik by tě od roku 2011 stál 1% poplatek navíc?
+**sub:** Při 2 000 Kč měsíčně do S&P 500 zhruba 137 000 Kč. Spočítej si to s vlastní částkou.
+**podtext:** Historická data 01/2011 až 09/2026 (Yahoo Finance, ČNB). Vloženo 378 000 Kč, hodnota 1 365 315 Kč, s 1% poplatkem navíc 1 228 459 Kč, rozdíl 136 856 Kč. Minulé výnosy nezaručují budoucí výnosy.
 **cta:** Spočítej si svůj poplatek
 
 ## hero-b
@@ -186,7 +186,7 @@ Další e-maily nechceš? Odhlásíš se jedním klikem: {unsubscribe_url}
 
 ### reklama-a
 
-**primarni_text:** 1 % ročně navíc zní jako málo. U 2 000 Kč měsíčně za 15 let šlo o zhruba 112 000 Kč. Spočítej si to.
+**primarni_text:** 1 % ročně navíc zní jako málo. U 2 000 Kč měsíčně od roku 2011 šlo o zhruba 137 000 Kč. Spočítej si to.
 **nadpis:** Kolik tě stojí 1 % poplatek navíc?
 **popis:** Kalkulačka s daty do 09/2026
 **cta_tlacitko:** Zjistit více
@@ -204,7 +204,7 @@ Další e-maily nechceš? Odhlásíš se jedním klikem: {unsubscribe_url}
 
 - Tykání: cílovka 25 až 40 let přichází z reklamy na mobilu, vykání by působilo jako banka a zvětšovalo vzdálenost u tématu, kterého se lidé bojí.
 - CTA jsou konkrétní („Spočítej si svůj poplatek“, „Pošlete mi PDF“), protože říkají, co se stane po kliku. Hero vede ke kalkulačce zdarma bez e-mailu, e-mail se žádá až po výsledku.
-- Čísla jsou zaokrouhlená („zhruba 1,6 milionu“, „zhruba 112 000 Kč“), aby se daly přečíst za pár sekund. Přesná hodnota je vždy v podtextu, kvůli důvěře a ověřitelnosti.
+- Čísla jsou zaokrouhlená („zhruba 1,6 milionu“, „zhruba 137 000 Kč“), aby se daly přečíst za pár sekund. Přesná hodnota je vždy v podtextu, kvůli důvěře a ověřitelnosti.
 - Každé historické číslo má uvedené období a větu, že minulé výnosy nezaručují budoucí. Žádné sliby, žádné „zbohatni“, žádné odhady budoucnosti.
 - PRIIPs vysvětlujeme lidsky („chybí evropský klíčový informační dokument“), zkratka není v nadpisu. Důvod, proč ukazujeme UCITS, je pro čtenáře užitečný, ne technický.
 - VWCE je označeno jako „nejbližší“ ekvivalent VT, ne stejný fond, protože sleduje jiný index. Nepsali jsme, že jde o totéž.
