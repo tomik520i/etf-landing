@@ -103,12 +103,12 @@ Varianta se ukládá ke každému eventu i leadu a analytika je porovná (konver
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
 - **Lighthouse (mobil, produkce, po redesignu a interakcích):** výkon 91, přístupnost 100, best practices 100, SEO 100 (před redesignem 95 / 100 / 100 / 100).
 
-**Kde se AI spletla:** 27 záznamů + popis neúspěšné simulace skla v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
+**Kde se AI spletla:** 29 záznamů + popis neúspěšné simulace skla v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.
 - **Copywriter:** neověřené tvrzení („nejstarší ETF“) a slib e-mailové série, která neexistuje.
 - **Backend:** odhlášení na GET (spustil by ho skener odkazů), jakákoli DB chyba se tvářila jako duplicita.
 - **Já (Opus):** reklama A slibovala jiné číslo, než ukázala kalkulačka. `sed` by rozbil produkční HAProxy (zachyceno simulací). Ceník tokenů jsem dosadil z paměti a byl špatně. Falešný poplach u přepínání fondů (test ve skrytém panelu).
-- **Codex (design):** šipka v tlačítku čitelná pro čtečky obrazovky; trhavá CSS simulace lomu (nahrazena knihovnou); knihovna bez textu licence MIT.
+- **Codex (design):** šipka v tlačítku čitelná pro čtečky obrazovky; trhavá CSS simulace lomu (nahrazena knihovnou); knihovna bez textu licence MIT; pozadí na telefonu poskakovalo se zasouvací lištou; lom posunutý o šířku posuvníku.
 - **Já (Opus):** cache CSS/JS na 7 dní bez verzování – po nasazení by vracející se návštěvníci viděli starý design.
 
 **Tokeny a cena:** [`ai-log/usage.md`](ai-log/usage.md) – jen čísla z ccusage. Spotřebu Codexu na designu nedokážu jednoznačně přiřadit, uvádím ji jako neověřenou.

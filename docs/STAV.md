@@ -48,7 +48,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 27 záznamů + záznam neúspěšné simulace skla)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 29 záznamů + záznam neúspěšné simulace skla)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
 - ✅ Export konverzace → [`ai-log/session-01/`](../ai-log/session-01/) (export přes aplikaci; zkontrolováno: bez hesel a klíčů, soukromé údaje a konfigurace jiných služeb vynechány)
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
@@ -91,5 +91,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Nasazeno ztmavení (`1a884b5`, VŠE OK)
 - ✅ Na přání uživatele (Claude Code): **matnější sklo** – jemné rozostření pod panely i s WebGL (`blur(7px)`), CSS fallback 5 → 9 px, mobil 4 → 7 px; verze `?v=20261010-3`
   - plynulost po změně (Chrome s GPU): desktop scroll 1–2 snímky nad 50 ms (max ~62 ms, jednou 156 ms) oproti 0 před změnou; mobilní šířka max ~63 ms; hover bez trhání
-- ⬜ Nasazení matného skla + ověření produkce
+- ✅ Nasazeno matné sklo (`7cce1d6`, VŠE OK)
+- ✅ Oprava (Claude Code, nahlásil uživatel): na telefonu poskakovalo pozadí při zasouvání lišty prohlížeče → plátno i CSS pozadí `100lvh`, textura jen při změně velikosti plátna (errors #28); lom čoček posunutý o šířku posuvníku na desktopu (#29); verze `?v=20261010-5`
+- ⬜ Nasazení opravy + finální ověření produkce
 

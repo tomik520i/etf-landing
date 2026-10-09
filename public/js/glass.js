@@ -11,6 +11,9 @@ async function configure() {
   if (!panels.length || preferences.some(q => q.matches)) return;
   let canvas, pass, gl, texture, image, source, ctx, observer;
   let frame = 0, resize = true, measure = true, boxes = [], stopped = false;
+  // Stabilní velikost pozadí: na telefonu zasouvací lišta prohlížeče mění výšku okna (innerHeight),
+  // plátno má ale výšku 100lvh – texturu přepočítáme jen při změně šířky nebo skutečné výšky plátna.
+  let stableW = 0, stableH = 0;
   function stop() {
     stopped = true; cancelAnimationFrame(frame); observer?.disconnect();
     removeEventListener('scroll', schedule); removeEventListener('resize', onResize);
@@ -18,16 +21,22 @@ async function configure() {
     canvas?.remove(); document.documentElement.classList.remove('webgl-glass');
     if (gl && !gl.isContextLost()) { pass?.destroy(); if (texture) gl.deleteTexture(texture); }
   }
-  function onResize() { resize = true; measure = true; schedule(); }
+  // výška plátna = 100lvh (CSS) – při zasunutí/vysunutí lišty se nemění, takže se textura nepřepočítává
+  function onResize() { if ((canvas.clientWidth || innerWidth) !== stableW || (canvas.clientHeight || innerHeight) !== stableH) resize = true; measure = true; schedule(); }
   function schedule() { if (!stopped && !frame && !document.hidden) frame = requestAnimationFrame(draw); }
   function draw() {
     frame = 0;
     if (stopped) return;
     try {
-      const w = innerWidth, h = innerHeight;
+      // šířka plátna bez posuvníku (innerWidth ho na desktopu zahrnuje → čočky by byly posunuté)
+      const w = canvas.clientWidth || innerWidth;
       // Cap buffers at CSS resolution, including high-DPR phones.
       if (resize) {
-        resize = false; canvas.width = source.width = w; canvas.height = source.height = h;
+        resize = false;
+        stableW = w;
+        stableH = canvas.clientHeight || innerHeight;
+        const h = stableH;
+        canvas.width = source.width = w; canvas.height = source.height = h;
         const scale = Math.max(w / 1600, h / 1100), mobile = w < 900;
         // Bake a little frost into the static texture once, not per frame.
         ctx.filter = 'blur(0.5px)';
@@ -41,6 +50,7 @@ async function configure() {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
         measure = true;
       }
+      const h = stableH; // výška plátna a textury (stabilní), ne aktuální innerHeight
       if (measure) {
         measure = false;
         boxes = panels.map(panel => {

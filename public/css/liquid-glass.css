@@ -18,7 +18,8 @@ body {
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
+  /* 100lvh: zasouvací lišta prohlížeče na telefonu pozadí nepřeměřuje */
+  top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh;
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(90deg, #030919c9, #03091935 58%, #03091908), url('market-scene.svg') center top / cover no-repeat;
@@ -129,7 +130,8 @@ summary { transition: color .2s ease; }
 summary:hover { color: var(--accent); }
 
 /* One GPU background layer; content stays native, accessible HTML. */
-.glass-renderer { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+/* Výška podle největšího viewportu (lišta prohlížeče schovaná) – při zasunutí/vysunutí lišty na telefonu se pozadí nepřeměřuje. */
+.glass-renderer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; z-index: -1; pointer-events: none; }
 .webgl-glass .card, .webgl-glass .calc.card, .webgl-glass .cta.card, .webgl-glass .kpi {
   /* matné sklo: jemné rozostření lomeného WebGL pozadí pod textem */
   backdrop-filter: blur(7px) saturate(125%);
