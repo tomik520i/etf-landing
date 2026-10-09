@@ -377,10 +377,74 @@ function initScrollDepth() {
   window.addEventListener('scroll', check, { passive: true });
 }
 
+/* ---------- Plynulé rozbalení FAQ (bez JS / s reduced-motion funguje <details> nativně) ---------- */
+function initFaq() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !Element.prototype.animate) return;
+  $$('.faq details').forEach((d) => {
+    const summary = $('summary', d);
+    let anim = null;
+    // fill: forwards drží konečnou výšku, dokud se <details> skutečně nepřepne – jinak na 1 snímek problikne
+    const done = (a, open) => {
+      d.open = open;
+      d.classList.remove('is-closing');
+      d.style.overflow = '';
+      a.cancel();
+      if (anim === a) anim = null;
+    };
+    summary.addEventListener('click', (e) => {
+      e.preventDefault();
+      const start = d.offsetHeight;
+      if (anim) { anim.cancel(); anim = null; }
+      d.style.overflow = 'hidden';
+      let a;
+      if (!d.open || d.classList.contains('is-closing')) {
+        d.classList.remove('is-closing');
+        d.open = true;
+        const end = d.offsetHeight; // otevřená výška včetně rámečku
+        a = d.animate({ height: [`${start}px`, `${end}px`] }, { duration: 320, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
+        a.onfinish = () => done(a, true);
+      } else {
+        d.classList.add('is-closing');
+        const closed = summary.offsetHeight + (d.offsetHeight - d.clientHeight); // summary + rámeček
+        a = d.animate({ height: [`${start}px`, `${closed}px`] }, { duration: 260, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+        a.onfinish = () => done(a, false);
+      }
+      anim = a;
+    });
+  });
+}
+
+/* ---------- 3D náklon karet po najetí myší (jen jemný ukazatel, ne dotyk) ---------- */
+function initTilt() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  $$('.fund, .spiva').forEach((card) => {
+    card.classList.add('tilt');
+    let raf = 0;
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = card.classList.contains('spiva') ? 2.5 : 6; // velkou kartu jen lehce
+        card.style.setProperty('--ry', `${((x - 0.5) * 2 * max).toFixed(2)}deg`);
+        card.style.setProperty('--rx', `${((0.5 - y) * 2 * max).toFixed(2)}deg`);
+        card.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+        card.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+      });
+    });
+    card.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
+    });
+  });
+}
+
 /* ---------- Start ---------- */
 initReveal();
 initHero();
 initHeroCta();
+initFaq();
+initTilt();
 initForms();
 initScrollDepth();
 const c = getContext();

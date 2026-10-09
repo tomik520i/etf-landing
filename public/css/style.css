@@ -195,8 +195,8 @@ details > p { padding: 0 0 20px; color: var(--muted); max-width: 70ch; }
 .back { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* Scroll-reveal */
-html.js .reveal { opacity: 1; transform: none; }
-html.js .reveal.is-visible { opacity: 1; transform: none; }
+/* Scroll-reveal je vypnutý (design Liquid Glass) – karty jsou vždy vidět; transform nechávám volný pro hover efekty. */
+html.js .reveal, html.js .reveal.is-visible { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

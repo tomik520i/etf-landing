@@ -80,7 +80,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 
 **Finální design: OpenAI Codex, model GPT-6 Astra, reasoning effort Medium.** Codex podle zadání [`docs/codex-design-brief.md`](docs/codex-design-brief.md) a pokynů uživatele vytvořil vzhled *Liquid Glass*: skleněné panely nad statickým tradingovým pozadím se zelenými a červenými svíčkami, bez vyjíždění karet při scrollu. Pracoval ve větvi `design/codex` (commity `40547b9`, `69ec4a5`, `5c0413f`) a měnil jen CSS, SVG pozadí, hlavičky HTML a styl analytiky.
 
-**Co potom udělal Claude Code (Opus), ne Codex:** review diffu (logika, texty, data a backend beze změny), funkční kontrola v reálném prohlížeči (obě varianty reklamy, přepínání fondů proti nezávislému výpočtu, validace obou formulářů, honeypot, mobil 375 px, čitelnost textu nad pozadím), drobná oprava přístupnosti (šipka v tlačítku skrytá čtečkám), testy a Lighthouse, aktualizace pravidel a dokumentace, sloučení do `main`, posílení nasazení (záloha DB, automatický návrat), nasazení a ověření produkce.
+**Co potom udělal Claude Code (Opus), ne Codex:** review diffu (logika, texty, data a backend beze změny), funkční kontrola v reálném prohlížeči (obě varianty reklamy, přepínání fondů proti nezávislému výpočtu, validace obou formulářů, honeypot, mobil 375 px, čitelnost textu nad pozadím), drobná oprava přístupnosti (šipka v tlačítku skrytá čtečkám), na přání uživatele plynulé rozbalování FAQ a 3D náklon karet po najetí myší, testy a Lighthouse, aktualizace pravidel a dokumentace, sloučení do `main`, posílení nasazení (záloha DB, automatický návrat), nasazení a ověření produkce.
 
 **Pravidla pro agenty** ([`CLAUDE.md`](CLAUDE.md)): žádné číslo bez zdroje (jinak `NENALEZENO`), `.env` nikdy nečíst (vynuceno i v [`.claude/settings.json`](.claude/settings.json)), prepared statements, žádný „AI“ design, nic nespouštět na serveru bez potvrzení.
 
@@ -92,7 +92,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
 - **Lighthouse (mobil):** před redesignem 95 / 100 / 100 / 100 na produkci; po redesignu viz [`docs/STAV.md`](docs/STAV.md).
 
-**Kde se AI spletla:** 23 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
+**Kde se AI spletla:** 25 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.
 - **Copywriter:** neověřené tvrzení („nejstarší ETF“) a slib e-mailové série, která neexistuje.
 - **Backend:** odhlášení na GET (spustil by ho skener odkazů), jakákoli DB chyba se tvářila jako duplicita.

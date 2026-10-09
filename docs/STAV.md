@@ -48,7 +48,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 23 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 25 záznamů)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
 - ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla – dělá uživatel
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
@@ -62,5 +62,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Lighthouse mobil lokálně: 95 / 100 / 96 / 100 (96 = chyby 501 z lokálního serveru bez PHP)
 - ✅ Pravidla a dokumentace aktualizované (CLAUDE.md, design-a-rozhrani.md, frontend agent, README, errors, usage)
 - ✅ Nasazení posíleno: záloha DB + automatický návrat (`03-update.sh`), ruční návrat (`04-rollback.sh`)
-- ⬜ Sloučení do `main`, push, GitHub Pages
-- ⬜ Nasazení na aijunior.opicebot.cz + ověření produkce (web, formuláře, měření, admin, Lighthouse)
+- ✅ Sloučení do `main` (`c5c2aab`), push, GitHub Pages
+- ✅ 1. nasazení: test měření „selhal“ kvůli chybě parseru v testu → **automatický návrat** na předchozí verzi zafungoval (errors #23); po opravě nasazeno `48c68c4`, VŠE OK
+- ✅ Na přání uživatele (Claude Code): plynulé rozbalování FAQ, 3D náklon karet fondů a SPIVA za kurzorem s odleskem, jemné zvednutí ostatních karet – jen myš, ne dotyk; s „omezit pohyb“ vypnuto
+- ⬜ Nasazení interakcí + ověření produkce (web, formuláře, měření, admin, Lighthouse, Pages)

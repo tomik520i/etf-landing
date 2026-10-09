@@ -116,3 +116,25 @@ input::placeholder { color: #bfd0df; }
   .btn { background: #144f47; }
   body::before { opacity: .35; }
 }
+
+/* ---------- Interakce (Claude Code, nad designem Liquid Glass) ---------- */
+/* FAQ: plynulé otočení šipky a vyjetí odpovědi; výšku animuje app.js */
+summary::after { transition: transform .32s cubic-bezier(.2,.7,.2,1); }
+details > p { transition: opacity .3s ease, transform .32s cubic-bezier(.2,.7,.2,1); }
+details:not([open]) > p, details.is-closing > p { opacity: 0; transform: translateY(-6px); }
+details[open]:not(.is-closing) > p { opacity: 1; transform: none; }
+details.is-closing > summary::after { transform: rotate(45deg); }
+@starting-style { details[open] > p { opacity: 0; transform: translateY(-6px); } }
+summary { transition: color .2s ease; }
+summary:hover { color: var(--accent); }
+
+/* Karty: 3D náklon za kurzorem (fondy, SPIVA) a jemné zvednutí ostatních */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease; }
+  .cta.card:hover, .faq.card:hover, .calc.card:hover { transform: translateY(-3px); box-shadow: var(--glass-depth), 0 28px 60px #00071a66; }
+  .tilt { transform-style: preserve-3d; transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(0); will-change: transform; }
+  .tilt:hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px) scale(1.015); box-shadow: var(--glass-depth), 0 34px 70px #00071a80, 0 0 0 1px #b8ffe430; border-color: #c9fff0aa; transition: transform .12s linear, box-shadow .35s ease, border-color .35s ease; }
+  /* odlesk skla, který jede za kurzorem */
+  .tilt::after { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), #ffffff26, #ffffff08 35%, transparent 60%); opacity: 0; transition: opacity .35s ease; }
+  .tilt:hover::after { opacity: 1; }
+}
