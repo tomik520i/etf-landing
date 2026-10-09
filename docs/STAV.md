@@ -19,18 +19,19 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 ## 3. Kalkulačka
 - ✅ Výpočet v Kč: pravidelná investice, kurz, dopad poplatků, projekce
 - ✅ 19 automatických testů (`npm test`)
+- ✅ Specifikace designu a rozhraní (`docs/design-a-rozhrani.md`)
 
 ## 4. Stránka
-- ⬜ Texty, 2 verze reklamy, FAQ (copywriter / Sonnet)
-- ⬜ Design: tmavý styl, karty se scroll-reveal animací (frontend / Sonnet)
-- ⬜ Kalkulačka na stránce + graf
-- ⬜ Formulář (e-mail + GDPR souhlas)
+- ✅ Texty, 2 verze reklamy, FAQ, e-mail, zásady (copywriter / Sonnet + review)
+- 🔄 Design: tmavý styl, karty se scroll-reveal animací (frontend / Sonnet)
+- 🔄 Kalkulačka na stránce + graf
+- 🔄 Formulář (e-mail + GDPR souhlas)
 
 ## 5. Backend a měření
-- ⬜ `lead.php` – uložení kontaktu + e-mail s PDF (Resend)
+- 🔄 `lead.php` – uložení kontaktu + e-mail s PDF (Resend)
 - ⬜ PDF „srovnání + jak koupit z ČR“
-- ⬜ `event.php` – měření průchodu stránkou (funnel)
-- ⬜ Admin přehled funnelu za heslem
+- 🔄 `event.php` – měření průchodu stránkou (funnel)
+- 🔄 Admin přehled funnelu za heslem
 
 ## 6. Server (192.168.1.200)
 - ✅ Postup a konfigurace připraveny (`deploy/`)
@@ -43,7 +44,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ⬜ README (cílovka, pořadí sekcí, konverze, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 5 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 8 záznamů)
 - ⬜ `ai-log/usage.md` – tokeny a cena
 - ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla
 - ⬜ Test na mobilu + Lighthouse
