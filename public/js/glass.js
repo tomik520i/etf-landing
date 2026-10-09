@@ -30,7 +30,7 @@ async function configure() {
         resize = false; canvas.width = source.width = w; canvas.height = source.height = h;
         const scale = Math.max(w / 1600, h / 1100), mobile = w < 900;
         // Bake a little frost into the static texture once, not per frame.
-        ctx.filter = 'blur(3px)';
+        ctx.filter = 'blur(0.5px)';
         ctx.drawImage(image, (w - 1600 * scale) * (mobile ? .61 : .5), 0, 1600 * scale, 1100 * scale);
         ctx.filter = 'none';
         const shade = ctx.createLinearGradient(0, 0, w, 0);
@@ -53,7 +53,7 @@ async function configure() {
         ...r, x:r.x-scrollX, y:r.y-scrollY,
         // Feather stays inside the normal field so displacement reaches zero
         // continuously at the interior instead of creating a cut-out seam.
-        depth:18, feather:r.radius, curve:2.4, chroma:0, tint:[.06,.14,.23,.1], glint:.08,
+        depth:48, feather:r.radius, curve:1.5, chroma:0.6, tint:[.06,.14,.23,.025], glint:.12,
       }));
       gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
       pass.render({sourceTexture:texture, resolution:[w,h], lenses});

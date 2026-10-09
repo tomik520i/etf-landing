@@ -8,8 +8,8 @@
   --accent: #a2ffe1;
   --fee: #ffb4a5;
   --border: #b9ddff38;
-  --glass-edge: #ddf5ff59;
-  --glass-depth: inset 0 1px 1px #ffffff59, inset 1px 0 0 #ffffff18, inset 0 -1px 1px #a6e4ff30, 0 16px 42px #000b2033;
+  --glass-edge: #ddf5ff80;
+  --glass-depth: inset 0 1px 1px #ffffff8c, inset 1px 0 0 #ffffff24, inset 0 -1px 1px #a6e4ff55, 0 16px 42px #000b2033;
 }
 body {
   isolation: isolate;
@@ -32,11 +32,11 @@ body::before {
 .eyebrow { color: #d7fff0; border-color: #d8f5ff66; background: linear-gradient(125deg, #e5f6ff24, #9cdbff08); box-shadow: inset 0 1px 0 #fff5; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .card, .calc.card, .cta.card, .kpi {
   position: relative;
-  background: linear-gradient(125deg, #e3f5ff25, #cae7ff08 45%, #95d8ee12), #0b1a308c;
+  background: linear-gradient(125deg, #e3f5ff12, #cae7ff03 45%, #95d8ee07), #0b1a3059;
   border: 1px solid var(--glass-edge);
   box-shadow: var(--glass-depth);
-  backdrop-filter: blur(22px) saturate(145%);
-  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(5px) saturate(130%);
+  -webkit-backdrop-filter: blur(5px) saturate(130%);
   border-radius: 30px;
 }
 /* A second, fine rim suggests the thickness of polished glass. */
@@ -46,12 +46,12 @@ body::before {
   inset: 3px;
   border-radius: 27px;
   border: 1px solid transparent;
-  border-top-color: #ffffff12;
-  border-bottom-color: #c6efff0e;
+  border-top-color: #ffffff36;
+  border-bottom-color: #c6efff24;
   pointer-events: none;
 }
 .calc-result {
-  background: linear-gradient(135deg, #bfdfff16, #05152833);
+  background: linear-gradient(135deg, #bfdfff06, #05152824);
   border-color: #d9efff38;
   box-shadow: inset 0 1px 0 #fff3;
 }
@@ -103,7 +103,7 @@ input::placeholder { color: #bfd0df; }
 }
 @media (max-width: 899px) {
   body::before { background-position: center, 61% top; background-image: linear-gradient(90deg, #030919db, #03091977), url('market-scene.svg'); }
-  .card, .calc.card, .cta.card { backdrop-filter: blur(12px) saturate(130%); -webkit-backdrop-filter: blur(12px) saturate(130%); }
+  .card, .calc.card, .cta.card { backdrop-filter: blur(4px) saturate(130%); -webkit-backdrop-filter: blur(4px) saturate(130%); }
   .calc-result { background: transparent; box-shadow: none; }
   .btn { background-color: #06504566; }
   .hero { padding-top: 16px; }
@@ -133,7 +133,7 @@ summary:hover { color: var(--accent); }
 .webgl-glass .card, .webgl-glass .calc.card, .webgl-glass .cta.card, .webgl-glass .kpi {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  background: linear-gradient(125deg, #e3f5ff1c, #cae7ff06 45%, #95d8ee0c), #0b1a3066;
+  background: linear-gradient(125deg, #e3f5ff0c, transparent 45%, #95d8ee05), #0b1a303d;
 }
 .card::after, .kpi::after { transition: opacity .2s ease; }
 @media (hover: hover) and (pointer: fine) {
