@@ -87,9 +87,11 @@ Varianta se ukládá ke každému eventu i leadu a analytika je porovná (konver
 | copywriter | Sonnet | Texty stránky, 2 reklamy, e-mail, zásady, obsah PDF |
 | frontend / backend | Sonnet | HTML/CSS/JS, PHP API, analytická stránka (první verze designu) |
 
-**Finální design: OpenAI Codex, model GPT-6 Astra, reasoning effort Medium.** Codex podle zadání [`docs/codex-design-brief.md`](docs/codex-design-brief.md) a pokynů uživatele vytvořil vzhled *Liquid Glass*: skleněné panely nad statickým tradingovým pozadím se zelenými a červenými svíčkami, bez vyjíždění karet při scrollu. Pracoval ve větvi `design/codex` (commity `40547b9`, `69ec4a5`, `5c0413f`) a měnil jen CSS, SVG pozadí, hlavičky HTML a styl analytiky.
+**Design a iterace Liquid Glass: OpenAI Codex, GPT-6 Astra, reasoning effort Medium.** Codex podle zadání [`docs/codex-design-brief.md`](docs/codex-design-brief.md) a pokynů uživatele vytvořil vzhled *Liquid Glass*: čiré skleněné panely nad statickým tradingovým pozadím se zelenými a červenými svíčkami, bez vyjíždění karet při scrollu.
+- 1. kolo (větev `design/codex`: `40547b9`, `69ec4a5`, `5c0413f`) – CSS sklo (`backdrop-filter`), SVG pozadí, styl analytiky.
+- 2. kolo (větev `codex/glass-optics`: `ede4b43` → `9356013`) – viditelný lom svíček přes hrany panelů. První pokus (CSS simulace výřezu, `ede4b43`) byl trhavý a měl ostrou hranu; Codex ho nahradil knihovnou **[Liquid Glass Canvas 0.1.0](https://github.com/Whynotmetoo/liquid-glass-canvas)** (MIT, lokálně v `public/js/vendor/`, nezměněná) přes `public/js/glass.js`: jediná WebGL vrstva láme pozadí, text a ovládání zůstávají HTML, překresluje se jen při scrollu / změně velikosti, při nedostupném WebGL, ztrátě kontextu nebo „omezit pohyb / průhlednost / vyšší kontrast“ zůstává CSS sklo. 3D náklon karet odstranil.
 
-**Co potom udělal Claude Code (Opus), ne Codex:** review diffu (logika, texty, data a backend beze změny), funkční kontrola v reálném prohlížeči (obě varianty reklamy, přepínání fondů proti nezávislému výpočtu, validace obou formulářů, honeypot, mobil 375 px, čitelnost textu nad pozadím), drobná oprava přístupnosti (šipka v tlačítku skrytá čtečkám), na přání uživatele plynulé rozbalování FAQ a 3D náklon karet po najetí myší, testy a Lighthouse, aktualizace pravidel a dokumentace, sloučení do `main`, posílení nasazení (záloha DB, automatický návrat), nasazení a ověření produkce.
+**Co potom udělal Claude Code (Opus), ne Codex:** review diffu (logika, texty, data a backend beze změny), funkční kontrola v reálném prohlížeči (obě varianty reklamy, přepínání fondů proti nezávislému výpočtu, validace obou formulářů, honeypot, mobil 375 px, čitelnost textu nad pozadím), drobná oprava přístupnosti (šipka v tlačítku skrytá čtečkám), na přání uživatele plynulé rozbalování FAQ (náklon karet z té doby Codex ve 2. kole odstranil), testy a Lighthouse, aktualizace pravidel a dokumentace, sloučení do `main`, posílení nasazení (záloha DB, automatický návrat), nasazení a ověření produkce.
 
 **Pravidla pro agenty** ([`CLAUDE.md`](CLAUDE.md)): žádné číslo bez zdroje (jinak `NENALEZENO`), `.env` nikdy nečíst (vynuceno i v [`.claude/settings.json`](.claude/settings.json)), prepared statements, žádný „AI“ design, nic nespouštět na serveru bez potvrzení.
 
@@ -101,18 +103,19 @@ Varianta se ukládá ke každému eventu i leadu a analytika je porovná (konver
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
 - **Lighthouse (mobil, produkce, po redesignu a interakcích):** výkon 91, přístupnost 100, best practices 100, SEO 100 (před redesignem 95 / 100 / 100 / 100).
 
-**Kde se AI spletla:** 25 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
+**Kde se AI spletla:** 27 záznamů + popis neúspěšné simulace skla v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.
 - **Copywriter:** neověřené tvrzení („nejstarší ETF“) a slib e-mailové série, která neexistuje.
 - **Backend:** odhlášení na GET (spustil by ho skener odkazů), jakákoli DB chyba se tvářila jako duplicita.
 - **Já (Opus):** reklama A slibovala jiné číslo, než ukázala kalkulačka. `sed` by rozbil produkční HAProxy (zachyceno simulací). Ceník tokenů jsem dosadil z paměti a byl špatně. Falešný poplach u přepínání fondů (test ve skrytém panelu).
-- **Codex (design):** šipka v tlačítku čitelná pro čtečky obrazovky.
+- **Codex (design):** šipka v tlačítku čitelná pro čtečky obrazovky; trhavá CSS simulace lomu (nahrazena knihovnou); knihovna bez textu licence MIT.
+- **Já (Opus):** cache CSS/JS na 7 dní bez verzování – po nasazení by vracející se návštěvníci viděli starý design.
 
 **Tokeny a cena:** [`ai-log/usage.md`](ai-log/usage.md) – jen čísla z ccusage. Spotřebu Codexu na designu nedokážu jednoznačně přiřadit, uvádím ji jako neověřenou.
 
 ## Technicky
 
-- **Frontend:** statické HTML/CSS + vanilla JS (ES moduly), vlastní SVG graf bez knihovny, self-hosted font. Design Liquid Glass (`backdrop-filter`) s fallbackem pro `prefers-reduced-transparency`, `prefers-contrast` a prohlížeče bez podpory; bez animací při scrollu.
+- **Frontend:** statické HTML/CSS + vanilla JS (ES moduly), vlastní SVG graf bez knihovny, self-hosted font. Lom skla přes WebGL (Liquid Glass Canvas 0.1.0, MIT – [`NOTICE`](public/js/vendor/liquid-glass-canvas.NOTICE.md), [licence](public/js/vendor/liquid-glass-canvas.LICENSE.txt)), CSS fallback (`backdrop-filter`) bez WebGL a při `prefers-reduced-motion` / `-transparency` / `prefers-contrast`; bez animací při scrollu.
 - **Data:** [`public/data/`](public/data/) – měsíční adjusted close (Yahoo Finance), kurz USD/CZK (ČNB), parametry fondů a SPIVA se zdroji. Obnova: `npm run fetch-data`.
 - **Backend:** PHP 8.3 + PDO (prepared statements), MariaDB s uživatelem jen `SELECT, INSERT`, honeypot, rate limit bez ukládání IP, CORS jen pro GitHub Pages.
 - **Konfigurace:** v `.env` (vzor v [`.env.example`](.env.example)). Leží mimo document root a Claude Code má čtení `.env` zakázané.
@@ -121,7 +124,7 @@ Varianta se ukládá ke každému eventu i leadu a analytika je porovná (konver
 
 ## Co chybí / známá omezení
 
-- **Design Liquid Glass** stojí na `backdrop-filter`. Na slabších telefonech může být scrollování méně plynulé; Lighthouse to nezachytí, na reálném zařízení to ověřené není.
+- **Plynulost WebGL skla na skutečném telefonu není ověřená.** V Chrome s GPU (NVIDIA, D3D11) je scroll i hover na desktopové šířce bez snímků nad 50 ms; na mobilní šířce (375 px) se v headless Chrome objevují ~3 snímky kolem 100 ms na 5 s scrollu, které bez WebGL nejsou – JS skla přitom běží pod 8 ms na snímek (žádné nahrávání textur při scrollu), takže jde o skládání plátna. Výkon v Lighthouse kolísá mezi běhy 86–95.
 - **Výstupní tokeny podagentů** jsou v lokálních logách podhodnocené, takže cena agentů je dolní odhad.
 - **Číslo novely**, která zrušila daňový limit 40 mil. Kč, se nepodařilo dohledat. Na stránce ani v PDF limit proto není.
 - **SPIVA PDF:** oficiální web S&P vracel 403, čísla jsou z kopie stejného PDF reportu (uvedeno v `public/data/spiva.json`).

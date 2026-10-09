@@ -414,37 +414,11 @@ function initFaq() {
   });
 }
 
-/* ---------- 3D náklon karet po najetí myší (jen jemný ukazatel, ne dotyk) ---------- */
-function initTilt() {
-  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  $$('.fund, .spiva').forEach((card) => {
-    card.classList.add('tilt');
-    let raf = 0;
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const max = card.classList.contains('spiva') ? 2.5 : 6; // velkou kartu jen lehce
-        card.style.setProperty('--ry', `${((x - 0.5) * 2 * max).toFixed(2)}deg`);
-        card.style.setProperty('--rx', `${((0.5 - y) * 2 * max).toFixed(2)}deg`);
-        card.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
-        card.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
-      });
-    });
-    card.addEventListener('pointerleave', () => {
-      cancelAnimationFrame(raf);
-      card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
-    });
-  });
-}
-
 /* ---------- Start ---------- */
 initReveal();
 initHero();
 initHeroCta();
 initFaq();
-initTilt();
 initForms();
 initScrollDepth();
 const c = getContext();

@@ -48,7 +48,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 25 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 27 záznamů + záznam neúspěšné simulace skla)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
 - ✅ Export konverzace → [`ai-log/session-01/`](../ai-log/session-01/) (export přes aplikaci; zkontrolováno: bez hesel a klíčů, soukromé údaje a konfigurace jiných služeb vynechány)
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
@@ -64,7 +64,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ Nasazení posíleno: záloha DB + automatický návrat (`03-update.sh`), ruční návrat (`04-rollback.sh`)
 - ✅ Sloučení do `main` (`c5c2aab`), push, GitHub Pages
 - ✅ 1. nasazení: test měření „selhal“ kvůli chybě parseru v testu → **automatický návrat** na předchozí verzi zafungoval (errors #23); po opravě nasazeno `48c68c4`, VŠE OK
-- ✅ Na přání uživatele (Claude Code): plynulé rozbalování FAQ, 3D náklon karet fondů a SPIVA za kurzorem s odleskem, jemné zvednutí ostatních karet – jen myš, ne dotyk; s „omezit pohyb“ vypnuto
+- ✅ Na přání uživatele (Claude Code): plynulé rozbalování FAQ, 3D náklon karet fondů a SPIVA (náklon později odstraněn – viz bod 9)
 - ✅ Nasazeno `b667f92` (záloha DB, kontroly, test měření VŠE OK)
 - ✅ Ověření produkce (bez odesílání e-mailů a s blokovaným měřením, aby se neznečistila analytika):
   - `?ad=a` 1 365 315 Kč, `?ad=b` 1 608 004 Kč; fondy VT 1 163 047 / 1 021 112 (od 2011), VOO 1 371 440 = nezávislý výpočet
@@ -74,3 +74,17 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
   - GitHub Pages: nový design i interakce nasazené, PHP na zrcadle není
 - ✅ Vysvětlení reklam A/B: [`docs/reklamy.md`](reklamy.md)
 - ⬜ Neověřeno: admin vizuálně na produkci za heslem (ověřen přes CLI na serveru), plynulost skla a animací na reálném slabším telefonu
+
+## 9. Design – 2. kolo: lom skla (Codex) + review a nasazení (Claude Code)
+- ✅ **Design a iterace Liquid Glass: OpenAI Codex, GPT-6 Astra, reasoning effort Medium** – větev `codex/glass-optics` (`ede4b43`, `f0f7d32`, `673f6ff`, `9356013`)
+  - CSS simulace lomu (`ede4b43`) byla trhavá → nahrazena knihovnou **Liquid Glass Canvas 0.1.0** (MIT, `public/js/vendor/`) přes `public/js/glass.js`; čiré sklo, plynulý lom svíček na hranách; náklon karet odstraněn
+- ✅ Claude Code – review celého diffu proti `main`: knihovna = upstream (SHA-256), bez síťových volání a `eval`; WebGL jen pozadí, HTML zůstává; bez nečinné smyčky; fallbacky
+- ✅ Claude Code – opravy: cache (`no-cache` pro HTML/CSS/JS/SVG + `?v=20261010`, errors #26), text licence MIT ke knihovně (#27)
+- ✅ Claude Code – kontrola lokálně (Chrome s GPU NVIDIA/D3D11, měření bez odesílání eventů):
+  - `?ad=a` 1 365 315 Kč, `?ad=b` 1 608 004 Kč; vklad 5 000 Kč (A) 3 413 287 Kč; poplatek 2 % 647 884 Kč; VT 2 552 781 Kč = nezávislý výpočet; graf se překresluje
+  - oba formuláře validují, FAQ se plynule otevře/zavře, zásady OK, žádné chyby v konzoli
+  - WebGL aktivní; fallback bez WebGL a s „omezit pohyb“ → CSS sklo; náklon karet odstraněn (`transform: none`)
+  - plynulost (časy snímků): desktop scroll 2 snímky nad 33 ms, 0 nad 50 ms (CSS fallback max 125 ms); hover bez trhání; mobilní šířka ~3 snímky ~100 ms / 5 s scrollu (jen s WebGL, JS < 8 ms/snímek)
+  - 19/19 testů; Lighthouse mobil lokálně: výkon 86 / 95 / 91 (3 běhy), přístupnost 100, best practices 100, SEO 100
+- ⬜ Sloučení do `main`, push, GitHub Pages, nasazení, ověření produkce
+
