@@ -243,7 +243,7 @@ body {
 .sub { color: #c7d6dc; font-size: 1rem; max-width: 57ch; }
 .podtext { font-size: .75rem; max-width: 83ch; }
 .btn { border-radius: 999px; background: linear-gradient(160deg, #c2ffe6, #8cebc4); border: 1px solid #d1ffeb; box-shadow: inset 0 1px 0 #fff8, 0 5px 22px #64dcae15; min-height: 50px; transition: transform var(--duration) var(--ease); }
-.btn-hero::after { content: '↗'; margin-left: 20px; font-size: 1.2rem; }
+.btn-hero::after { content: '↗' / ''; margin-left: 20px; font-size: 1.2rem; }
 .card { background: var(--glass); border: 1px solid #a9d6e12e; box-shadow: var(--glass-shadow); padding: 25px 20px; }
 /* Small screens retain the glass highlights without costly backdrop compositing. */
 @media (min-width: 900px) {

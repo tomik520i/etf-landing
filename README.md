@@ -76,7 +76,11 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 | testy | Haiku | 19 testů kalkulačky; výpočet ověřují nezávisle (ruční příklady, uzavřený vzorec anuity) |
 | data-verifier | Sonnet | TER, burza, UCITS ekvivalenty, SPIVA, daně – jen z načtených primárních zdrojů |
 | copywriter | Sonnet | Texty stránky, 2 reklamy, e-mail, zásady, obsah PDF |
-| frontend / backend | Sonnet | HTML/CSS/JS, PHP API, analytická stránka |
+| frontend / backend | Sonnet | HTML/CSS/JS, PHP API, analytická stránka (první verze designu) |
+
+**Finální design: OpenAI Codex, model GPT-6 Astra, reasoning effort Medium.** Codex podle zadání [`docs/codex-design-brief.md`](docs/codex-design-brief.md) a pokynů uživatele vytvořil vzhled *Liquid Glass*: skleněné panely nad statickým tradingovým pozadím se zelenými a červenými svíčkami, bez vyjíždění karet při scrollu. Pracoval ve větvi `design/codex` (commity `40547b9`, `69ec4a5`, `5c0413f`) a měnil jen CSS, SVG pozadí, hlavičky HTML a styl analytiky.
+
+**Co potom udělal Claude Code (Opus), ne Codex:** review diffu (logika, texty, data a backend beze změny), funkční kontrola v reálném prohlížeči (obě varianty reklamy, přepínání fondů proti nezávislému výpočtu, validace obou formulářů, honeypot, mobil 375 px, čitelnost textu nad pozadím), drobná oprava přístupnosti (šipka v tlačítku skrytá čtečkám), testy a Lighthouse, aktualizace pravidel a dokumentace, sloučení do `main`, posílení nasazení (záloha DB, automatický návrat), nasazení a ověření produkce.
 
 **Pravidla pro agenty** ([`CLAUDE.md`](CLAUDE.md)): žádné číslo bez zdroje (jinak `NENALEZENO`), `.env` nikdy nečíst (vynuceno i v [`.claude/settings.json`](.claude/settings.json)), prepared statements, žádný „AI“ design, nic nespouštět na serveru bez potvrzení.
 
@@ -86,28 +90,29 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 - **Review každého výstupu agenta:** texty proti datům, kód proti specifikaci a bezpečnosti, web v prohlížeči (mobil 375 px, desktop, obě varianty reklamy).
 - **Server:** úpravy produkčního `haproxy.cfg` nejdřív nanečisto na kopii; skripty se zálohou a automatickým vrácením.
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
-- **Lighthouse (mobil):** výkon 95, přístupnost 100, best practices 100, SEO 100.
+- **Lighthouse (mobil):** před redesignem 95 / 100 / 100 / 100 na produkci; po redesignu viz [`docs/STAV.md`](docs/STAV.md).
 
-**Kde se AI spletla:** 19 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
+**Kde se AI spletla:** 22 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.
 - **Copywriter:** neověřené tvrzení („nejstarší ETF“) a slib e-mailové série, která neexistuje.
 - **Backend:** odhlášení na GET (spustil by ho skener odkazů), jakákoli DB chyba se tvářila jako duplicita.
-- **Já (Opus):** reklama A slibovala jiné číslo, než ukázala kalkulačka. `sed` by rozbil produkční HAProxy (zachyceno simulací). Ceník tokenů jsem dosadil z paměti a byl špatně.
+- **Já (Opus):** reklama A slibovala jiné číslo, než ukázala kalkulačka. `sed` by rozbil produkční HAProxy (zachyceno simulací). Ceník tokenů jsem dosadil z paměti a byl špatně. Falešný poplach u přepínání fondů (test ve skrytém panelu).
+- **Codex (design):** šipka v tlačítku čitelná pro čtečky obrazovky.
 
-**Tokeny a cena:** [`ai-log/usage.md`](ai-log/usage.md). Session-01 stála ~15 USD (odhad podle ccusage). Opus ~87 %, ačkoli většinu psaní udělali agenti na Sonnetu a Haiku.
+**Tokeny a cena:** [`ai-log/usage.md`](ai-log/usage.md) – jen čísla z ccusage. Spotřebu Codexu na designu nedokážu jednoznačně přiřadit, uvádím ji jako neověřenou.
 
 ## Technicky
 
-- **Frontend:** statické HTML/CSS + vanilla JS (ES moduly), vlastní SVG graf bez knihovny, self-hosted font, scroll-reveal s ohledem na `prefers-reduced-motion`.
+- **Frontend:** statické HTML/CSS + vanilla JS (ES moduly), vlastní SVG graf bez knihovny, self-hosted font. Design Liquid Glass (`backdrop-filter`) s fallbackem pro `prefers-reduced-transparency`, `prefers-contrast` a prohlížeče bez podpory; bez animací při scrollu.
 - **Data:** [`public/data/`](public/data/) – měsíční adjusted close (Yahoo Finance), kurz USD/CZK (ČNB), parametry fondů a SPIVA se zdroji. Obnova: `npm run fetch-data`.
 - **Backend:** PHP 8.3 + PDO (prepared statements), MariaDB s uživatelem jen `SELECT, INSERT`, honeypot, rate limit bez ukládání IP, CORS jen pro GitHub Pages.
 - **Konfigurace:** v `.env` (vzor v [`.env.example`](.env.example)). Leží mimo document root a Claude Code má čtení `.env` zakázané.
-- **Nasazení:** [`deploy/server/`](deploy/server/) – instalace, TLS + HAProxy, aktualizace s testem; [`deploy/INSTALL.md`](deploy/INSTALL.md).
+- **Nasazení:** [`deploy/server/`](deploy/server/) – instalace, TLS + HAProxy, aktualizace se zálohou DB, testem a automatickým návratem (`03-update.sh`), ruční návrat (`04-rollback.sh`); [`deploy/INSTALL.md`](deploy/INSTALL.md).
 - **Testy:** `npm test`
 
 ## Co chybí / známá omezení
 
-- **Design projde ještě jedním kolem** (komplexnější vizuál), viz poslední bod v [`docs/STAV.md`](docs/STAV.md).
+- **Design Liquid Glass** stojí na `backdrop-filter`. Na slabších telefonech může být scrollování méně plynulé; Lighthouse to nezachytí, na reálném zařízení to ověřené není.
 - **Výstupní tokeny podagentů** jsou v lokálních logách podhodnocené, takže cena agentů je dolní odhad.
 - **Číslo novely**, která zrušila daňový limit 40 mil. Kč, se nepodařilo dohledat. Na stránce ani v PDF limit proto není.
 - **SPIVA PDF:** oficiální web S&P vracel 403, čísla jsou z kopie stejného PDF reportu (uvedeno v `public/data/spiva.json`).

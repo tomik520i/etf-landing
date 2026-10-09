@@ -91,7 +91,7 @@ Neodhadovat z hlavy. Najít benchmark konverze lead-magnet landing pages z place
 
 Každý záznam:
 ```json
-{ "ticker": "VOO", "ter": 0.03, "source": "https://investor.vanguard.com/...", "retrieved": "2026-10-10" }
+{ "ticker": "VOO", "ter": 0.03, "source": "https://investor.vanguard.com/...", "retrieved": "2026-10-09" }
 ```
 
 ### Ceny ETF (historie)
