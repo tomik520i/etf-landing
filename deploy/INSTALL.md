@@ -1,5 +1,11 @@
 # Nasazení na Ubuntu server 192.168.1.200
 
+> **Doporučená cesta: skripty v `deploy/server/`** (napsané podle skutečného stavu serveru, zjištěného 2026-10-09):
+> 1. `01-install-app.sh` – Apache (127.0.0.1:8081), PHP 8.3, MariaDB, kód, `.env` s vygenerovaným heslem DB, basic auth, testy. Na HAProxy nesahá.
+> 2. `02-haproxy-tls.sh` – certifikát přes stávající webroot (`/var/www/certbot`, `acme_backend` na :8888), úprava `haproxy.cfg` se zálohou a automatickým vrácením při chybě, doplnění deploy hooku `haproxy_reload.sh`.
+>
+> Ruční postup níže slouží jako popis toho, co skripty dělají.
+
 Cíl: `https://aijunior.opicebot.cz` → HAProxy (:443, TLS) → Apache `127.0.0.1:8081` + PHP-FPM → MariaDB `127.0.0.1:3306`.
 
 Všechny příkazy spouští správce serveru ručně, krok po kroku. Hesla se zadávají jen na serveru, nikdy do chatu ani do gitu.

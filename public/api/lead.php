@@ -26,7 +26,7 @@ function clean_utm(mixed $v): ?string
 function send_resend_mail(string $email, array $content, string $unsubUrl): bool
 {
     $from = ($_ENV['MAIL_FROM_NAME'] ?? '') . ' <' . ($_ENV['MAIL_FROM'] ?? '') . '>';
-    $payload = json_encode([
+    $mail = [
         'from' => $from,
         'to' => [$email],
         'subject' => $content['subject'],
@@ -36,7 +36,12 @@ function send_resend_mail(string $email, array $content, string $unsubUrl): bool
             'List-Unsubscribe' => '<' . $unsubUrl . '>',
             'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click', // RFC 8058
         ],
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    ];
+    // Odesílací adresa nemá schránku – odpovědi jdou na skutečný kontakt
+    if (!empty($_ENV['MAIL_REPLY_TO'])) {
+        $mail['reply_to'] = $_ENV['MAIL_REPLY_TO'];
+    }
+    $payload = json_encode($mail, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if ($payload === false) {
         error_log('lead: mail payload encode failed');
         return false;
