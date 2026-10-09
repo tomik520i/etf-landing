@@ -1,0 +1,22 @@
+{
+  "retrieved": "2026-10-09",
+  "report": "SPIVA U.S. Scorecard Year-End 2025",
+  "publisher": "S&P Dow Jones Indices",
+  "data_as_of": "2025-12-31",
+  "landing_page": "https://www.spglobal.com/spdji/en/spiva/article/spiva-us/",
+  "pdf_official_url": "https://www.spglobal.com/spdji/en/documents/spiva/spiva-us-year-end-2025.pdf",
+  "pdf_official_url_note": "Oficialni URL pri nacteni vraci HTTP 403 (stejne jako stranka spglobal.com). Cisla byla nactena z kopie stejneho PDF (nazev dokumentu SPIVA U.S. Scorecard Year-End 2025, autori Ganti, Di Gioia, Didio, Flaherty).",
+  "pdf_read_from": "https://www.ariesadvisors.com/files/spiva-us-year-end-2025.pdf",
+  "location_in_report": "Report 1a: Percentage of U.S. Equity Funds Underperforming Their Benchmarks (Based on Absolute Return), radek 'All Large-Cap Funds', benchmark S&P 500, strana 12 PDF",
+  "headline_quote_en": "79% of all active large-cap U.S. equity funds underperformed the S&P 500",
+  "headline_location": "Summary na prvni strane reportu; Exhibit 1",
+  "large_cap_vs_sp500_pct_underperforming": {
+    "1y": 78.78,
+    "3y": 66.84,
+    "5y": 88.96,
+    "10y": 85.59,
+    "15y": 89.93,
+    "20y": 92.89
+  },
+  "notes": "Metodika SPIVA: pocet fondu, ktere zaostaly za benchmarkem, vcetne zanikelych fondu (bez survivorship bias), po poplatcich. Zaokrouhleno: 79 / 67 / 89 / 86 / 90 / 93 %. Report 1b (risk-adjusted) ma jina cisla (15y 98.61, 20y 97.76) - nepouzito."
+}

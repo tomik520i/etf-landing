@@ -1,0 +1,134 @@
+{
+  "retrieved": "2026-10-09",
+  "note": "Hodnoty z webu emitenta (SPY: ssga.com; VOO a VT: oficialni Vanguard fact sheet PDF na fund-docs.vanguard.com, protoze investor.vanguard.com/advisors.vanguard.com vraci pri nacteni jen nadpis stranky - data se dotahuji JavaScriptem). UCITS udaje z justETF (emitentovy stranky nebyly nacteny). TER v procentech (0.03 = 0,03 %). Oficialni vynosy jsou rocni prumerne (annualised), po uhrade nakladu, s reinvestici dividend; urceno ke kontrole nasich vypoctu z adjusted close, ne k zobrazeni.",
+  "funds": [
+    {
+      "ticker": "SPY",
+      "name": "State Street SPDR S&P 500 ETF Trust",
+      "issuer": "State Street Investment Management (SPDR)",
+      "structure": "unit investment trust",
+      "index": "S&P 500 Index",
+      "ter": 0.0945,
+      "ter_note": "Gross expense ratio uvedeny na strance; cista (net) hodnota na strance neuvedena.",
+      "ter_source": "https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy",
+      "inception": "1993-01-22",
+      "exchange": "NYSE Arca",
+      "exchange_source": "https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy",
+      "distribution": "distributing",
+      "distribution_frequency": "quarterly",
+      "official_returns": {
+        "as_of": "2026-09-30",
+        "source": "https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy",
+        "unit": "percent p.a. (annualised)",
+        "nav": { "1y": 15.60, "5y": 13.65, "10y": 15.18 },
+        "market_price": { "1y": 15.66, "5y": 13.66, "10y": 15.18 },
+        "benchmark_index": { "1y": 15.74, "5y": 13.79, "10y": 15.33 }
+      },
+      "ucits": {
+        "ticker": "SXR8",
+        "exchange": "XETRA (EUR)",
+        "alt_tickers": "CSPX (London USD, Euronext Amsterdam EUR), CSSPX (Borsa Italiana EUR)",
+        "isin": "IE00B5BMR087",
+        "name": "iShares Core S&P 500 UCITS ETF USD (Acc)",
+        "ter": 0.07,
+        "domicile": "IE",
+        "distribution": "accumulating",
+        "replication": "physical (full replication)",
+        "inception": "2010-05-19",
+        "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087",
+        "alternative": {
+          "ticker": "VUAA",
+          "exchange": "XETRA (EUR)",
+          "isin": "IE00BFMXXD54",
+          "name": "Vanguard S&P 500 UCITS ETF (USD) Accumulating",
+          "ter": 0.07,
+          "domicile": "IE",
+          "distribution": "accumulating",
+          "inception": "2019-05-14",
+          "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BFMXXD54"
+        }
+      }
+    },
+    {
+      "ticker": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "issuer": "Vanguard",
+      "index": "S&P 500 Index",
+      "ter": 0.03,
+      "ter_source": "https://fund-docs.vanguard.com/F0968.pdf",
+      "inception": "2010-09-07",
+      "exchange": "NYSE Arca",
+      "exchange_source": "https://fund-docs.vanguard.com/F0968.pdf",
+      "distribution": "distributing",
+      "distribution_frequency": "quarterly",
+      "official_returns": {
+        "as_of": "2026-06-30",
+        "source": "https://fund-docs.vanguard.com/F0968.pdf",
+        "unit": "percent p.a. (annualised)",
+        "nav": { "1y": 22.28, "5y": 13.36, "10y": 15.47 },
+        "market_price": { "1y": 22.34, "5y": 13.37, "10y": 15.47 },
+        "benchmark_index": { "1y": 22.32, "5y": 13.41, "10y": 15.51 }
+      },
+      "ucits": {
+        "ticker": "SXR8",
+        "exchange": "XETRA (EUR)",
+        "alt_tickers": "CSPX (London USD, Euronext Amsterdam EUR), CSSPX (Borsa Italiana EUR)",
+        "isin": "IE00B5BMR087",
+        "name": "iShares Core S&P 500 UCITS ETF USD (Acc)",
+        "ter": 0.07,
+        "domicile": "IE",
+        "distribution": "accumulating",
+        "replication": "physical (full replication)",
+        "inception": "2010-05-19",
+        "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087",
+        "alternative": {
+          "ticker": "VUAA",
+          "exchange": "XETRA (EUR)",
+          "isin": "IE00BFMXXD54",
+          "name": "Vanguard S&P 500 UCITS ETF (USD) Accumulating",
+          "ter": 0.07,
+          "domicile": "IE",
+          "distribution": "accumulating",
+          "inception": "2019-05-14",
+          "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BFMXXD54"
+        }
+      }
+    },
+    {
+      "ticker": "VT",
+      "name": "Vanguard Total World Stock ETF",
+      "issuer": "Vanguard",
+      "index": "FTSE Global All Cap Index",
+      "ter": 0.06,
+      "ter_source": "https://fund-docs.vanguard.com/F3141.pdf",
+      "inception": "2008-06-24",
+      "exchange": "NYSE Arca",
+      "exchange_source": "https://fund-docs.vanguard.com/F3141.pdf",
+      "distribution": "distributing",
+      "distribution_frequency": "quarterly",
+      "official_returns": {
+        "as_of": "2026-06-30",
+        "source": "https://fund-docs.vanguard.com/F3141.pdf",
+        "unit": "percent p.a. (annualised)",
+        "nav": { "1y": 24.28, "5y": 10.89, "10y": 12.82 },
+        "market_price": { "1y": 24.26, "5y": 10.86, "10y": 12.80 },
+        "benchmark_index": { "1y": 24.07, "5y": 10.89, "10y": 12.87 },
+        "benchmark_note": "Spliced Total World Stock Index (FTSE All-World do 18. 12. 2011, poté FTSE Global All Cap)"
+      },
+      "ucits": {
+        "ticker": "VWCE",
+        "exchange": "XETRA (EUR)",
+        "alt_tickers": "VWCE (Borsa Italiana, Euronext Amsterdam, gettex, Stuttgart), VWRA (London USD, SIX), VWRP (London GBP)",
+        "isin": "IE00BK5BQT80",
+        "name": "Vanguard FTSE All-World UCITS ETF (USD) Accumulating",
+        "ter": 0.14,
+        "domicile": "IE",
+        "distribution": "accumulating",
+        "replication": "physical (optimized sampling)",
+        "inception": "2019-07-23",
+        "index_note": "Sleduje FTSE All-World (velke + stredni firmy), VT sleduje FTSE Global All Cap (vcetne malych firem) - ekvivalent je priblizny, ne identicky.",
+        "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BK5BQT80"
+      }
+    }
+  ]
+}
