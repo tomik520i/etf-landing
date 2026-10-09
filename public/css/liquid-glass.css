@@ -35,8 +35,8 @@ body::before {
   background: linear-gradient(125deg, #e3f5ff12, #cae7ff03 45%, #95d8ee07), #0b1a3070;
   border: 1px solid var(--glass-edge);
   box-shadow: var(--glass-depth);
-  backdrop-filter: blur(5px) saturate(130%);
-  -webkit-backdrop-filter: blur(5px) saturate(130%);
+  backdrop-filter: blur(9px) saturate(130%);
+  -webkit-backdrop-filter: blur(9px) saturate(130%);
   border-radius: 30px;
 }
 /* A second, fine rim suggests the thickness of polished glass. */
@@ -103,7 +103,7 @@ input::placeholder { color: #bfd0df; }
 }
 @media (max-width: 899px) {
   body::before { background-position: center, 61% top; background-image: linear-gradient(90deg, #030919db, #03091977), url('market-scene.svg'); }
-  .card, .calc.card, .cta.card { backdrop-filter: blur(4px) saturate(130%); -webkit-backdrop-filter: blur(4px) saturate(130%); }
+  .card, .calc.card, .cta.card { backdrop-filter: blur(7px) saturate(130%); -webkit-backdrop-filter: blur(7px) saturate(130%); }
   .calc-result { background: transparent; box-shadow: none; }
   .btn { background-color: #06504566; }
   .hero { padding-top: 16px; }
@@ -131,8 +131,9 @@ summary:hover { color: var(--accent); }
 /* One GPU background layer; content stays native, accessible HTML. */
 .glass-renderer { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .webgl-glass .card, .webgl-glass .calc.card, .webgl-glass .cta.card, .webgl-glass .kpi {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  /* matné sklo: jemné rozostření lomeného WebGL pozadí pod textem */
+  backdrop-filter: blur(7px) saturate(125%);
+  -webkit-backdrop-filter: blur(7px) saturate(125%);
   background: linear-gradient(125deg, #e3f5ff0c, transparent 45%, #95d8ee05), #0b1a305c;
 }
 .card::after, .kpi::after { transition: opacity .2s ease; }

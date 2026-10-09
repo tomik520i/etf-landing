@@ -88,5 +88,8 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
   - 19/19 testů; Lighthouse mobil lokálně: výkon 86 / 95 / 91 (3 běhy), přístupnost 100, best practices 100, SEO 100
 - ✅ Sloučeno do `main` (`fcaaca8`), push, nasazeno (VŠE OK)
 - ✅ Na přání uživatele (Claude Code): sklo o trochu tmavší kvůli čitelnosti – karta s WebGL 24 → 36 % krytí, box formuláře / UCITS 35 → 50 %, CSS fallback 35 → 44 %; verze odkazů `?v=20261010-2`
-- ⬜ Nasazení ztmavení + ověření produkce
+- ✅ Nasazeno ztmavení (`1a884b5`, VŠE OK)
+- ✅ Na přání uživatele (Claude Code): **matnější sklo** – jemné rozostření pod panely i s WebGL (`blur(7px)`), CSS fallback 5 → 9 px, mobil 4 → 7 px; verze `?v=20261010-3`
+  - plynulost po změně (Chrome s GPU): desktop scroll 1–2 snímky nad 50 ms (max ~62 ms, jednou 156 ms) oproti 0 před změnou; mobilní šířka max ~63 ms; hover bez trhání
+- ⬜ Nasazení matného skla + ověření produkce
 

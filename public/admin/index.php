@@ -433,8 +433,8 @@ svg rect[fill="#9BA1A6"]{fill:#6f8d9b}
 :focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 @media(max-width:600px){body{padding:24px 14px}.card{padding:20px 16px;border-radius:20px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi{padding:16px}.kpi .v{font-size:1.8rem}.filters button{width:100%}}
 </style>
-<link rel="stylesheet" href="../css/liquid-glass.css?v=20261010-2">
-<script type="module" src="../js/glass.js?v=20261010-2"></script>
+<link rel="stylesheet" href="../css/liquid-glass.css?v=20261010-3">
+<script type="module" src="../js/glass.js?v=20261010-3"></script>
 </head>
 <body>
 <main>
