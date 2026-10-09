@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Srovnání ETF a jak je koupit z Česka</title>
+<style>
+  @page { size: A4; margin: 16mm; }
+  :root { --akcent: #B8741A; --text: #1f2328; --tlumena: #5b626b; --linka: #dcd6cc; --pozadi-hlavicky: #f6f1e8; }
+  * { box-sizing: border-box; }
+  html { background: #fff; }
+  body {
+    margin: 0 auto; max-width: 178mm; color: var(--text); background: #fff;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 9.6pt; line-height: 1.42;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  header.titul { border-bottom: 2px solid var(--akcent); padding-bottom: 6mm; margin-bottom: 5mm; }
+  .stitek { font-size: 8.5pt; letter-spacing: .08em; text-transform: uppercase; color: var(--akcent); font-weight: 700; margin: 0 0 2mm; }
+  h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 2mm; }
+  .podtitul { font-size: 11pt; color: var(--tlumena); margin: 0 0 2mm; }
+  .datum { font-size: 9pt; color: var(--tlumena); margin: 0; }
+  h2 { font-size: 13pt; margin: 6mm 0 2mm; color: var(--text); border-left: 3px solid var(--akcent); padding-left: 2.5mm; page-break-after: avoid; break-after: avoid; }
+  h3 { font-size: 10.5pt; margin: 3.5mm 0 1mm; page-break-after: avoid; break-after: avoid; }
+  p { margin: 0 0 2mm; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 1.5mm; font-size: 8.6pt; page-break-inside: avoid; break-inside: avoid; }
+  th, td { border: 1px solid var(--linka); padding: 1.3mm 1.8mm; text-align: left; vertical-align: top; }
+  th { background: var(--pozadi-hlavicky); font-weight: 700; }
+  thead th { border-bottom: 2px solid var(--akcent); }
+  td.cis { white-space: nowrap; }
+  .pozn { font-size: 8pt; color: var(--tlumena); margin: 0 0 2mm; }
+  .zvyrazneni { border: 1px solid var(--akcent); background: #fdf8ef; padding: 2mm 3mm; margin: 2mm 0; page-break-inside: avoid; break-inside: avoid; }
+  ol.kroky { list-style: none; counter-reset: krok; margin: 2mm 0; padding: 0; }
+  ol.kroky li { counter-increment: krok; position: relative; padding: 0 0 0 9mm; margin: 0 0 2.4mm; page-break-inside: avoid; break-inside: avoid; }
+  ol.kroky li::before { content: counter(krok); position: absolute; left: 0; top: 0; width: 6mm; height: 6mm; border: 1.5px solid var(--akcent); color: var(--akcent); border-radius: 50%; text-align: center; font-weight: 700; font-size: 8.5pt; line-height: 5mm; }
+  ol.kroky strong { display: block; }
+  ul { margin: 0 0 2mm; padding-left: 5mm; }
+  ul.zdroje { font-size: 8pt; word-break: break-word; }
+  ul.zdroje li { margin-bottom: 1mm; }
+  .upozorneni { border-top: 1px solid var(--linka); margin-top: 4mm; padding-top: 2.5mm; font-size: 8.5pt; page-break-inside: avoid; break-inside: avoid; }
+  footer { margin-top: 4mm; font-size: 8pt; color: var(--tlumena); border-top: 1px solid var(--linka); padding-top: 2mm; }
+  .sekce { page-break-inside: avoid; break-inside: avoid; }
+  @media screen { body { padding: 16mm 8mm; } }
+</style>
+</head>
+<body>
+
+<header class="titul">
+  <p class="stitek">Průvodce pro začínající investory</p>
+  <h1>Srovnání ETF a jak je koupit z Česka</h1>
+  <p class="podtitul">SPY, VOO a VT vedle sebe, jejich evropské ekvivalenty a postup nákupu krok za krokem.</p>
+  <p class="datum">Data k 09/2026. Parametry fondů staženy 09. 10. 2026.</p>
+</header>
+
+<section class="sekce">
+  <h2>1. Srovnání SPY, VOO a VT</h2>
+  <p>Tři americké ETF, které v kalkulačce porovnáváme. Všechny se obchodují na burze NYSE Arca a všechny vyplácejí dividendy čtvrtletně.</p>
+  <table>
+    <thead>
+      <tr><th></th><th>SPY</th><th>VOO</th><th>VT</th></tr>
+    </thead>
+    <tbody>
+      <tr><th>Název</th><td>State Street SPDR S&amp;P 500 ETF Trust</td><td>Vanguard S&amp;P 500 ETF</td><td>Vanguard Total World Stock ETF</td></tr>
+      <tr><th>Emitent</th><td>State Street Investment Management (SPDR)</td><td>Vanguard</td><td>Vanguard</td></tr>
+      <tr><th>Index</th><td>S&amp;P 500</td><td>S&amp;P 500</td><td>FTSE Global All Cap</td></tr>
+      <tr><th>Roční poplatek (TER)</th><td class="cis">0,0945 %<sup>1</sup></td><td class="cis">0,03 %</td><td class="cis">0,06 %</td></tr>
+      <tr><th>Vznik</th><td class="cis">22. 1. 1993</td><td class="cis">7. 9. 2010</td><td class="cis">24. 6. 2008</td></tr>
+      <tr><th>Burza</th><td>NYSE Arca</td><td>NYSE Arca</td><td>NYSE Arca</td></tr>
+      <tr><th>Distribuce</th><td>Distribuční, čtvrtletně</td><td>Distribuční, čtvrtletně</td><td>Distribuční, čtvrtletně</td></tr>
+    </tbody>
+  </table>
+  <p class="pozn"><sup>1</sup> Hrubý poplatek (gross expense ratio) uvedený emitentem, čistá hodnota na stránce emitenta uvedena není. Zdroje TER, vzniku a burzy: SPY ssga.com, VOO a VT fact sheety Vanguard (viz zdroje níže), stav k 09. 10. 2026.</p>
+
+  <h3>Oficiální výnosy (roční průměr, po nákladech, s reinvestovanými dividendami)</h3>
+  <table>
+    <thead>
+      <tr><th>Fond</th><th>Údaj k</th><th>Typ</th><th>1 rok</th><th>5 let</th><th>10 let</th></tr>
+    </thead>
+    <tbody>
+      <tr><th rowspan="2">SPY</th><td rowspan="2" class="cis">30. 9. 2026</td><td>NAV</td><td class="cis">15,60 %</td><td class="cis">13,65 %</td><td class="cis">15,18 %</td></tr>
+      <tr><td>Tržní cena</td><td class="cis">15,66 %</td><td class="cis">13,66 %</td><td class="cis">15,18 %</td></tr>
+      <tr><th rowspan="2">VOO</th><td rowspan="2" class="cis">30. 6. 2026</td><td>NAV</td><td class="cis">22,28 %</td><td class="cis">13,36 %</td><td class="cis">15,47 %</td></tr>
+      <tr><td>Tržní cena</td><td class="cis">22,34 %</td><td class="cis">13,37 %</td><td class="cis">15,47 %</td></tr>
+      <tr><th rowspan="2">VT</th><td rowspan="2" class="cis">30. 6. 2026</td><td>NAV</td><td class="cis">24,28 %</td><td class="cis">10,89 %</td><td class="cis">12,82 %</td></tr>
+      <tr><td>Tržní cena</td><td class="cis">24,26 %</td><td class="cis">10,86 %</td><td class="cis">12,80 %</td></tr>
+    </tbody>
+  </table>
+  <p class="pozn">Pozor: údaje SPY jsou k 30. 9. 2026, údaje VOO a VT k 30. 6. 2026, proto je nelze přímo porovnávat v jednom sloupci. NAV je hodnota podílu podle majetku fondu, tržní cena je cena, za kterou se podíl obchodoval na burze. Čísla jsou v USD. Zdroje: ssga.com (SPY), fact sheety Vanguard F0968 (VOO) a F3141 (VT). Minulé výnosy nezaručují budoucí výnosy.</p>
+</section>
+
+<section class="sekce">
+  <h2>2. Co koupíš z Česka: UCITS ekvivalenty</h2>
+  <p>Americké SPY, VOO a VT ti evropský broker většinou neprodá. Místo nich koupíš irský UCITS ETF, který sleduje stejný nebo podobný index.</p>
+  <table>
+    <thead>
+      <tr><th>Místo</th><th>Název a ticker</th><th>ISIN</th><th>TER</th><th>Domicil</th><th>Typ</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SPY, VOO (S&amp;P 500)</td>
+        <td>iShares Core S&amp;P 500 UCITS ETF USD (Acc)<br>SXR8 (XETRA, EUR), též CSPX (Londýn USD, Amsterdam EUR)</td>
+        <td class="cis">IE00B5BMR087</td><td class="cis">0,07 %</td><td>Irsko</td><td>Akumulační</td>
+      </tr>
+      <tr>
+        <td>SPY, VOO (S&amp;P 500), alternativa</td>
+        <td>Vanguard S&amp;P 500 UCITS ETF (USD) Accumulating<br>VUAA (XETRA, EUR)</td>
+        <td class="cis">IE00BFMXXD54</td><td class="cis">0,07 %</td><td>Irsko</td><td>Akumulační</td>
+      </tr>
+      <tr>
+        <td>VT (celý svět)<br><strong>nejbližší, ne stejný index</strong></td>
+        <td>Vanguard FTSE All-World UCITS ETF (USD) Accumulating<br>VWCE (XETRA, EUR; také Borsa Italiana, Amsterdam)</td>
+        <td class="cis">IE00BK5BQT80</td><td class="cis">0,14 %</td><td>Irsko</td><td>Akumulační</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="zvyrazneni"><strong>VWCE není totéž co VT.</strong> VWCE sleduje index FTSE All-World (velké a střední firmy), VT sleduje FTSE Global All Cap, který obsahuje i malé firmy. Je to nejbližší dostupná varianta, ne stejný fond.</div>
+  <p class="pozn">Zdroj: justETF, profily podle ISIN (viz zdroje), staženo 09. 10. 2026. Údaje o burzách a tickerech si před nákupem ověř u svého brokera.</p>
+
+  <h3>PRIIPs a KID lidsky</h3>
+  <p>Evropská pravidla PRIIPs (platí od začátku roku 2018) vyžadují, aby každý investiční produkt prodávaný drobným investorům měl klíčový informační dokument, zkráceně KID. Americké ETF jako SPY, VOO a VT ho pro Evropu nevydávají, takže je evropští brokeři drobným klientům nedovolí dokoupit. UCITS ETF KID mají, proto jdou koupit z Česka. Nejde o zákaz vlastnit, jen o omezení na straně brokera.</p>
+
+  <h3>Akumulační a distribuční fond</h3>
+  <p>Distribuční fond ti dividendy vyplácí na účet, jako to dělají SPY, VOO a VT. Akumulační fond dividendy sám znovu investuje do fondu, takže ti na účet žádné nedorazí a hodnota podílu roste. Všechny tři ekvivalenty výše jsou akumulační.</p>
+</section>
+
+<section>
+  <h2>3. Postup krok za krokem</h2>
+  <ol class="kroky">
+    <li><strong>Vyber brokera</strong>
+      Poplatky a podmínky u brokerů se mění, proto je tu nejmenujeme ani neuvádíme. Sleduj tohle: je regulovaný v EU a podléhá dohledu (u českých klientů typicky ČNB nebo regulátor jiné země EU); kolik stojí nákup a vedení účtu; zda nabízí UCITS ETF, které chceš; zda umí zlomkové podíly; zda podporuje pravidelné investování; jak převádí koruny na eura nebo dolary a kolik za převod účtuje.</li>
+    <li><strong>Otevři účet</strong>
+      Vyplníš online formulář a ověříš totožnost, obvykle dokladem a fotografií nebo videohovorem. Přidáš bankovní účet, ze kterého budeš posílat peníze. Rozsah ověření se liší podle brokera.</li>
+    <li><strong>Pošli první vklad</strong>
+      Pošli peníze z vlastního bankovního účtu. Zjisti předem, v jaké měně se obchoduje tvůj fond (u SXR8, VUAA a VWCE na XETRA jsou to eura) a jak a za kolik broker převede koruny.</li>
+    <li><strong>Najdi fond podle ISIN</strong>
+      V brokerovi hledej ISIN, ne jen ticker: stejný fond může mít na různých burzách různé tickery. Zkontroluj, že název a ISIN sedí s tabulkou výše, a zvol burzu a měnu, kterou chceš.</li>
+    <li><strong>Zvol typ pokynu</strong>
+      Tržní pokyn se provede hned za aktuální cenu, ale nevíš přesně za jakou. Limitní pokyn zadáš s nejvyšší cenou, kterou jsi ochotný zaplatit, a provede se, až když ji trh nabídne. Pro začátek je limitní pokyn bezpečnější.</li>
+    <li><strong>Nastav pravidelný vklad</strong>
+      Pokud to broker umí, nastav trvalý příkaz a pravidelný nákup ve stejný den každý měsíc. Částka, kterou ti zbývá, je lepší než částka, kterou bys chtěl investovat.</li>
+    <li><strong>Zkontroluj první nákup</strong>
+      Ověř, že se koupil správný ISIN, v očekávané měně a za cenu, kterou jsi čekal, a že znáš poplatek, který ti broker strhl.</li>
+    <li><strong>Při propadech nic nedělej</strong>
+      Hodnota fondu může klesnout, i výrazně, a nikdo nezaručí, že se vrátí. Investuj jen peníze, které v dohledné době nepotřebuješ, a pravidelný plán nepřerušuj z nálady.</li>
+  </ol>
+</section>
+
+<section class="sekce">
+  <h2>4. Daně v ČR (jen základ)</h2>
+  <p>Platí pro fyzické osoby, které cenné papíry (akcie, ETF) drží jako nepodnikatelský majetek. Zákon č. 586/1992 Sb., o daních z příjmů, § 4 odst. 1 písm. t) a u).</p>
+  <table>
+    <thead><tr><th style="width:26%">Pravidlo</th><th>Co platí</th></tr></thead>
+    <tbody>
+      <tr><th>Časový test</th><td>Příjem z prodeje cenného papíru je osvobozen, pokud doba mezi nákupem a prodejem přesáhne 3 roky. Posuzuje se zvlášť u každého cenného papíru.</td></tr>
+      <tr><th>Hodnotový test</th><td>Příjmy z prodeje cenných papírů jsou osvobozeny, pokud jejich úhrn za zdaňovací období nepřesáhne 100 000 Kč. Počítá se příjem z prodeje, ne zisk.</td></tr>
+      <tr><th>Testy se nekombinují</th><td>Osvobození podle výše příjmu a podle časového testu nelze skládat dohromady. Nejdřív se posuzuje výše příjmu, pak doba držby.</td></tr>
+      <tr><th>Oznamovací povinnost</th><td>Osvobozený příjem nad 5 000 000 Kč se oznamuje správci daně ve lhůtě pro podání daňového přiznání.</td></tr>
+    </tbody>
+  </table>
+  <p>Zdanění dividend a daňové zacházení s akumulačními fondy tu neřešíme. <strong>Není to daňové poradenství.</strong> Pravidla si ověř u finanční správy nebo daňového poradce, doslovné znění zákona najdeš na zakonyprolidi.cz.</p>
+  <p class="pozn">Zdroje: zakonyprolidi.cz/cs/1992-586 (znění platné od 1. 8. 2026), Finanční správa (financnisprava.gov.cz), stav ověřený 09. 10. 2026.</p>
+</section>
+
+<section class="sekce">
+  <h2>5. Proč pasivně</h2>
+  <p>Podíl aktivně řízených amerických fondů velkých firem, které za dané období zaostaly za indexem S&amp;P 500 (po poplatcích, včetně zaniklých fondů):</p>
+  <table>
+    <thead><tr><th>Období</th><th>1 rok</th><th>5 let</th><th>10 let</th><th>15 let</th><th>20 let</th></tr></thead>
+    <tbody><tr><th>Zaostalo za S&amp;P 500</th><td class="cis">78,78 %</td><td class="cis">88,96 %</td><td class="cis">85,59 %</td><td class="cis">89,93 %</td><td class="cis">92,89 %</td></tr></tbody>
+  </table>
+  <p class="pozn">Zdroj: S&amp;P Dow Jones Indices, SPIVA U.S. Scorecard Year-End 2025, Report 1a, All Large-Cap Funds vs. S&amp;P 500, data k 31. 12. 2025. Je to historie za uvedená období, budoucnost nezaručuje.</p>
+</section>
+
+<section class="sekce">
+  <h2>6. Zdroje</h2>
+  <ul class="zdroje">
+    <li>SPY: https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy (staženo 09. 10. 2026)</li>
+    <li>VOO: https://fund-docs.vanguard.com/F0968.pdf (fact sheet k 30. 6. 2026, staženo 09. 10. 2026)</li>
+    <li>VT: https://fund-docs.vanguard.com/F3141.pdf (fact sheet k 30. 6. 2026, staženo 09. 10. 2026)</li>
+    <li>UCITS fondy, justETF: https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087, ...isin=IE00BFMXXD54, ...isin=IE00BK5BQT80 (staženo 09. 10. 2026)</li>
+    <li>PRIIPs a KID: justETF, „US-domiciled ETFs: why they are no longer available from many online brokers“ (28. 3. 2018): https://www.justetf.com/en/news/etf/us-domiciled-etfs.html; Finhacker.cz (13. 8. 2020): https://www.finhacker.cz/jak-obejit-znemozneni-obchodovani-americkych-etfek-1-cast</li>
+    <li>Daně: zákon č. 586/1992 Sb., https://www.zakonyprolidi.cz/cs/1992-586; Finanční správa, https://financnisprava.gov.cz/cs/dane/dane/dan-z-prijmu/fyzicke-osoby/ostatni (ověřeno 09. 10. 2026)</li>
+    <li>SPIVA: S&amp;P Dow Jones Indices, SPIVA U.S. Scorecard Year-End 2025, https://www.spglobal.com/spdji/en/spiva/article/spiva-us/ (data k 31. 12. 2025, staženo 09. 10. 2026)</li>
+  </ul>
+  <div class="upozorneni">
+    <strong>Upozornění.</strong> Minulé výnosy nezaručují budoucí výnosy. Nejedná se o investiční doporučení, dokument má vzdělávací charakter a nezná tvoji situaci. Hodnota investice může klesat i stoupat. Není to daňové poradenství.
+  </div>
+  <footer>Srovnání ETF a jak je koupit z Česka. Data k 09/2026. Správce: {{SPRAVCE}}.</footer>
+</section>
+
+</body>
+</html>
