@@ -1,0 +1,38 @@
+# Zrcadlo statického frontendu na GitHub Pages.
+# Bez PHP (api/, admin/) – formulář a měření posílají na https://aijunior.opicebot.cz přes CORS.
+# Verze actions ověřeny v jejich repozitářích 2026-10-09.
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['public/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Statika bez PHP
+        run: |
+          rsync -a --exclude api --exclude admin --exclude '*.php' public/ _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v5
