@@ -128,66 +128,14 @@ details.is-closing > summary::after { transform: rotate(45deg); }
 summary { transition: color .2s ease; }
 summary:hover { color: var(--accent); }
 
-/* Optical rim: the scenery is reprojected only through the bevel, never text. */
-.card, .calc.card, .cta.card, .kpi {
-  --glass-depth: inset 0 1px 1px #ffffff75, inset 1px 0 1px #b3eaff30, inset 0 -1px 2px #b1f8ed45, 0 18px 44px #000d2538;
-  --rim-scene: linear-gradient(90deg, #030919c9, #03091935 58%, #03091908), url('market-scene.svg');
+/* One GPU background layer; content stays native, accessible HTML. */
+.glass-renderer { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.webgl-glass .card, .webgl-glass .calc.card, .webgl-glass .cta.card, .webgl-glass .kpi {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: linear-gradient(125deg, #e3f5ff1c, #cae7ff06 45%, #95d8ee0c), #0b1a3066;
 }
-.glass-optics::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  width: auto;
-  height: auto;
-  padding: 9px;
-  border-radius: inherit;
-  background-image: var(--rim-scene);
-  background-size: var(--lens-size);
-  background-position: var(--lens-position);
-  background-repeat: no-repeat;
-  /* Standard and WebKit mask variants retain only the narrow glass edge. */
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: .62;
-  pointer-events: none;
-  filter: saturate(1.35);
+.card::after, .kpi::after { transition: opacity .2s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover::after, .kpi:hover::after { background: linear-gradient(125deg, #e3f5ff0e, transparent 55%); }
 }
-.card::after, .kpi::after {
-  inset: 1px;
-  border-radius: inherit;
-  border: 1px solid transparent;
-  border-top-color: #eaffff44;
-  border-left-color: #daedff1a;
-  border-bottom-color: #aef8eb33;
-  background: radial-gradient(ellipse at var(--mx, 18%) var(--my, 0%), #e1f4ff16, transparent 58%);
-  box-shadow: inset 0 0 2px #d9ffff2b, inset 0 -5px 10px -9px #a9fff2;
-  pointer-events: none;
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .glass-optics {
-    transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-    transition: transform .3s cubic-bezier(.2,.7,.2,1);
-  }
-  .glass-optics.glass-active {
-    transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-2px);
-    border-color: #dcf7ff8a;
-    box-shadow: var(--glass-depth), 0 24px 48px #000a2038;
-    transition-duration: .16s;
-  }
-  .glass-active::after { background: radial-gradient(ellipse at var(--mx, 50%) var(--my, 0%), #e1f4ff29, #b0e9ff05 40%, transparent 66%); }
-}
-@media (max-width: 899px) {
-  .card, .kpi { --rim-scene: linear-gradient(90deg, #030919db, #03091977), url('market-scene.svg'); }
-  .glass-optics::before { padding: 6px; opacity: .45; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .glass-optics { transform: none; transition: none; }
-  details > p { transition: none; transform: none; }
-}
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .glass-optics::before, .glass-optics::after { display: none; }
-  .glass-optics { transform: none; }
-}
-@supports not (mask-composite: exclude) { .glass-optics::before { display: none; } }

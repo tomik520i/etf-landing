@@ -1,81 +1,83 @@
-/* Visual-only glass optics, shared by the landing page, document and admin. */
+/* Liquid Glass Canvas 0.1.0: one GPU pass over the static background.
+ * No DOM snapshots, pointer-driven layout writes, tilt, or idle render loop. */
 const panels = [...document.querySelectorAll('.card, .kpi')];
-const motion = matchMedia('(prefers-reduced-motion: reduce)');
-const pointer = matchMedia('(hover: hover) and (pointer: fine)');
-const contrast = matchMedia('(prefers-contrast: more)');
-const transparency = matchMedia('(prefers-reduced-transparency: reduce)');
-const visible = new Set(panels);
-let frame = 0;
-let active = null;
-let point = null;
+const preferences = ['(prefers-reduced-motion: reduce)', '(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)'].map(q => matchMedia(q));
+let cleanup = null;
+let generation = 0;
 
-function reset(panel) {
-  panel.classList.remove('glass-active');
-  for (const key of ['--rx', '--ry', '--mx', '--my']) panel.style.removeProperty(key);
-}
-
-function paint() {
-  frame = 0;
-  const w = innerWidth, h = innerHeight;
-  const zoom = 1.055;
-  const cover = Math.max(w / 1600, h / 1100);
-  const aw = 1600 * cover * zoom, ah = 1100 * cover * zoom;
-  const mobile = w < 900;
-  // Reproject the same scene into the thin rim with a slightly larger optical
-  // scale. Only the background is displaced; text and controls stay untouched.
-  for (const panel of visible) {
-    const r = panel.getBoundingClientRect();
-    panel.style.setProperty('--lens-size', `${w * zoom}px ${h * zoom}px, ${aw}px ${ah}px`);
-    const x = -(aw - w) * (mobile ? .61 : .5) - r.left;
-    panel.style.setProperty('--lens-position', `${-r.left - w * .0275}px ${-r.top}px, ${x}px ${-r.top}px`);
-    panel.classList.add('glass-optics');
+async function configure() {
+  const version = ++generation;
+  cleanup?.(); cleanup = null;
+  if (!panels.length || preferences.some(q => q.matches)) return;
+  let canvas, pass, gl, texture, image, source, ctx, observer;
+  let frame = 0, resize = true, measure = true, boxes = [], stopped = false;
+  function stop() {
+    stopped = true; cancelAnimationFrame(frame); observer?.disconnect();
+    removeEventListener('scroll', schedule); removeEventListener('resize', onResize);
+    document.removeEventListener('visibilitychange', schedule);
+    canvas?.remove(); document.documentElement.classList.remove('webgl-glass');
+    if (gl && !gl.isContextLost()) { pass?.destroy(); if (texture) gl.deleteTexture(texture); }
   }
-  if (!active || !point || motion.matches || !pointer.matches) return;
-  const r = active.getBoundingClientRect();
-  const x = Math.max(0, Math.min(1, (point.x - r.left) / r.width));
-  const y = Math.max(0, Math.min(1, (point.y - r.top) / r.height));
-  // Limit displacement by panel size instead of giving small funds extra tilt.
-  const ax = Math.min(1.5, 75 / r.height), ay = Math.min(1.5, 75 / r.width);
-  active.style.setProperty('--rx', `${((.5 - y) * 2 * ax).toFixed(3)}deg`);
-  active.style.setProperty('--ry', `${((x - .5) * 2 * ay).toFixed(3)}deg`);
-  active.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
-  active.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+  function onResize() { resize = true; measure = true; schedule(); }
+  function schedule() { if (!stopped && !frame && !document.hidden) frame = requestAnimationFrame(draw); }
+  function draw() {
+    frame = 0;
+    if (stopped) return;
+    try {
+      const w = innerWidth, h = innerHeight;
+      // Cap buffers at CSS resolution, including high-DPR phones.
+      if (resize) {
+        resize = false; canvas.width = source.width = w; canvas.height = source.height = h;
+        const scale = Math.max(w / 1600, h / 1100), mobile = w < 900;
+        // Bake a little frost into the static texture once, not per frame.
+        ctx.filter = 'blur(3px)';
+        ctx.drawImage(image, (w - 1600 * scale) * (mobile ? .61 : .5), 0, 1600 * scale, 1100 * scale);
+        ctx.filter = 'none';
+        const shade = ctx.createLinearGradient(0, 0, w, 0);
+        if (mobile) { shade.addColorStop(0, '#030919db'); shade.addColorStop(1, '#03091977'); }
+        else { shade.addColorStop(0, '#030919c9'); shade.addColorStop(.58, '#03091935'); shade.addColorStop(1, '#03091908'); }
+        ctx.fillStyle = shade; ctx.fillRect(0, 0, w, h);
+        gl.bindTexture(gl.TEXTURE_2D, texture); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+        measure = true;
+      }
+      if (measure) {
+        measure = false;
+        boxes = panels.map(panel => {
+          const r = panel.getBoundingClientRect();
+          return {x:r.left+scrollX, y:r.top+scrollY, width:r.width, height:r.height,
+            radius:parseFloat(getComputedStyle(panel).borderTopLeftRadius)||30};
+        });
+      }
+      const lenses = boxes.filter(r => r.y-scrollY < h && r.y+r.height-scrollY > 0).map(r => ({
+        ...r, x:r.x-scrollX, y:r.y-scrollY,
+        // Feather stays inside the normal field so displacement reaches zero
+        // continuously at the interior instead of creating a cut-out seam.
+        depth:18, feather:r.radius, curve:2.4, chroma:0, tint:[.06,.14,.23,.1], glint:.08,
+      }));
+      gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+      pass.render({sourceTexture:texture, resolution:[w,h], lenses});
+      document.documentElement.classList.add('webgl-glass');
+    } catch { stop(); }
+  }
+  try {
+    const library = await import('./vendor/liquid-glass-canvas-0.1.0.js');
+    image = new Image(); image.src = new URL('../css/market-scene.svg', import.meta.url).href;
+    await image.decode(); if (version !== generation) return;
+    canvas = document.createElement('canvas'); canvas.className = 'glass-renderer'; canvas.setAttribute('aria-hidden','true');
+    gl = canvas.getContext('webgl', {alpha:true,depth:false,stencil:false,antialias:false,premultipliedAlpha:true});
+    if (!gl) return;
+    pass = library.createLiquidGlassPass(gl); texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D,texture);
+    for (const axis of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T]) gl.texParameteri(gl.TEXTURE_2D,axis,gl.CLAMP_TO_EDGE);
+    for (const filter of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D,filter,gl.LINEAR);
+    source = document.createElement('canvas'); ctx = source.getContext('2d');
+    document.body.append(canvas); canvas.addEventListener('webglcontextlost',stop,{once:true});
+    observer = new ResizeObserver(() => { measure = true; schedule(); });
+    panels.forEach(panel => observer.observe(panel)); observer.observe(document.body);
+    addEventListener('scroll',schedule,{passive:true}); addEventListener('resize',onResize,{passive:true});
+    document.addEventListener('visibilitychange',schedule); cleanup = stop; schedule();
+  } catch { stop(); }
 }
-function schedule() { if (!frame) frame = requestAnimationFrame(paint); }
-for (const panel of panels) {
-  panel.addEventListener('pointermove', (event) => {
-    if (event.pointerType === 'touch' || !pointer.matches || motion.matches || contrast.matches || transparency.matches) return;
-    // Keep form controls steady while the user enters or adjusts a value.
-    if (panel.contains(document.activeElement) && document.activeElement.matches('input, select, textarea')) return;
-    active = panel;
-    point = { x: event.clientX, y: event.clientY };
-    panel.classList.add('glass-active');
-    schedule();
-  });
-  panel.addEventListener('pointerleave', () => {
-    reset(panel);
-    if (active === panel) { active = null; point = null; }
-    schedule();
-  });
-  panel.addEventListener('focusin', () => { reset(panel); active = null; point = null; });
-}
-if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => {
-    for (const { target, isIntersecting } of entries) {
-      if (isIntersecting) visible.add(target); else visible.delete(target);
-    }
-    schedule();
-  }, { rootMargin: '80px' });
-  panels.forEach(panel => observer.observe(panel));
-}
-if ('ResizeObserver' in window) {
-  const observer = new ResizeObserver(schedule);
-  panels.forEach(panel => observer.observe(panel));
-}
-for (const query of [motion, pointer, contrast, transparency]) query.addEventListener('change', () => {
-  panels.forEach(reset); active = null; point = null; schedule();
-});
-addEventListener('scroll', schedule, { passive: true });
-addEventListener('resize', schedule, { passive: true });
-addEventListener('blur', () => { panels.forEach(reset); active = null; point = null; });
-schedule();
+preferences.forEach(q => q.addEventListener('change',configure));
+configure();
