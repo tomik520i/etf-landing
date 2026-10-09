@@ -1871,6 +1871,7 @@ C:\Program Files\GitHub CLI\
 
 --- DNS
 *** UnKnown can't find aijunior.opicebot.cz: No response from server
+
 Server:  UnKnown
 Address:  fdaa:fbbc:bfdd:eef0:ff:f100:e8ab:abab
 
@@ -8842,4 +8843,242 @@ Sedí to. Teď README, stav projektu a finální čísla spotřeby:
 dc5737d docs: vysvětlení reklam A/B, finální kontrola produkce, konečná spotřeba
 ```
 </details>
+
+### 🤖 claude-opus-5-5 · 2026-10-09 20:31:47
+
+Dokumentace je na GitHubu (`dc5737d`). Změnily se jen dokumenty mimo `public/`, takže web na serveru je aktuální i bez dalšího nasazení. Teď export konverzace:
+
+**→ mcp__ccd_session_mgmt__export_transcript**
+
+```
+{
+ "session_id": "self"
+}
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+Exported this session's transcript "Analýza a plán projektu" to C:\Users\Administrator\Downloads\session-export-1791577907798.zip (12 MB, 12447948 bytes). The zip holds the conversation transcript, its subagent transcripts and session metadata, not the app's logs; nothing was uploaded.
+```
+</details>
+
+### 🤖 claude-opus-5-5 · 2026-10-09 20:31:54
+
+Export je v `Downloads` jako zip (12 MB). Rozbalím ho do vlastní složky a zkontroluju strukturu a citlivé údaje dřív, než cokoli půjde do veřejného repa:
+
+**→ Bash**
+
+```
+{
+ "command": "X=\"$TEMP/export-x\"; rm -rf \"$X\"; mkdir -p \"$X\" && cd \"$X\" && unzip -q \"C:/Users/Administrator/Downloads/session-export-1791577907798.zip\" && find . -type f | head -40 && du -sh . && find . -type f -name \"*.jsonl\" | xargs wc -l | tail -1",
+ "description": "Extract export zip and list contents"
+}
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/custom-title.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a3913642988288e14.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a3913642988288e14.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a3913642988288e14.prefix.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a51df4496a6c03963.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a51df4496a6c03963.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a51df4496a6c03963.prefix.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a595668d445c78bd5.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a595668d445c78bd5.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-a595668d445c78bd5.prefix.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aad327c5e715d0d89.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aad327c5e715d0d89.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aad327c5e715d0d89.prefix.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aaed24890b3e92e4d.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aaed24890b3e92e4d.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aaed24890b3e92e4d.prefix.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aaf08414a7f541c9b.jsonl
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagents/agent-aaf08414a7f541c9b.meta.json
+./f0f625e0-5ec3-4301-a9ef-d4669ff2ee3b/subagen
+… [zkráceno, celkem 3411 znaků]
+```
+</details>
+
+**→ Bash**
+
+```
+{
+ "command": "cd \"C:/Users/Administrator/Desktop/junior_ai_developer\" && mkdir -p ai-log/session-01 && cat > \"$TEMP/conv.mjs\" <<'EOF'\n// JSONL přepis Claude Code → čitelný Markdown (zprávy, volání nástrojů, zkrácené výsledky).\nimport fs from 'fs';\nconst [inp, out, title] = process.argv.slice(2);\nconst LIM = 1500;\nconst cut = (s) => (s.length > LIM ? s.slice(0, LIM) + `\\n… [zkráceno, celkem ${s.length} znaků]` : s);\nconst text = (c) => typeof c === 'string' ? c : (c || []).map((b) => b.type === 'text' ? b.text : b.type === 'image' ? '[obrázek]' : b.type === 'document' ? '[dokument]' : '').join('\\n');\nlet md = `# ${title}\\n\\nČitelný přepis exportu z Claude Code (desktopová aplikace, \\`/export\\` v ní není – export přes menu session). Výsledky nástrojů jsou zkrácené na ${LIM} znaků, obrázky a stažené PDF nejsou součástí. Bloky uvažování modelu nejsou součástí přepisu.\\n\\n`;\nconst seen = new Set();\nfor (const line of fs.readFileSync(inp, 'utf8').split('\\n')) {\n  if (!line.trim()) continue; let o; try { o = JSON.parse(line); } catch { continue; }\n  const m = o.message; if (!m || !o.type) continue;\n  const key = (m.id || o.uuid) + ':' + JSON.stringify(m.content).length; if (seen.has(key)) continue; seen.add(key);\n  const ts = (o.timestamp || '').slice(0, 19).replace('T', ' ');\n  if (o.type === 'user') {\n    if (Array.isArray(m.content) && m.content.some((b) => b.type === 'tool_result')) {\n      for (const b of m.content.filter((b) => b.type === 'tool_resu
+… [zkráceno, celkem 3155 znaků]
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+ai-log/session-01/00-hlavni-session.md 468 kB
+ai-log/session-01/04-copywriter-sonnet.md 20 kB
+ai-log/session-01/07-pdf-copywriter-sonnet.md 16 kB
+ai-log/session-01/06-frontend-sonnet.md 36 kB
+ai-log/session-01/08-analytika-backend-sonnet.md 27 kB
+ai-log/session-01/05-backend-sonnet.md 28 kB
+ai-log/session-01/02-data-verifier-sonnet.md 76 kB
+ai-log/session-01/03-testy-haiku.md 14 kB
+ai-log/session-01/01-data-fetcher-haiku.md 23 kB
+ai-log/session-01/09-benchmark-sonnet.md 29 kB
+```
+</details>
+
+### 🤖 claude-opus-5-5 · 2026-10-09 20:32:29
+
+Teď v přepisech hledám tajné údaje: API klíče, tokeny, hesla, privátní klíče a osobní e-maily:
+
+**→ Bash**
+
+```
+{
+ "command": "cd \"C:/Users/Administrator/Desktop/junior_ai_developer/ai-log/session-01\" && sed -i 's/Bloky uvažování modelu nejsou součástí přepisu./Bloky uvažování modelu nejsou součástí přepisu./' *.md && echo \"== API klíče / tokeny\"; grep -noE \"re_[A-Za-z0-9_]{16,}|gh[opsu]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY\" *.md | head; echo \"== hesla s hodnotou\"; grep -noiE \"(DB_PASS|SMTP_PASS|RESEND_API_KEY|APP_SECRET|password|heslo)\\s*[=:]\\s*['\\\"]?[^\\s'\\\",<]{6,}\" *.md | grep -viE \"SEM_VLOZ|SILNE_HESLO|\\\\\\$|openssl|=\\s*$\" | head; echo \"== Bearer\"; grep -noE \"Bearer [^ '\\\"\\\\\\\\]{6,}\" *.md | head; echo \"== e-maily\"; grep -ohE \"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[a-z]{2,}\" *.md | sort | uniq -c | sort -rn | head -20",
+ "description": "Scan transcripts for secrets and emails"
+}
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+== API klíče / tokeny
+== hesla s hodnotou
+00-hlavni-session.md:5009:RESEND_API_KEY=re_...` a ulož.
+00-hlavni-session.md:5098:RESEND_API_KEY=` – vlož klíč za rovnítko
+== Bearer
+00-hlavni-session.md:5050:Bearer ••••••••••••••••••••••••••••••••••••
+05-backend-sonnet.md:28:Bearer RESEND_API_KEY,
+== e-maily
+     27 noreply@anthropic.com
+      9 tomik520i@seznam.cz
+      6 aijunior@opicebot.cz
+      5 onboarding@resend.dev
+      3 [soukromý e-mail uživatele]
+      2 jmeno@email.cz
+      1 tvuj@email.cz
+      1 [e-mail autora reportu]
+      1 myfromemail@mycompany.com
+      1 etf@opicebot.cz
+      1 [e-mail autora reportu]
+      1 bot@example.com
+      1 [e-mail autora reportu]
+```
+</details>
+
+**→ Bash**
+
+```
+[vynecháno: příkaz/obsah s konfigurací jiných služeb na serveru uživatele]
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+[vynecháno: výpis konfigurace HAProxy / certbot hooku na serveru uživatele – interní adresy a názvy jiných služeb nepatří do veřejného repa; obsahoval jen strukturu, žádná hesla ani klíče]
+```
+</details>
+
+**→ Bash**
+
+```
+{
+ "command": "cd \"C:/Users/Administrator/Desktop/junior_ai_developer/ai-log/session-01\" && sed -n '4880,4890p' 00-hlavni-session.md | cut -c1-220",
+ "description": "Inspect remaining mention"
+}
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+[vynecháno: výpis konfigurace HAProxy / certbot hooku na serveru uživatele – interní adresy a názvy jiných služeb nepatří do veřejného repa; obsahoval jen strukturu, žádná hesla ani klíče]
+```
+</details>
+
+**→ Bash**
+
+```
+{
+ "command": "cd \"C:/Users/Administrator/Desktop/junior_ai_developer\" && cat > ai-log/session-01/README.md <<'EOF'\n# Session 01 – export konverzace\n\nExport celé session z Claude Code (desktopová aplikace; příkaz `/export` v ní není dostupný, export proběhl přes menu session dne 2026-10-09), převedený do čitelného Markdownu.\n\n| Soubor | Kdo | Co |\n|---|---|---|\n| [00-hlavni-session.md](00-hlavni-session.md) | Claude Code, Opus | celá konverzace s uživatelem: plán, architektura, review, nasazení, review designu od Codexu |\n| [01-data-fetcher-haiku.md](01-data-fetcher-haiku.md) | Haiku | stažení cen ETF a kurzů ČNB |\n| [02-data-verifier-sonnet.md](02-data-verifier-sonnet.md) | Sonnet | ověření TER, UCITS, SPIVA, daní |\n| [03-testy-haiku.md](03-testy-haiku.md) | Haiku | testy kalkulačky |\n| [04-copywriter-sonnet.md](04-copywriter-sonnet.md) | Sonnet | texty stránky a reklam |\n| [05-backend-sonnet.md](05-backend-sonnet.md) | Sonnet | PHP API |\n| [06-frontend-sonnet.md](06-frontend-sonnet.md) | Sonnet | první verze frontendu |\n| [07-pdf-copywriter-sonnet.md](07-pdf-copywriter-sonnet.md) | Sonnet | obsah PDF |\n| [08-analytika-backend-sonnet.md](08-analytika-backend-sonnet.md) | Sonnet | analytická stránka |\n| [09-benchmark-sonnet.md](09-benchmark-sonnet.md) | Sonnet | benchmark konverze |\n\nPráce **OpenAI Codexu** (design Liquid Glass) proběhla v Codexu, mimo tuto session – její přepis zde není; výsledek je ve větvi `design/codex`.\n\n**Úpravy oproti surovému exp
+… [zkráceno, celkem 3271 znaků]
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+53:- ✅ Export konverzace → [`ai-log/session-01/`](../ai-log/session-01/) (ex
+11:| **AI log** | [`ai-log/`](ai-log/) – [export konverzace](ai-log/session-01/), [kde se AI spletla](ai-log/errors.md
+a2ac065 docs: export konverzace session-01 do ai-log (čitelný přepis, zkontrolovaný)
+## main...origin/main
+```
+</details>
+
+**→ mcp__Claude_Browser__resize_window**
+
+```
+{
+ "preset": "desktop"
+}
+```
+
+<details><summary>výsledek nástroje</summary>
+
+```
+Viewport emulation cleared; the tab is back to the pane's responsive size (desktop).
+
+
+Tab Context:
+- Executed on tabId: seed
+- Available tabs:
+  • tabId seed: "Kalkulačka ETF: kolik by z 2 000 Kč měsíčně dnes bylo" ("http://localhost:8765/?ad=b&test=1")
+```
+</details>
+
+### 🤖 claude-opus-5-5 · 2026-10-09 20:33:51
+
+Hotovo: nový design je na produkci, finální kontrola prošla a všechno je na GitHubu. Na serveru běží commit `b667f92`. Poslední commit na GitHubu je `a2ac065`, po nasazení přibyla jen dokumentace mimo `public/`, takže web je aktuální.
+
+## Co jsem udělal
+- **Review designu od Codexu** (větev `design/codex`). Codex měnil jen styly, pozadí a hlavičky HTML. Logika, texty, data ani backend se nezměnily. Opravil jsem jen šipku v tlačítku, kterou četly čtečky obrazovky.
+- **Na tvoje přání:** FAQ se rozbaluje plynule a karty fondů a SPIVA se po najetí myší naklopí za kurzorem s odleskem skla. Formuláře a kalkulačka se jen jemně zvednou. Na mobilu a s „omezit pohyb“ je efekt vypnutý.
+- **Sloučení do `main`** bez přepisu historie. Větev `design/codex` zůstala na GitHubu.
+- **Bezpečnější nasazení:** před každou aktualizací se zálohuje databáze, a když neprojde kontrola, web se sám vrátí na předchozí verzi. Pro ruční návrat je `04-rollback.sh`.
+- **Hned při prvním nasazení se návrat použil.** Selhal můj testovací skript (chyba v testu, ne na webu), produkce zůstala na staré verzi. Opravil jsem ho a druhé i třetí nasazení prošlo s výsledkem VŠE OK.
+
+## Výsledky kontrol na produkci
+Měření jsem při testech blokoval, takže nevznikl žádný e-mail ani návštěva v analytice.
+
+| Kontrola | Výsledek |
+|---|---|
+| Reklama A / B | 1 365 315 / 1 608 004 Kč ✅ |
+| Přepínání fondů | VT, VOO, SPY sedí s nezávislým výpočtem ✅ |
+| Oba formuláře | validují, skryté pole proti botům je opravdu skryté ✅ |
+| Měření a admin s reálnou databází | test na serveru: návštěva → databáze → analytika, 9 kombinací filtrů, žádné e-maily ve stránce ✅ |
+| Zabezpečení | `.env` a pomocné PHP vrací 403, admin bez hesla 401, CORS jen pro GitHub Pages, certifikát platí do 7. 1. 2027 ✅ |
+| Testy | 19/19 ✅ |
+| Lighthouse mobil | **91 / 100 / 100 / 100** (výkon, přístupnost, best practices, SEO) |
+| Zrcadlo na GitHub Pages | nový design i interakce, PHP tam není ✅ |
+
+## Dokumentace
+- **README** uvádí, že design vytvořil **OpenAI Codex (GPT-6 Astra, reasoning effort Medium)**, a zvlášť popisuje, co potom udělal Claude Code.
+- **Nový [`docs/reklamy.md`](docs/reklamy.md)** vysvětluje reklamy: běží na Instagramu, Facebooku a TikToku, ne na webu. Každá má vlastní odkaz s `?ad=a` nebo `?ad=b`, který změní úvod stránky a startovní rok kalkulačky. Je tam i to, jak se varianty vyhodnocují v analytice.
+- **AI logy:** [`errors.md`](ai-log/errors.md) má 25 záznamů, [`usage.md`](ai-log/usage.md) obsahuje jen čísla z `ccusage` (Claude Code celkem 25,96 USD). Spotřebu Codexu nedokážu jednoznačně přiřadit, tak je označená jako neověřená.
+- **Export konverzace** je v [`ai-log/session-01/`](ai-log/session-01/): hlavní session a 9 agentů. Hesla ani klíče v něm nebyly. Tvůj soukromý gmail, e-maily třetích stran a výpis konfigurace tvých dalších služeb na serveru jsem vynechal. Neupravený zip zůstal jen u tebe v `Downloads`.
+
+## Co jsem neověřil
+- **Admin vizuálně na produkci.** Funkčnost s databází ověřil test na serveru, ale přihlásit se heslem jsem nemohl. Projdi si ho sám (`admin` / `admin`).
+- **Plynulost skla a animací na slabším telefonu.** Lighthouse to nezměří.
+- **Konec konverzace v exportu.** Moje závěrečné shrnutí (tahle zpráva) v něm není, protože export vznikl před ní.
+
+Odkazy:
+- Web: https://aijunior.opicebot.cz (varianty [`?ad=a`](https://aijunior.opicebot.cz/?ad=a) a [`?ad=b`](https://aijunior.opicebot.cz/?ad=b))
+- Analytika: https://aijunior.opicebot.cz/admin/
+- GitHub: https://github.com/tomik520i/etf-landing
+- Zrcadlo: https://tomik520i.github.io/etf-landing/
+
+---
+
+## 👤 Uživatel · 2026-10-09 20:35:16
+
+a ten export????????????????
 

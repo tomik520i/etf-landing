@@ -23,4 +23,4 @@ Práce **OpenAI Codexu** (design Liquid Glass) proběhla v Codexu, mimo tuto ses
 - výpisy konfigurace HAProxy a certbot hooku produkčního serveru (interní adresy a názvy jiných služeb uživatele) vynechány s poznámkou
 - výsledky nástrojů zkrácené na 1 500 znaků; screenshoty, stažená PDF třetích stran a metadata aplikace nejsou součástí
 - chyby a slepé uličky ponechány beze změny (viz i [`../errors.md`](../errors.md))
-- konec konverzace (závěrečné shrnutí po tomto commitu) v exportu není
+- export obnoven po závěrečném shrnutí; chybí jen tato poslední výměna (aktualizace exportu)
