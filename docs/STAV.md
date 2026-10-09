@@ -47,9 +47,14 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ GitHub Pages zrcadlo – https://tomik520i.github.io/etf-landing/ (CORS ověřen)
 
 ## 7. Odevzdání
-- ⬜ README (cílovka, pořadí sekcí, konverze, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 17 záznamů)
-- ⬜ `ai-log/usage.md` – tokeny a cena
-- ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla
-- ⬜ Test na mobilu + Lighthouse
+- ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 19 záznamů)
+- ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
+- ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla – dělá uživatel
+- ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
 - ⬜ Odeslat e-mail s odkazy
+
+## 8. Design – předání Codexu (poslední bod)
+- ⬜ Předat Codexu zadání [`docs/codex-design-brief.md`](codex-design-brief.md) – Codex dělá **jen komplexnější design** (CSS/markup), nic jiného
+- ⬜ Codex hotový → uživatel dá vědět Claude Code
+- ⬜ Claude Code: review změn designu, testy (`npm test`, kalkulačka, formuláře, měření), Lighthouse, nasazení na server a Pages, aktualizace README / STAV / errors / usage
