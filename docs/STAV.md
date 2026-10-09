@@ -86,5 +86,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
   - WebGL aktivní; fallback bez WebGL a s „omezit pohyb“ → CSS sklo; náklon karet odstraněn (`transform: none`)
   - plynulost (časy snímků): desktop scroll 2 snímky nad 33 ms, 0 nad 50 ms (CSS fallback max 125 ms); hover bez trhání; mobilní šířka ~3 snímky ~100 ms / 5 s scrollu (jen s WebGL, JS < 8 ms/snímek)
   - 19/19 testů; Lighthouse mobil lokálně: výkon 86 / 95 / 91 (3 běhy), přístupnost 100, best practices 100, SEO 100
-- ⬜ Sloučení do `main`, push, GitHub Pages, nasazení, ověření produkce
+- ✅ Sloučeno do `main` (`fcaaca8`), push, nasazeno (VŠE OK)
+- ✅ Na přání uživatele (Claude Code): sklo o trochu tmavší kvůli čitelnosti – karta s WebGL 24 → 36 % krytí, box formuláře / UCITS 35 → 50 %, CSS fallback 35 → 44 %; verze odkazů `?v=20261010-2`
+- ⬜ Nasazení ztmavení + ověření produkce
 
