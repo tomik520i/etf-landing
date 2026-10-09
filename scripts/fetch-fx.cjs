@@ -2,7 +2,7 @@
 // Primárně ČNB (rok.txt?rok=RRRR, jeden request na rok). Záloha: Frankfurter – jen když ČNB
 // nejde vůbec, a vždy se to vypíše do konzole a zapíše do výstupu (source/method).
 // Výstup: public/data/fx/usdczk.json
-// Spuštění: node scripts/fetch-fx.js
+// Spuštění: node scripts/fetch-fx.cjs
 'use strict';
 const fs = require('fs');
 const path = require('path');

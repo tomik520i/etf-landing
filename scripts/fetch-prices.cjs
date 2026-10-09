@@ -1,6 +1,6 @@
 // Stáhne měsíční ceny ETF z Yahoo Finance chart API (bez klíče).
 // Výstup: public/data/prices/<TICKER>.json (adjclose = hlavní hodnota, close = kontrola).
-// Spuštění: node scripts/fetch-prices.js
+// Spuštění: node scripts/fetch-prices.cjs
 'use strict';
 const fs = require('fs');
 const path = require('path');

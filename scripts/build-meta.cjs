@@ -1,6 +1,6 @@
 // Projde public/data/prices a public/data/fx a sestaví public/data/meta.json.
 // Cesty ve "files" jsou relativní k public/data/ (např. "prices/VOO.json").
-// Spuštění: node scripts/build-meta.js
+// Spuštění: node scripts/build-meta.cjs
 'use strict';
 const fs = require('fs');
 const path = require('path');

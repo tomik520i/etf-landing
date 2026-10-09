@@ -11,7 +11,7 @@ Pravidla:
 2. Ceny ETF: **měsíční adjusted close** (počítá s dividendami). Nikdy prostý close.
 3. Kurz USD/CZK: primárně ČNB (`rok.txt?rok=RRRR`, jeden request na rok), záloha Frankfurter. Formát odpovědi nejdřív ověř na jednom requestu.
 4. Výstup: `public/data/prices/<TICKER>.json` s polem `[{ "date": "YYYY-MM", "adjclose": number, "close": number }]` a `public/data/fx/usdczk.json` s polem `[{ "date": "YYYY-MM", "rate": number }]` (kurz posledního obchodního dne v měsíci). Každý soubor obsahuje `source` (URL) a `retrieved` (YYYY-MM-DD), data seřazená vzestupně.
-5. Aktualizuj `public/data/meta.json` přes `node scripts/build-meta.js` (cesty relativní k `public/data/`).
+5. Aktualizuj `public/data/meta.json` přes `node scripts/build-meta.cjs` (cesty relativní k `public/data/`).
 6. Žádné API klíče do kódu ani do výstupu – jen z proměnné prostředí.
 7. Nevymýšlej data. Když request selže, skript skončí chybou; nevyplňuj díry odhadem.
 

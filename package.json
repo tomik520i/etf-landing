@@ -1,8 +1,9 @@
 {
   "name": "etf-landing",
   "private": true,
+  "type": "module",
   "scripts": {
     "test": "node --test \"tests/**/*.test.mjs\"",
-    "fetch-data": "node scripts/fetch-prices.js && node scripts/fetch-fx.js && node scripts/build-meta.js"
+    "fetch-data": "node scripts/fetch-prices.cjs && node scripts/fetch-fx.cjs && node scripts/build-meta.cjs"
   }
 }
