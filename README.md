@@ -11,7 +11,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik budu mít z
 - Frontend: statické HTML/CSS + vanilla JS, data jako statické JSON
 - Backend: PHP 8 + PDO, MariaDB
 - Infra: Ubuntu server, HAProxy (TLS, Let's Encrypt) → Apache + PHP-FPM, MariaDB – vše na jednom stroji
-- E-mail: Resend SMTP
+- E-mail: Resend (HTTP API)
 - Měření: vlastní first-party funnel do MariaDB, bez cookies
 
 Konfigurace je v `.env` (vzor v `.env.example`), leží mimo document root a Claude Code má čtení `.env` zakázané (`.claude/settings.json`).

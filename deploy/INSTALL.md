@@ -68,7 +68,7 @@ EXIT;
 sudo git clone https://github.com/UZIVATEL/REPO.git /var/www/aijunior
 sudo mariadb < /var/www/aijunior/deploy/schema.sql
 sudo cp /var/www/aijunior/.env.example /var/www/aijunior/.env
-sudo nano /var/www/aijunior/.env          # DB_PASS, SMTP_PASS (Resend API klíč), MAIL_FROM…
+sudo nano /var/www/aijunior/.env          # DB_PASS, RESEND_API_KEY, MAIL_FROM, APP_SECRET (openssl rand -hex 32)
 sudo chown root:www-data /var/www/aijunior/.env
 sudo chmod 640 /var/www/aijunior/.env
 ```

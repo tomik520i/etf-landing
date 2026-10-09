@@ -15,6 +15,14 @@ CREATE TABLE IF NOT EXISTS leads (
   UNIQUE KEY uq_email (email)
 ) ENGINE=InnoDB;
 
+-- Odhlášení: DB uživatel smí jen SELECT/INSERT, proto se odhlášení zapisuje jako nový řádek
+CREATE TABLE IF NOT EXISTS unsubscribes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_unsub_email (email)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS events (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   session_id CHAR(36) NOT NULL,

@@ -7,7 +7,8 @@ Detailní plán: `docs/zadanie-B-poznamky.md`. Kde se liší od rozhodnutí ní�
 ## Rozhodnutí (aktuální, přebíjí poznámky)
 - Doména: **aijunior.opicebot.cz** (ne etf.opicebot.cz)
 - Vše na Ubuntu serveru **192.168.1.200**: HAProxy (TLS, Let's Encrypt) → **Apache na 127.0.0.1:8081** + PHP-FPM → **MariaDB na 127.0.0.1**. Server .175 / nginx se nepoužívá.
-- E-mail: **Resend SMTP**
+- E-mail: **Resend HTTP API** (cURL, bez Composeru); PDF jako odkaz, ne příloha
+- Specifikace designu a rozhraní: `docs/design-a-rozhrani.md`
 - Zrcadlo statiky: GitHub Pages, API přes CORS na aijunior.opicebot.cz
 - Design: moderní **tmavý** styl, obsah v kartách se **scroll-reveal** animací
 - Jazyk webu: čeština, **tykání**
