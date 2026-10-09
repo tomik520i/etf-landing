@@ -48,7 +48,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 22 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 23 záznamů)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
 - ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla – dělá uživatel
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)

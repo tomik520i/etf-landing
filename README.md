@@ -92,7 +92,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 - **End-to-end test měření** ([`smoke-analytics.sh`](deploy/server/smoke-analytics.sh)): testovací návštěva přes API → DB → analytika, po sobě uklidí.
 - **Lighthouse (mobil):** před redesignem 95 / 100 / 100 / 100 na produkci; po redesignu viz [`docs/STAV.md`](docs/STAV.md).
 
-**Kde se AI spletla:** 22 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
+**Kde se AI spletla:** 23 záznamů v [`ai-log/errors.md`](ai-log/errors.md). Výběr:
 - **Plán z chatu:** neúplná daňová pravidla (limit 40 mil. Kč od 2026 neplatí), VWCE jako „stejný“ fond jako VT, zastaralé verze GitHub Actions.
 - **Copywriter:** neověřené tvrzení („nejstarší ETF“) a slib e-mailové série, která neexistuje.
 - **Backend:** odhlášení na GET (spustil by ho skener odkazů), jakákoli DB chyba se tvářila jako duplicita.

@@ -21,8 +21,9 @@ admin() {
 }
 # Číslo z řádku tabulky/dlaždice: první čistě číselné pole ZA polem s popiskem
 # (HTML značky → '|', nezlomitelné mezery z num() pryč; popisek „Scroll 50 %“ tak nevrátí 50)
+# HTML se nejdřív spojí do jednoho řádku – buňky <td> jsou v adminu každá na svém řádku.
 val() {
-  sed -e 's/<[^>]*>/|/g' -e 's/\xc2\xa0//g' | awk -F'|' -v L="$1" '
+  tr '\n' ' ' | sed -e 's/<[^>]*>/|/g' -e 's/\xc2\xa0//g' | awk -F'|' -v L="$1" '
     index($0, L) { for (i = 1; i <= NF; i++) if (index($i, L)) {
       for (j = i + 1; j <= NF; j++) { g = $j; gsub(/[ \t]/, "", g); if (g ~ /^[0-9]+$/) { print g; exit } } } }'
 }
