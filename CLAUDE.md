@@ -10,7 +10,7 @@ Detailní plán: `docs/zadanie-B-poznamky.md`. Kde se liší od rozhodnutí ní�
 - E-mail: **Resend HTTP API** (cURL, bez Composeru); PDF jako odkaz, ne příloha
 - Specifikace designu a rozhraní: `docs/design-a-rozhrani.md`
 - Zrcadlo statiky: GitHub Pages, API přes CORS na aijunior.opicebot.cz
-- Design: moderní **tmavý** styl, obsah v kartách se **scroll-reveal** animací
+- Design (od 2026-10-09, rozhodnutí uživatele – přebíjí původní zadání): **Liquid Glass** panely nad statickým tradingovým pozadím se zelenými a červenými svíčkami (`public/css/liquid-glass.css`, `market-scene.svg`), **bez vyjíždění karet při scrollu**. Autor designu: OpenAI Codex (GPT-6 Astra).
 - Jazyk webu: čeština, **tykání**
 
 ## Struktura
@@ -30,7 +30,7 @@ docs/          plánovací poznámky
 3. **Žádné real-time API na stránce** – frontend čte jen statické JSON z `public/data/`.
 4. **PHP:** PDO + prepared statements, `ATTR_EMULATE_PREPARES=false`, validace vstupů, žádné vypisování výjimek uživateli. `require __DIR__ . '/../../config.php'`.
 5. **Frontend:** vanilla HTML/CSS/JS, mobile-first, žádný framework bez důvodu. Hero a kalkulačka se neanimují (rychlé LCP). Bez JS musí být obsah vidět; respektuj `prefers-reduced-motion`.
-6. **Design:** žádné fialové gradienty, glassmorphism, emoji v nadpisech, generické „AI“ fráze. Vlastní paleta (CSS proměnné), 1 výrazný font.
+6. **Design:** Liquid Glass je schválený směr (průhledné panely s `backdrop-filter`, fallback pro `prefers-reduced-transparency` a prohlížeče bez podpory). Dál platí: žádné fialové/neonové gradienty, emoji v nadpisech, generické „AI“ fráze; vlastní paleta v CSS proměnných, 1 výrazný font; text nad pozadím musí splnit kontrast WCAG AA.
 7. **Měření:** first-party, bez cookies a bez IP; `session_id` v `sessionStorage`; eventy přes `sendBeacon` jako `text/plain`.
 8. **Chyby AI:** každou nalezenou chybu agenta zapiš do `ai-log/errors.md` (co udělal → jak se poznalo → jak opraveno). Nemazat slepé uličky.
 9. **Commity:** malé, po každém hotovém kroku, Conventional Commits česky (`feat: kalkulačka – výpočet v CZK`).

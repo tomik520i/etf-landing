@@ -401,7 +401,39 @@ details ul{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:13px}
 .legend{display:flex;gap:16px;margin-top:8px;color:var(--muted);font-size:13px}
 .legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
 .err{color:var(--fee)}
+/* Liquid market — visual layer only; queries and metrics stay unchanged. */
+:root{color-scheme:dark;--bg:#080f14;--surface:#14232c;--surface-2:#1b3039;--border:#344b55;--text:#f0f6f6;--muted:#adbec6;--accent:#9bf4cf;--accent-ink:#09251d;--fee:#f3b493}
+body{padding:32px 20px;background-image:radial-gradient(ellipse at 90% 0,#296c6040,transparent 40%),linear-gradient(#a1d5d306 1px,transparent 1px),linear-gradient(90deg,#a1d5d306 1px,transparent 1px);background-size:auto,64px 64px,64px 64px}
+main{max-width:1240px;min-width:0}
+h1{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.055em;line-height:1.1;margin-bottom:10px}
+h2{font-size:1.2rem;letter-spacing:-.025em;margin-bottom:22px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.card,.kpi{background:linear-gradient(140deg,#ffffff0e,#ffffff02 50%,#a7e8ff08),#11212bea;border:1px solid #a9d6e12e;box-shadow:inset 0 1px 0 #ffffff21,0 16px 40px #0003;border-radius:24px}
+.card{padding:26px;margin-bottom:22px}
+.kpis{gap:14px;margin:26px 0}
+.kpi{padding:22px;min-width:0}
+.kpi .v{font-size:2.25rem;letter-spacing:-.05em;margin-top:12px}
+.kpi:nth-child(2){background:linear-gradient(135deg,#9bf4cf20,#11212b);border-color:#9bf4cf55}
+.kpi .l{min-height:40px}
+form.filters{gap:16px}
+.filters label{flex:1;min-width:140px;gap:8px}
+input,select,button{min-height:46px;border-radius:12px;max-width:100%}
+input,select{background:#08141c;color:var(--text);border-color:#9cc4cf38}
+button{padding:10px 26px;border:1px solid #d1ffeb;background:linear-gradient(160deg,#c2ffe6,#8cebc4);border-radius:999px;box-shadow:inset 0 1px 0 #fff8}
+th,td{padding:14px 12px;border-bottom-color:#b4d8e31c}
+th{font-size:12px;background:#06121a40}
+tbody tr:hover{background:#b8f2dd06}
+td:first-child .m{display:block;font-size:11px}
+.bar{height:9px;background:#b4d3e015}
+.bar i{background:linear-gradient(90deg,#4f9c8b,#bafadd);box-shadow:inset 0 1px 0 #fff5}
+summary{min-height:44px;display:flex;align-items:center;width:fit-content}
+details{margin:10px 0 20px}
+.legend b[style*="#F2A541"]{background:var(--accent)!important}
+svg rect[fill="#F2A541"]{fill:var(--accent)}
+svg rect[fill="#9BA1A6"]{fill:#6f8d9b}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media(max-width:600px){body{padding:24px 14px}.card{padding:20px 16px;border-radius:20px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi{padding:16px}.kpi .v{font-size:1.8rem}.filters button{width:100%}}
 </style>
+<link rel="stylesheet" href="../css/liquid-glass.css">
 </head>
 <body>
 <main>

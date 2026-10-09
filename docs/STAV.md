@@ -23,7 +23,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 4. Stránka
 - ✅ Texty, 2 verze reklamy, FAQ, e-mail, zásady (copywriter / Sonnet + review)
-- ✅ Design: tmavý styl, karty se scroll-reveal animací (frontend / Sonnet + review)
+- ✅ Design: první verze tmavý styl (frontend / Sonnet); finální Liquid Glass – viz bod 8
 - ✅ Kalkulačka na stránce + graf, varianty reklamy A/B
 - ✅ Formulář (e-mail + GDPR souhlas) – test proti API až na serveru
 
@@ -48,13 +48,19 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 
 ## 7. Odevzdání
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
-- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 19 záznamů)
+- 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 22 záznamů)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
 - ⬜ Export konverzací (`/export`) a kontrola, že v nich nejsou hesla – dělá uživatel
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
 - ⬜ Odeslat e-mail s odkazy
 
-## 8. Design – předání Codexu (poslední bod)
-- ⬜ Předat Codexu zadání [`docs/codex-design-brief.md`](codex-design-brief.md) – Codex dělá **jen komplexnější design** (CSS/markup), nic jiného
-- ⬜ Codex hotový → uživatel dá vědět Claude Code
-- ⬜ Claude Code: review změn designu, testy (`npm test`, kalkulačka, formuláře, měření), Lighthouse, nasazení na server a Pages, aktualizace README / STAV / errors / usage
+## 8. Design – Codex (poslední bod)
+- ✅ Zadání Codexu [`docs/codex-design-brief.md`](codex-design-brief.md); uživatel ho během práce upravil: **Liquid Glass, tradingové pozadí se zelenými a červenými svíčkami, bez vyjíždění karet**
+- ✅ Design vytvořil **OpenAI Codex, GPT-6 Astra, reasoning effort Medium** – větev `design/codex` (`40547b9`, `69ec4a5`, `5c0413f`)
+- ✅ Claude Code: review diffu (jen CSS/SVG/hlavičky HTML/styl adminu, logika beze změny), oprava přístupnosti šipky v tlačítku
+- ✅ Claude Code: kontrola lokálně – 19/19 testů; `?ad=a` 1 365 315 Kč, `?ad=b` 1 608 004 Kč; přepínání fondů = nezávislý výpočet; oba formuláře validují; honeypot skrytý; 375 px bez přetečení; text nad pozadím čitelný
+- ✅ Lighthouse mobil lokálně: 95 / 100 / 96 / 100 (96 = chyby 501 z lokálního serveru bez PHP)
+- ✅ Pravidla a dokumentace aktualizované (CLAUDE.md, design-a-rozhrani.md, frontend agent, README, errors, usage)
+- ✅ Nasazení posíleno: záloha DB + automatický návrat (`03-update.sh`), ruční návrat (`04-rollback.sh`)
+- ⬜ Sloučení do `main`, push, GitHub Pages
+- ⬜ Nasazení na aijunior.opicebot.cz + ověření produkce (web, formuláře, měření, admin, Lighthouse)

@@ -1,0 +1,118 @@
+/* Shared optical material. The background is static; controls remain native. */
+:root {
+  --bg: #060e20;
+  --surface: #172d44;
+  --surface-2: #203d53;
+  --text: #f4faff;
+  --muted: #c2d4e4;
+  --accent: #a2ffe1;
+  --fee: #ffb4a5;
+  --border: #b9ddff38;
+  --glass-edge: #ddf5ff59;
+  --glass-depth: inset 0 1px 1px #ffffff59, inset 1px 0 0 #ffffff18, inset 0 -1px 1px #a6e4ff30, 0 16px 42px #000b2033;
+}
+body {
+  isolation: isolate;
+  background: var(--bg);
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #030919c9, #03091935 58%, #03091908), url('market-scene.svg') center top / cover no-repeat;
+}
+.site-header .wrap::after { background: linear-gradient(90deg, #d7f4ff30, transparent); }
+.logo-mark { background: linear-gradient(145deg, #e9ffff45, #a9d9ff08); border-color: #e3f8ff70; box-shadow: inset 0 1px 1px #fff9, 0 4px 12px #0004; }
+.hero { overflow: visible; isolation: auto; }
+.hero::before, .market-art { display: none; }
+.hero h1 { text-shadow: 0 4px 24px #02071399; }
+.hero .sub, .hero .podtext { color: #d1dfec; text-shadow: 0 2px 8px #020713; }
+.eyebrow { color: #d7fff0; border-color: #d8f5ff66; background: linear-gradient(125deg, #e5f6ff24, #9cdbff08); box-shadow: inset 0 1px 0 #fff5; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.card, .calc.card, .cta.card, .kpi {
+  position: relative;
+  background: linear-gradient(125deg, #e3f5ff25, #cae7ff08 45%, #95d8ee12), #0b1a308c;
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-depth);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  border-radius: 30px;
+}
+/* A second, fine rim suggests the thickness of polished glass. */
+.card::after, .kpi::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 27px;
+  border: 1px solid transparent;
+  border-top-color: #ffffff12;
+  border-bottom-color: #c6efff0e;
+  pointer-events: none;
+}
+.calc-result {
+  background: linear-gradient(135deg, #bfdfff16, #05152833);
+  border-color: #d9efff38;
+  box-shadow: inset 0 1px 0 #fff3;
+}
+.big { color: #e2fff4; text-shadow: 0 2px 16px #83ffd52e; }
+.big .cur { color: #ccdfed; }
+.stats li { background: linear-gradient(140deg, #d4ecff1c, #b0dcff05); border-color: #e1f6ff36; color: #d4e4ef; box-shadow: inset 0 1px 0 #ffffff17; }
+.stats li.fx { border-left-color: #e1f6ff36; }
+.stats strong { color: #fff; }
+.chart-wrap { background: linear-gradient(180deg, #02223805, #0c39672b); border-color: #b9ddff30; }
+#chart .grid { stroke: #d1e7ff29; }
+.btn, .filters button {
+  color: #f3fffc;
+  background: linear-gradient(160deg, #a8ffdd47, #20dbaa36 45%, #51b8cc29);
+  border-color: #baffe5aa;
+  box-shadow: inset 0 1px 1px #ffffffb3, inset 0 -2px 5px #c1fff126, 0 6px 22px #001e3066;
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  text-shadow: 0 1px 3px #001e25;
+}
+.btn:hover, .filters button:hover { background-color: #8fffdc22; }
+input[type=number], input[type=email], input[type=text] { background: #02102270; border-color: #d4eeff4d; color: #fff; box-shadow: inset 0 1px 5px #0003, 0 1px 0 #fff1; }
+input::placeholder { color: #bfd0df; }
+.seg-row { background: #020e204f; border-color: #d8efff40; border-radius: 999px; }
+.seg-row label { border-radius: 999px; color: #d2e2ee; }
+.seg-row input:checked + label {
+  color: #fff;
+  background: linear-gradient(140deg, #eaffff45, #aaffdd20 60%, #dfffff30);
+  box-shadow: inset 0 1px 1px #ffffffbf, inset 0 -1px 1px #b6ffe36b, 0 3px 8px #00142455;
+}
+.range::-webkit-slider-runnable-track { background: linear-gradient(to right, #9cefd8 var(--pct), #d0eaff26 var(--pct)); }
+.range::-webkit-slider-thumb { background: linear-gradient(135deg, #ffffffee, #cdf5ffa6 55%, #dfffff); border-color: #fff; box-shadow: inset 0 0 3px #fff, 0 2px 8px #00142b99; }
+.cta-form, .ucits { background: linear-gradient(135deg, #e5f5ff0a, #020d2259); border-color: #c5e9ff33; box-shadow: inset 0 1px 0 #fff2; }
+.checks li, .fund > p { color: #d5e3f0; }
+.bar { background: #d5e8ff1a; }
+.bar-fill { background: linear-gradient(90deg, #7ac8de, #b3fce0); }
+.fund::before { height: 2px; background: linear-gradient(90deg, transparent, #e0fcffbb, transparent); }
+.fund:nth-child(2) { background: linear-gradient(135deg, #d7fff526, #a4ffdb06 65%), #0b1a309c; }
+.fund:nth-child(3) { background: linear-gradient(135deg, #c0dbff2b, #a4d9ff06 65%), #0b1a309c; }
+.site-footer { background: #020a19ad; border-color: #c7e9ff26; }
+.form-success { background: #10332fe8; }
+@media (min-width: 900px) {
+  .hero { padding-top: 45px; padding-bottom: 58px; }
+  .hero h1 { max-width: 15ch; }
+  .hero .sub { max-width: 50ch; }
+  .hero .podtext { max-width: 69ch; }
+  .calc.card { padding: 24px; }
+  .calc-inputs { padding: 14px 12px; }
+  .calc-result { padding: 26px; border-radius: 25px; }
+}
+@media (max-width: 899px) {
+  body::before { background-position: center, 61% top; background-image: linear-gradient(90deg, #030919db, #03091977), url('market-scene.svg'); }
+  .card, .calc.card, .cta.card { backdrop-filter: blur(12px) saturate(130%); -webkit-backdrop-filter: blur(12px) saturate(130%); }
+  .calc-result { background: transparent; box-shadow: none; }
+  .btn { background-color: #06504566; }
+  .hero { padding-top: 16px; }
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .card, .calc.card, .cta.card, .kpi { background-color: #14253bed; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .card, .calc.card, .cta.card, .kpi { background: #14253b; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .btn { background: #144f47; }
+  body::before { opacity: .35; }
+}

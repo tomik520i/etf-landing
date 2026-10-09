@@ -1,5 +1,7 @@
 # Zadání pro Codex: komplexnější design
 
+> **Stav 2026-10-09:** hotovo. Uživatel během práce zadání upravil – místo zákazu glassmorphism a požadavku na scroll-reveal chtěl **Liquid Glass, výrazné tradingové pozadí se zelenými a červenými svíčkami a žádné vyjíždění karet**. Body 6 (animace při scrollu) a 8 (zákaz glassmorphism) níže proto už neplatí. Výsledek: větev `design/codex` (40547b9, 69ec4a5, 5c0413f), review a nasazení viz `docs/STAV.md`.
+
 **Úkol: jen vizuální design.** Žádná nová funkce, žádné změny textů, dat, výpočtů, měření ani serveru. Až budeš hotový, hlavní session (Claude Code) změny zreviewuje, otestuje a nasadí.
 
 ## Kontext projektu

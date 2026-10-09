@@ -1,5 +1,7 @@
 # Design a rozhraní (zadání pro agenty frontend a backend)
 
+> **Aktualizace 2026-10-09:** vizuální styl níže (sekce 1) je **historický**. Platný design je Liquid Glass od OpenAI Codexu (`public/css/liquid-glass.css`, `public/css/market-scene.svg`, úpravy v `style.css`): skleněné panely nad statickým tradingovým pozadím se svíčkami a **bez scroll-reveal animací** (třída `.reveal` zůstává v HTML i JS, ale CSS ji nechává vždy viditelnou). Sekce 2–6 (pořadí sekcí, kalkulačka, měření, formulář, výkon) platí beze změny.
+
 Rozhodnutí hlavní session. Agenti se jich drží, odchylku nejdřív nahlásí.
 
 ## 1. Vizuální styl
