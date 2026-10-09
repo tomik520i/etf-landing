@@ -1,0 +1,21 @@
+# Tajné údaje – NIKDY do gitu
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build / Pages
+_site/
+dist/
+
+# OS / editory
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Lokální nastavení Claude Code (sdílené settings.json se commituje)
+.claude/settings.local.json
