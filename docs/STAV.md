@@ -50,7 +50,7 @@ Legenda: ✅ hotovo · 🔄 rozpracováno · ⬜ čeká
 - ✅ README (cílovka, pořadí sekcí, konverze se zdroji, A/B hypotézy, rozhodnutí, práce s AI)
 - 🔄 `ai-log/errors.md` – kde se AI spletla (zatím 25 záznamů)
 - ✅ `ai-log/usage.md` – tokeny a cena (ccusage)
-- 🔄 Export konverzace (v desktopové aplikaci `/export` není – export přes aplikaci) a kontrola, že v něm nejsou hesla
+- ✅ Export konverzace → [`ai-log/session-01/`](../ai-log/session-01/) (export přes aplikaci; zkontrolováno: bez hesel a klíčů, soukromé údaje a konfigurace jiných služeb vynechány)
 - ✅ Test na mobilu + Lighthouse (mobil 95 / 100 / 100 / 100)
 - ⬜ Odeslat e-mail s odkazy
 

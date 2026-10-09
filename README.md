@@ -8,7 +8,7 @@ Landing page pro českého drobného investora: kalkulačka „kolik by z mých 
 | **Analytika** | https://aijunior.opicebot.cz/admin/ – přihlášení `admin` / `admin` (záměrně veřejné: jen souhrnná čísla, žádné e-maily ani osobní údaje) |
 | **Zrcadlo** | https://tomik520i.github.io/etf-landing/ – statika na GitHub Pages; formulář a měření posílá přes CORS na vlastní server |
 | **Reklamy** | [`docs/reklamy.md`](docs/reklamy.md) – kde běží, odkazy, texty a co mění na stránce |
-| **AI log** | [`ai-log/`](ai-log/) – exporty konverzací, [kde se AI spletla](ai-log/errors.md), [tokeny a cena](ai-log/usage.md) |
+| **AI log** | [`ai-log/`](ai-log/) – [export konverzace](ai-log/session-01/), [kde se AI spletla](ai-log/errors.md), [tokeny a cena](ai-log/usage.md) |
 | **Průběh** | [`docs/STAV.md`](docs/STAV.md) |
 
 ---
